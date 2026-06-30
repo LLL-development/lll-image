@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/lang.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Image – LLL Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--text);color:var(--text);background:none"> Image</span></a>
+    <nav>
+      <a href="compress.html">Compress</a>
+      <a href="resize.html">Resize</a>
+      <a href="crop.html" class="active">Crop</a>
+      <a href="convert.html">Convert</a>
+      <a href="rotate.html">Rotate</a>
+      <a href="watermark.html">Watermark</a>
+      <a href="filters.html">Filters</a>
+      <a href="meme.html">Meme</a>
+    </nav>
+    <div class="nav-end">
+      <a href="index.html" class="btn btn-ghost btn-sm"><i class="fas fa-th-large"></i> All Tools</a></div>
+  </div>
+</header>
+
+<section class="tool-hero">
+  <h1><span style="background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-crop-alt"></i></span> Crop Image</h1>
+  <p>Click and drag on your image to select a crop area. Lock to aspect ratio presets or enter exact pixels.</p>
+</section>
+
+<div class="tool-wrap">
+
+  <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
+    <div class="up-icon"><i class="fas fa-crop-alt"></i></div>
+    <h2>Drop your image here</h2>
+    <p>or click to browse</p>
+    <div class="up-row">
+      <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
+    </div>
+    <input type="file" id="fi" accept="image/*" hidden>
+    <p class="up-note">JPG · PNG · WebP · GIF</p>
+  </div>
+
+  <div class="workspace" id="ws">
+    <div class="ws-layout">
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Draw Crop Area</h3>
+          <button class="btn btn-ghost btn-sm" onclick="clearCrop()"><i class="fas fa-times"></i> Clear</button>
+        </div>
+        <div style="padding:16px;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;min-height:300px;overflow:auto">
+          <div class="crop-stage" id="cropStage">
+            <img id="prev" src="" alt="" draggable="false">
+            <div id="cropBox"></div>
+            <div class="dim-pill" id="dimPill"></div>
+          </div>
+        </div>
+        <div class="panel-foot">
+          <span id="iDims">—</span>
+          <span id="selDims" style="color:var(--violet-l);font-weight:700">No selection</span>
+        </div>
+      </div>
+
+      <div class="opts-panel">
+        <div class="opts-head">Crop Options</div>
+        <div class="opts-body">
+
+          <div class="opt-g">
+            <div class="opt-label">Aspect Ratio</div>
+            <div class="asp-grid">
+              <button class="asp-btn sel" id="asp-free" onclick="setAsp(0,0,'free')">Free</button>
+              <button class="asp-btn" id="asp-1:1" onclick="setAsp(1,1,'1:1')">1 : 1</button>
+              <button class="asp-btn" id="asp-4:3" onclick="setAsp(4,3,'4:3')">4 : 3</button>
+              <button class="asp-btn" id="asp-16:9" onclick="setAsp(16,9,'16:9')">16 : 9</button>
+              <button class="asp-btn" id="asp-3:2" onclick="setAsp(3,2,'3:2')">3 : 2</button>
+              <button class="asp-btn" id="asp-9:16" onclick="setAsp(9,16,'9:16')">9 : 16</button>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Manual Coordinates (px)</div>
+            <div class="two-col">
+              <div><input class="inp" id="cx" type="number" placeholder="X" min="0" oninput="manualCrop()"><div class="field-note">Left (X)</div></div>
+              <div><input class="inp" id="cy" type="number" placeholder="Y" min="0" oninput="manualCrop()"><div class="field-note">Top (Y)</div></div>
+            </div>
+            <div class="two-col" style="margin-top:8px">
+              <div><input class="inp" id="cw" type="number" placeholder="W" min="1" oninput="manualCrop()"><div class="field-note">Width</div></div>
+              <div><input class="inp" id="ch" type="number" placeholder="H" min="1" oninput="manualCrop()"><div class="field-note">Height</div></div>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Output Format</div>
+            <select class="inp" id="fmt">
+              <option value="original">Same as original</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG (preserves transparency)</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+
+          <div class="opt-g" style="background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.15);border-radius:var(--r-sm);padding:14px">
+            <div style="font-size:13px;color:var(--muted);line-height:1.6"><i class="fas fa-info-circle" style="color:var(--violet-l)"></i> Click and drag on the image to draw your crop area. Use presets above to lock the ratio.</div>
+          </div>
+
+        </div>
+        <div class="opts-foot">
+          <button class="btn btn-block" style="background:linear-gradient(135deg,#7c3aed,#6366f1);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,.4)" onclick="doCrop()">
+            <i class="fas fa-crop-alt"></i> Crop Image
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="dl-box" id="dlBox">
+      <div class="dl-ico" style="background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
+      <h3 class="gtext">Image Cropped!</h3>
+      <p id="dlInfo">Ready to download.</p>
+      <div class="dl-row">
+        <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Crop Another</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
+    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 LLL Image</div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+let file=null,ow=0,oh=0,scale=1,aspW=0,aspH=0;
+let crop={x:0,y:0,w:0,h:0,active:false};
+let drag={on:false,sx:0,sy:0};
+
+const box=document.getElementById('box');
+box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
+box.addEventListener('dragleave',()=>box.classList.remove('over'));
+box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
+document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
+
+function load(files){
+  if(!files.length)return;
+  file=files[0];
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=document.getElementById('prev');
+    img.src=e.target.result;
+    img.onload=()=>{
+      ow=img.naturalWidth;oh=img.naturalHeight;
+      scale=img.offsetWidth/ow;
+      document.getElementById('iDims').textContent=ow+' × '+oh+' px';
+      box.style.display='none';
+      document.getElementById('ws').classList.add('on');
+      setupDrag();
+    };
+  };
+  r.readAsDataURL(file);
+}
+
+function setupDrag(){
+  const s=document.getElementById('cropStage');
+  s.onmousedown=startD;s.onmousemove=moveD;s.onmouseup=endD;s.onmouseleave=endD;
+  s.ontouchstart=e=>startD(e.touches[0]);
+  s.ontouchmove=e=>{e.preventDefault();moveD(e.touches[0]);};
+  s.ontouchend=endD;
+}
+
+function getImgRect(){return document.getElementById('prev').getBoundingClientRect();}
+
+function startD(e){
+  const r=getImgRect();
+  const px=(e.clientX||e.pageX)-r.left,py=(e.clientY||e.pageY)-r.top;
+  if(px<0||py<0||px>r.width||py>r.height)return;
+  drag.on=true;drag.sx=px;drag.sy=py;
+}
+
+function moveD(e){
+  if(!drag.on)return;
+  const r=getImgRect();
+  let px=Math.min(Math.max((e.clientX||e.pageX)-r.left,0),r.width);
+  let py=Math.min(Math.max((e.clientY||e.pageY)-r.top,0),r.height);
+  let bx=Math.min(drag.sx,px),by=Math.min(drag.sy,py);
+  let bw=Math.abs(px-drag.sx),bh=Math.abs(py-drag.sy);
+  if(aspW&&aspH&&bw>0&&bh>0){
+    const ratio=aspW/aspH;
+    if(bw/bh>ratio)bh=bw/ratio;else bw=bh*ratio;
+    if(drag.sx<px&&drag.sy<py){bx=drag.sx;by=drag.sy;}
+    else if(drag.sx>px&&drag.sy<py){bx=drag.sx-bw;by=drag.sy;}
+    else if(drag.sx<px&&drag.sy>py){bx=drag.sx;by=drag.sy-bh;}
+    else{bx=drag.sx-bw;by=drag.sy-bh;}
+  }
+  drawBox(bx,by,bw,bh);
+}
+function endD(){drag.on=false;}
+
+function drawBox(bx,by,bw,bh){
+  const imgEl=document.getElementById('prev');
+  scale=imgEl.offsetWidth/ow;
+  crop.x=Math.round(bx/scale);crop.y=Math.round(by/scale);
+  crop.w=Math.round(bw/scale);crop.h=Math.round(bh/scale);
+  crop.active=crop.w>0&&crop.h>0;
+  const cb=document.getElementById('cropBox');
+  if(crop.active){
+    cb.style.cssText=`display:block;left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px`;
+    document.getElementById('dimPill').style.display='';
+    document.getElementById('dimPill').textContent=crop.w+' × '+crop.h;
+    document.getElementById('selDims').textContent=crop.x+', '+crop.y+' — '+crop.w+' × '+crop.h+' px';
+    document.getElementById('cx').value=crop.x;
+    document.getElementById('cy').value=crop.y;
+    document.getElementById('cw').value=crop.w;
+    document.getElementById('ch').value=crop.h;
+  }else{
+    cb.style.display='none';
+    document.getElementById('dimPill').style.display='none';
+    document.getElementById('selDims').textContent='No selection';
+  }
+}
+
+function setAsp(w,h,key){
+  aspW=w;aspH=h;
+  document.querySelectorAll('.asp-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('asp-'+key).classList.add('sel');
+  clearCrop();
+}
+
+function clearCrop(){
+  crop.active=false;
+  document.getElementById('cropBox').style.display='none';
+  document.getElementById('dimPill').style.display='none';
+  document.getElementById('selDims').textContent='No selection';
+  ['cx','cy','cw','ch'].forEach(id=>document.getElementById(id).value='');
+}
+
+function manualCrop(){
+  const x=+document.getElementById('cx').value||0;
+  const y=+document.getElementById('cy').value||0;
+  const w=+document.getElementById('cw').value||0;
+  const h=+document.getElementById('ch').value||0;
+  if(w<=0||h<=0)return;
+  const imgEl=document.getElementById('prev');
+  scale=imgEl.offsetWidth/ow;
+  drawBox(x*scale,y*scale,w*scale,h*scale);
+}
+
+function doCrop(){
+  if(!file||!crop.active||crop.w<=0||crop.h<=0){toast('Draw a crop area first!');return;}
+  const img=document.getElementById('prev');
+  const c=document.createElement('canvas');
+  c.width=crop.w;c.height=crop.h;
+  c.getContext('2d').drawImage(img,crop.x,crop.y,crop.w,crop.h,0,0,crop.w,crop.h);
+  const fmtV=document.getElementById('fmt').value;
+  const mime=fmtV==='original'?(file.type||'image/jpeg'):fmtV;
+  const ext={['image/jpeg']:'jpg',['image/png']:'png',['image/webp']:'webp'}[mime]||'jpg';
+  const a=document.getElementById('dlA');
+  a.href=c.toDataURL(mime,.92);a.download='cropped.'+ext;
+  document.getElementById('dlInfo').textContent='Cropped to '+crop.w+' × '+crop.h+' px';
+  document.getElementById('dlBox').classList.add('on');
+  document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ Crop applied!');
+}
+
+function reset(){
+  file=null;
+  document.getElementById('fi').value='';
+  document.getElementById('box').style.display='';
+  document.getElementById('ws').classList.remove('on');
+  document.getElementById('dlBox').classList.remove('on');
+  clearCrop();
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+</script>
+</body>
+</html>

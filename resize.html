@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/lang.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resize Image – LLL Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .tool-hero { --accent: #f97316; }
+    .tool-hero h1 .ico { background: linear-gradient(135deg,#f97316,#f59e0b); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .out-dims { background: rgba(249,115,22,.08); border: 1px solid rgba(249,115,22,.2); border-radius: var(--r-sm); padding: 12px 16px; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .out-dims strong { color: var(--orange-l); font-weight: 700; font-size: 15px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--text);color:var(--text);background:none"> Image</span></a>
+    <nav>
+      <a href="compress.html">Compress</a>
+      <a href="resize.html" class="active">Resize</a>
+      <a href="crop.html">Crop</a>
+      <a href="convert.html">Convert</a>
+      <a href="rotate.html">Rotate</a>
+      <a href="watermark.html">Watermark</a>
+      <a href="filters.html">Filters</a>
+      <a href="meme.html">Meme</a>
+    </nav>
+    <div class="nav-end">
+      <a href="index.html" class="btn btn-ghost btn-sm"><i class="fas fa-th-large"></i> All Tools</a>
+    </div>
+  </div>
+</header>
+
+<section class="tool-hero">
+  <h1><span class="ico"><i class="fas fa-expand-arrows-alt"></i></span> Resize Image</h1>
+  <p>Change dimensions by pixels or percentage. Lock aspect ratio. Live output preview.</p>
+</section>
+
+<div class="tool-wrap">
+
+  <!-- UPLOAD -->
+  <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
+    <div class="up-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+    <h2>Drop your image here</h2>
+    <p>or click anywhere to browse files</p>
+    <div class="up-row" onclick="e=>e.stopPropagation()">
+      <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()">
+        <i class="fas fa-folder-open"></i> Choose File
+      </button>
+    </div>
+    <input type="file" id="fi" accept="image/*" hidden>
+    <p class="up-note">JPG · PNG · WebP · GIF · SVG · Max any size</p>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="workspace" id="ws">
+    <div class="ws-layout">
+
+      <!-- Preview -->
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+        </div>
+        <div class="panel-body"><img id="prev" src="" alt="Preview"></div>
+        <div class="panel-foot">
+          <span id="iDims">—</span>
+          <span id="iSize">—</span>
+          <span id="iType">—</span>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="opts-panel">
+        <div class="opts-head">Resize Options</div>
+        <div class="opts-body">
+
+          <div class="opt-g">
+            <div class="opt-label">Mode</div>
+            <div class="radio-row">
+              <button class="r-btn sel" id="mPx" onclick="setMode('px')">By Pixels</button>
+              <button class="r-btn" id="mPct" onclick="setMode('pct')">By Percent</button>
+            </div>
+          </div>
+
+          <!-- pixel inputs -->
+          <div class="opt-g" id="pxOpts">
+            <div class="opt-label">Target Dimensions</div>
+            <div class="two-col">
+              <div><input class="inp" type="number" id="wInp" placeholder="Width" min="1" oninput="syncW()">
+                <div class="field-note">Width px</div></div>
+              <div><input class="inp" type="number" id="hInp" placeholder="Height" min="1" oninput="syncH()">
+                <div class="field-note">Height px</div></div>
+            </div>
+            <div class="opt-label" style="margin-top:4px">Quick Scale</div>
+            <div class="chips">
+              <button class="chip" onclick="qPct(25)">25%</button>
+              <button class="chip" onclick="qPct(50)">50%</button>
+              <button class="chip" onclick="qPct(75)">75%</button>
+              <button class="chip" onclick="qPct(100)">Original</button>
+            </div>
+          </div>
+
+          <!-- percent mode -->
+          <div class="opt-g" id="pctOpts" style="display:none">
+            <div class="opt-label">Scale Factor</div>
+            <div class="range-val" id="pctVal">50%</div>
+            <input type="range" id="pctR" min="1" max="300" value="50" oninput="onPct()">
+            <div class="range-limits"><span>1%</span><span>300%</span></div>
+          </div>
+
+          <!-- output preview -->
+          <div class="out-dims" id="outDims" style="display:none">
+            <i class="fas fa-arrow-right" style="color:var(--orange)"></i>
+            Output: <strong id="outLabel">— × —</strong>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Constraints</div>
+            <label class="toggle-row"><input type="checkbox" id="ckRatio" checked onchange="updateOutDims()"> Lock aspect ratio</label>
+            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckNoUp"> Prevent upscaling</label>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Output Format</div>
+            <select class="inp" id="fmt">
+              <option value="original">Same as original</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="opts-foot">
+          <button class="btn btn-grad btn-block" onclick="doResize()">
+            <i class="fas fa-magic"></i> Resize Image
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Download -->
+    <div class="dl-box" id="dlBox">
+      <div class="dl-ico" style="background:linear-gradient(135deg,#f97316,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
+      <h3 class="gtext">Image Resized!</h3>
+      <p id="dlInfo">Ready to download.</p>
+      <div class="dl-row">
+        <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Resize Another</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a>
+      <p>Free browser-based image tools. Zero uploads.</p>
+    </div>
+    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
+    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 LLL Image</div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+let file=null,ow=0,oh=0,mode='px',locking=false;
+
+const box=document.getElementById('box');
+box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
+box.addEventListener('dragleave',()=>box.classList.remove('over'));
+box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
+document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
+
+function load(files){
+  if(!files.length)return;
+  file=files[0];
+  const r=new FileReader();
+  r.onload=e=>{
+    const img=document.getElementById('prev');
+    img.src=e.target.result;
+    img.onload=()=>{
+      ow=img.naturalWidth;oh=img.naturalHeight;
+      document.getElementById('iDims').textContent=ow+' × '+oh+' px';
+      document.getElementById('iSize').textContent=fmt(file.size);
+      document.getElementById('iType').textContent=(file.type||'?').replace('image/','').toUpperCase();
+      document.getElementById('wInp').value=ow;
+      document.getElementById('hInp').value=oh;
+      updateOutDims();
+      box.style.display='none';
+      document.getElementById('ws').classList.add('on');
+    };
+  };
+  r.readAsDataURL(file);
+}
+
+function setMode(m){
+  mode=m;
+  document.getElementById('mPx').classList.toggle('sel',m==='px');
+  document.getElementById('mPct').classList.toggle('sel',m==='pct');
+  document.getElementById('pxOpts').style.display=m==='px'?'flex':'none';
+  document.getElementById('pctOpts').style.display=m==='pct'?'flex':'none';
+  updateOutDims();
+}
+
+function syncW(){
+  if(locking||!document.getElementById('ckRatio').checked)return updateOutDims();
+  locking=true;
+  const w=+document.getElementById('wInp').value||0;
+  document.getElementById('hInp').value=Math.round(w*oh/ow)||'';
+  locking=false; updateOutDims();
+}
+function syncH(){
+  if(locking||!document.getElementById('ckRatio').checked)return updateOutDims();
+  locking=true;
+  const h=+document.getElementById('hInp').value||0;
+  document.getElementById('wInp').value=Math.round(h*ow/oh)||'';
+  locking=false; updateOutDims();
+}
+function qPct(p){
+  document.getElementById('wInp').value=Math.round(ow*p/100);
+  document.getElementById('hInp').value=Math.round(oh*p/100);
+  updateOutDims();
+}
+function onPct(){
+  const v=document.getElementById('pctR').value;
+  document.getElementById('pctVal').textContent=v+'%';
+  updateOutDims();
+}
+function updateOutDims(){
+  if(!ow)return;
+  let tw,th;
+  if(mode==='px'){tw=+document.getElementById('wInp').value||ow;th=+document.getElementById('hInp').value||oh;}
+  else{const p=+document.getElementById('pctR').value/100;tw=Math.round(ow*p);th=Math.round(oh*p);}
+  if(document.getElementById('ckNoUp').checked){tw=Math.min(tw,ow);th=Math.min(th,oh);}
+  document.getElementById('outLabel').textContent=tw+' × '+th+' px';
+  document.getElementById('outDims').style.display='flex';
+}
+
+function doResize(){
+  if(!file)return;
+  let tw,th;
+  if(mode==='px'){tw=+document.getElementById('wInp').value||ow;th=+document.getElementById('hInp').value||oh;}
+  else{const p=+document.getElementById('pctR').value/100;tw=Math.round(ow*p);th=Math.round(oh*p);}
+  if(document.getElementById('ckNoUp').checked){tw=Math.min(tw,ow);th=Math.min(th,oh);}
+  const img=document.getElementById('prev');
+  const c=document.createElement('canvas');
+  c.width=tw;c.height=th;
+  const ctx=c.getContext('2d');
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  ctx.drawImage(img,0,0,tw,th);
+  const fmtV=document.getElementById('fmt').value;
+  const mime=fmtV==='original'?(file.type||'image/jpeg'):fmtV;
+  const ext={['image/jpeg']:'jpg',['image/png']:'png',['image/webp']:'webp'}[mime]||'jpg';
+  const url=mime==='image/jpeg'?c.toDataURL(mime,.92):c.toDataURL(mime);
+  const a=document.getElementById('dlA');
+  a.href=url;a.download='resized.'+ext;
+  document.getElementById('dlInfo').textContent='Output: '+tw+' × '+th+' px  ·  '+ext.toUpperCase();
+  document.getElementById('dlBox').classList.add('on');
+  document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ Resized to '+tw+' × '+th+' px');
+}
+
+function reset(){
+  file=null;
+  document.getElementById('fi').value='';
+  document.getElementById('box').style.display='';
+  document.getElementById('ws').classList.remove('on');
+  document.getElementById('dlBox').classList.remove('on');
+}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+</script>
+</body>
+</html>

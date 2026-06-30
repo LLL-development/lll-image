@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/lang.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotate & Flip – LLL Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--text);color:var(--text);background:none"> Image</span></a>
+    <nav>
+      <a href="compress.html">Compress</a>
+      <a href="resize.html">Resize</a>
+      <a href="crop.html">Crop</a>
+      <a href="convert.html">Convert</a>
+      <a href="rotate.html" class="active">Rotate</a>
+      <a href="watermark.html">Watermark</a>
+      <a href="filters.html">Filters</a>
+      <a href="meme.html">Meme</a>
+    </nav>
+    <div class="nav-end">
+      <a href="index.html" class="btn btn-ghost btn-sm"><i class="fas fa-th-large"></i> All Tools</a></div>
+  </div>
+</header>
+
+<section class="tool-hero">
+  <h1><span style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-redo-alt"></i></span> Rotate &amp; Flip</h1>
+  <p>Rotate 90°/180°, flip horizontally or vertically, or fine-tune with a free-angle slider. Live preview.</p>
+</section>
+
+<div class="tool-wrap">
+
+  <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
+    <div class="up-icon"><i class="fas fa-redo-alt"></i></div>
+    <h2>Drop your image here</h2>
+    <p>or click to browse</p>
+    <div class="up-row">
+      <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
+    </div>
+    <input type="file" id="fi" accept="image/*" hidden>
+    <p class="up-note">JPG · PNG · WebP · GIF</p>
+  </div>
+
+  <div class="workspace" id="ws">
+    <div class="ws-layout">
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Live Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+        </div>
+        <div class="panel-body">
+          <canvas id="cvs" style="max-width:100%;max-height:420px;border-radius:8px;display:block;"></canvas>
+        </div>
+        <div class="panel-foot">
+          <span id="iDims">—</span>
+          <span id="iRot" style="color:var(--green-l);font-weight:700">0° · No flip</span>
+        </div>
+      </div>
+
+      <div class="opts-panel">
+        <div class="opts-head">Transform Options</div>
+        <div class="opts-body">
+
+          <div class="opt-g">
+            <div class="opt-label">Rotate</div>
+            <div class="act-grid">
+              <button class="act-btn" onclick="doRot(-90)"><i class="fas fa-undo"></i><span>90° Left</span></button>
+              <button class="act-btn" onclick="doRot(90)"><i class="fas fa-redo"></i><span>90° Right</span></button>
+              <button class="act-btn" onclick="doRot(180)"><i class="fas fa-sync-alt"></i><span>180°</span></button>
+              <button class="act-btn" onclick="resetAll()"><i class="fas fa-home"></i><span>Reset All</span></button>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Flip</div>
+            <div class="act-grid">
+              <button class="act-btn" onclick="doFlip('h')"><i class="fas fa-arrows-alt-h"></i><span>Flip H</span></button>
+              <button class="act-btn" onclick="doFlip('v')"><i class="fas fa-arrows-alt-v"></i><span>Flip V</span></button>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Fine Angle</div>
+            <div class="range-val" id="fineVal">0°</div>
+            <input type="range" id="fineR" min="-180" max="180" value="0" oninput="onFine()">
+            <div class="range-limits"><span>-180°</span><span>+180°</span></div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Canvas Background</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <input type="color" id="bgClr" value="#000000" style="width:44px;height:38px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;padding:3px;background:transparent" oninput="render()">
+              <select class="inp" id="bgPng" onchange="render()" style="flex:1">
+                <option value="transparent">Transparent (PNG output)</option>
+                <option value="color">Use color picker</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Output Format</div>
+            <select class="inp" id="fmt">
+              <option value="original">Same as original</option>
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="opts-foot">
+          <button class="btn btn-block" style="background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;box-shadow:0 4px 20px rgba(16,185,129,.35)" onclick="doSave()">
+            <i class="fas fa-download"></i> Save Image
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dl-box" id="dlBox">
+      <div class="dl-ico" style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
+      <h3 class="gtext">Image Ready!</h3>
+      <p id="dlInfo">Your transformed image is ready.</p>
+      <div class="dl-row">
+        <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Start Over</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
+    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 LLL Image</div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+let file=null,origImg=null,totalRot=0,flipH=false,flipV=false,fineRot=0;
+
+const box=document.getElementById('box');
+box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
+box.addEventListener('dragleave',()=>box.classList.remove('over'));
+box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
+document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
+
+function load(files){
+  if(!files.length)return;
+  file=files[0];
+  const r=new FileReader();
+  r.onload=e=>{
+    origImg=new Image();
+    origImg.onload=()=>{
+      totalRot=0;flipH=false;flipV=false;fineRot=0;
+      document.getElementById('fineR').value=0;
+      document.getElementById('fineVal').textContent='0°';
+      render();
+      document.getElementById('iDims').textContent=origImg.naturalWidth+' × '+origImg.naturalHeight+' px';
+      box.style.display='none';
+      document.getElementById('ws').classList.add('on');
+    };
+    origImg.src=e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+
+function render(){
+  if(!origImg)return;
+  const iw=origImg.naturalWidth,ih=origImg.naturalHeight;
+  const ang=(totalRot+fineRot)*Math.PI/180;
+  const cos=Math.abs(Math.cos(ang)),sin=Math.abs(Math.sin(ang));
+  const cw=Math.round(iw*cos+ih*sin);
+  const ch=Math.round(iw*sin+ih*cos);
+  const cvs=document.getElementById('cvs');
+  cvs.width=cw;cvs.height=ch;
+  const ctx=cvs.getContext('2d');
+  ctx.clearRect(0,0,cw,ch);
+  const useTrans=document.getElementById('bgPng').value==='transparent';
+  if(!useTrans){ctx.fillStyle=document.getElementById('bgClr').value;ctx.fillRect(0,0,cw,ch);}
+  ctx.translate(cw/2,ch/2);
+  ctx.rotate(ang);
+  ctx.scale(flipH?-1:1,flipV?-1:1);
+  ctx.drawImage(origImg,-iw/2,-ih/2);
+  ctx.setTransform(1,0,0,1,0,0);
+  const rot=((totalRot+fineRot)%360+360)%360;
+  document.getElementById('iRot').textContent=rot+'°'+(flipH?' · H-flip':'')+(flipV?' · V-flip':'');
+}
+
+function doRot(d){totalRot=(totalRot+d+360)%360;render();}
+function doFlip(dir){if(dir==='h')flipH=!flipH;else flipV=!flipV;render();}
+function resetAll(){totalRot=0;flipH=false;flipV=false;fineRot=0;document.getElementById('fineR').value=0;document.getElementById('fineVal').textContent='0°';render();}
+function onFine(){fineRot=+document.getElementById('fineR').value;document.getElementById('fineVal').textContent=fineRot+'°';render();}
+
+function doSave(){
+  if(!origImg)return;
+  const cvs=document.getElementById('cvs');
+  const fmtV=document.getElementById('fmt').value;
+  const mime=fmtV==='original'?(file.type||'image/jpeg'):fmtV;
+  const ext={['image/jpeg']:'jpg',['image/png']:'png',['image/webp']:'webp'}[mime]||'jpg';
+  const url=mime==='image/jpeg'?cvs.toDataURL(mime,.93):cvs.toDataURL(mime);
+  const a=document.getElementById('dlA');
+  a.href=url;a.download='rotated.'+ext;
+  document.getElementById('dlInfo').textContent='Output: '+cvs.width+' × '+cvs.height+' px · '+ext.toUpperCase();
+  document.getElementById('dlBox').classList.add('on');
+  document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ Image saved!');
+}
+
+function reset(){
+  file=null;origImg=null;
+  document.getElementById('fi').value='';
+  document.getElementById('box').style.display='';
+  document.getElementById('ws').classList.remove('on');
+  document.getElementById('dlBox').classList.remove('on');
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+</script>
+</body>
+</html>

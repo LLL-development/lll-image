@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/lang.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compress Image – LLL Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* before/after compare */
+    .ba-wrap { position:relative; overflow:hidden; border-radius:8px; cursor:ew-resize; user-select:none; line-height:0; }
+    .ba-base img { display:block; width:100%; border-radius:8px; }
+    .ba-top { position:absolute; top:0; left:0; height:100%; overflow:hidden; }
+    .ba-top img { position:absolute; top:0; left:0; height:100%; width:auto; max-width:none; min-width:100vw; display:block; border-radius:0; }
+    .ba-line { position:absolute; top:0; bottom:0; width:2px; background:#fff; box-shadow:0 0 12px rgba(0,0,0,.6); pointer-events:none; }
+    .ba-handle { position:absolute; top:50%; width:42px; height:42px; border-radius:50%; background:#fff; box-shadow:0 2px 16px rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; transform:translate(-50%,-50%); pointer-events:none; font-size:13px; color:#333; gap:2px; }
+    .ba-pill { position:absolute; bottom:12px; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; background:rgba(0,0,0,.7); color:#fff; backdrop-filter:blur(6px); }
+    .ba-pill.l { left:12px; }
+    .ba-pill.r { right:12px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--text);color:var(--text);background:none"> Image</span></a>
+    <nav>
+      <a href="compress.html" class="active">Compress</a>
+      <a href="resize.html">Resize</a>
+      <a href="crop.html">Crop</a>
+      <a href="convert.html">Convert</a>
+      <a href="rotate.html">Rotate</a>
+      <a href="watermark.html">Watermark</a>
+      <a href="filters.html">Filters</a>
+      <a href="meme.html">Meme</a>
+    </nav>
+    <div class="nav-end">
+      <a href="index.html" class="btn btn-ghost btn-sm"><i class="fas fa-th-large"></i> All Tools</a>
+    </div>
+  </div>
+</header>
+
+<section class="tool-hero">
+  <h1><span style="background:linear-gradient(135deg,#ec4899,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-compress-alt"></i></span> Compress Image</h1>
+  <p>Reduce file size while preserving quality. Drag the slider to compare before and after.</p>
+</section>
+
+<div class="tool-wrap">
+
+  <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
+    <div class="up-icon"><i class="fas fa-compress-alt"></i></div>
+    <h2>Drop your image here</h2>
+    <p>or click to browse</p>
+    <div class="up-row">
+      <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
+    </div>
+    <input type="file" id="fi" accept="image/*" hidden>
+    <p class="up-note">JPG · PNG · WebP · Best results with JPEG photos</p>
+  </div>
+
+  <div class="workspace" id="ws">
+    <div class="ws-layout">
+
+      <!-- Preview with BA compare -->
+      <div class="panel">
+        <div class="panel-head">
+          <h3 id="previewLabel">Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+        </div>
+        <!-- normal preview (before compress) -->
+        <div class="panel-body" id="normalPreview"><img id="prev" src="" alt="Preview"></div>
+        <!-- BA compare (after compress) -->
+        <div id="baContainer" style="display:none; padding:18px; background:rgba(0,0,0,.25);">
+          <div class="ba-wrap" id="baWrap">
+            <div class="ba-base"><img id="baOrig" src="" alt="Original"></div>
+            <div class="ba-top" id="baTop"><img id="baComp" src="" alt="Compressed"></div>
+            <div class="ba-line" id="baLine"></div>
+            <div class="ba-handle" id="baHandle"><i class="fas fa-chevron-left"></i><i class="fas fa-chevron-right"></i></div>
+            <div class="ba-pill l">Original</div>
+            <div class="ba-pill r">Compressed</div>
+          </div>
+          <p style="text-align:center;font-size:12px;color:var(--dim);margin-top:10px"><i class="fas fa-arrows-alt-h"></i> Drag to compare</p>
+        </div>
+        <div class="panel-foot">
+          <span id="iDims">—</span>
+          <span id="iSize">—</span>
+          <span id="iSaved" style="color:var(--green-l);font-weight:700"></span>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="opts-panel">
+        <div class="opts-head">Compression Options</div>
+        <div class="opts-body">
+
+          <div class="opt-g">
+            <div class="opt-label">Quality</div>
+            <div class="range-val" id="qVal">80%</div>
+            <input type="range" id="qR" min="1" max="100" value="80" oninput="onQ()">
+            <div class="range-limits"><span>🗜 Smallest</span><span>✨ Best Quality</span></div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Presets</div>
+            <div class="chips">
+              <button class="chip" onclick="setQ(35)">Max Compress</button>
+              <button class="chip" onclick="setQ(65)">Balanced</button>
+              <button class="chip" onclick="setQ(85)">High Quality</button>
+              <button class="chip" onclick="setQ(95)">Near Lossless</button>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Output Format</div>
+            <select class="inp" id="fmt">
+              <option value="auto">Auto-detect (recommended)</option>
+              <option value="image/jpeg">Force JPEG</option>
+              <option value="image/webp">Force WebP (best ratio)</option>
+              <option value="image/png">Force PNG (lossless)</option>
+            </select>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Max Dimensions (optional)</div>
+            <div class="two-col">
+              <div><input class="inp" type="number" id="mxW" placeholder="Max width"><div class="field-note">Width px</div></div>
+              <div><input class="inp" type="number" id="mxH" placeholder="Max height"><div class="field-note">Height px</div></div>
+            </div>
+          </div>
+
+          <!-- size comparison (shows after compress) -->
+          <div id="szCmp" style="display:none">
+            <div class="sz-compare">
+              <div class="sz-box"><div class="sz-lbl">Original</div><div class="sz-val orig" id="szOrig">—</div></div>
+              <div class="sz-arrow"><i class="fas fa-arrow-right"></i></div>
+              <div class="sz-box"><div class="sz-lbl">Compressed</div><div class="sz-val new" id="szNew">—</div></div>
+            </div>
+            <div class="sz-saved" id="szSaved"></div>
+          </div>
+
+        </div>
+        <div class="opts-foot">
+          <button class="btn btn-grad btn-block" onclick="doCompress()">
+            <i class="fas fa-compress-alt"></i> Compress Image
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dl-box" id="dlBox">
+      <div class="dl-ico" style="background:linear-gradient(135deg,#ec4899,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
+      <h3 class="gtext">Compression Done!</h3>
+      <p id="dlInfo">Your image is ready.</p>
+      <div class="dl-row">
+        <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Compress Another</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a>
+      <p>Free browser-based image tools. Zero uploads.</p>
+    </div>
+    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
+    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 LLL Image</div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+let file=null,origSize=0,ow=0,oh=0,origDataUrl=null;
+
+const box=document.getElementById('box');
+box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
+box.addEventListener('dragleave',()=>box.classList.remove('over'));
+box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
+document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
+
+function load(files){
+  if(!files.length)return;
+  file=files[0];origSize=file.size;
+  const r=new FileReader();
+  r.onload=e=>{
+    origDataUrl=e.target.result;
+    const img=document.getElementById('prev');
+    img.src=origDataUrl;
+    img.onload=()=>{
+      ow=img.naturalWidth;oh=img.naturalHeight;
+      document.getElementById('iDims').textContent=ow+' × '+oh+' px';
+      document.getElementById('iSize').textContent=fmt(origSize);
+      document.getElementById('szCmp').style.display='none';
+      document.getElementById('baContainer').style.display='none';
+      document.getElementById('normalPreview').style.display='';
+      document.getElementById('iSaved').textContent='';
+      box.style.display='none';
+      document.getElementById('ws').classList.add('on');
+    };
+  };
+  r.readAsDataURL(file);
+}
+
+function onQ(){document.getElementById('qVal').textContent=document.getElementById('qR').value+'%';}
+function setQ(v){document.getElementById('qR').value=v;onQ();}
+
+function doCompress(){
+  if(!file)return;
+  const q=+document.getElementById('qR').value/100;
+  let tw=ow,th=oh;
+  const mxW=+document.getElementById('mxW').value;
+  const mxH=+document.getElementById('mxH').value;
+  if(mxW&&tw>mxW){th=Math.round(th*mxW/tw);tw=mxW;}
+  if(mxH&&th>mxH){tw=Math.round(tw*mxH/th);th=mxH;}
+
+  const img=document.getElementById('prev');
+  const c=document.createElement('canvas');
+  c.width=tw;c.height=th;
+  const ctx=c.getContext('2d');
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+  ctx.drawImage(img,0,0,tw,th);
+
+  const fmtV=document.getElementById('fmt').value;
+  let mime=fmtV==='auto'?(file.type==='image/png'?'image/png':'image/jpeg'):fmtV;
+  const ext={['image/jpeg']:'jpg',['image/png']:'png',['image/webp']:'webp'}[mime]||'jpg';
+  const useQ=mime!=='image/png'?q:undefined;
+  const url=useQ!==undefined?c.toDataURL(mime,useQ):c.toDataURL(mime);
+
+  const b64=url.split(',')[1];
+  const newSize=Math.round(b64.length*.75);
+  const saved=Math.max(0,Math.round((1-newSize/origSize)*100));
+
+  // show before/after compare
+  document.getElementById('baOrig').src=origDataUrl;
+  document.getElementById('baComp').src=url;
+  document.getElementById('normalPreview').style.display='none';
+  document.getElementById('baContainer').style.display='';
+  document.getElementById('previewLabel').textContent='Before / After Compare';
+  initBA();
+
+  document.getElementById('iSaved').textContent=saved>0?'↓ '+saved+'% saved':'Optimized';
+  document.getElementById('szOrig').textContent=fmt(origSize);
+  document.getElementById('szNew').textContent=fmt(newSize);
+  document.getElementById('szSaved').textContent=saved>0?'🎉 Saved '+saved+'% ('+fmt(origSize-newSize)+')':'File optimized';
+  document.getElementById('szCmp').style.display='';
+
+  const a=document.getElementById('dlA');
+  a.href=url;a.download='compressed.'+ext;
+  document.getElementById('dlInfo').textContent='Original: '+fmt(origSize)+' → Compressed: '+fmt(newSize);
+  document.getElementById('dlBox').classList.add('on');
+  document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ Saved '+(saved>0?saved+'% ':'')+'file size!');
+}
+
+// ── Before/After Slider ──
+function initBA(){
+  const wrap=document.getElementById('baWrap');
+  const top=document.getElementById('baTop');
+  const line=document.getElementById('baLine');
+  const handle=document.getElementById('baHandle');
+  let pct=50,dragging=false;
+
+  function setPos(p){
+    pct=Math.min(Math.max(p,0),100);
+    top.style.width=pct+'%';
+    line.style.left=pct+'%';
+    handle.style.left=pct+'%';
+  }
+  setPos(50);
+
+  function getX(e,el){
+    const r=el.getBoundingClientRect();
+    const cx=e.touches?e.touches[0].clientX:e.clientX;
+    return Math.min(Math.max(cx-r.left,0),r.width);
+  }
+
+  wrap.addEventListener('mousedown',e=>{dragging=true;setPos(getX(e,wrap)/wrap.offsetWidth*100);});
+  wrap.addEventListener('mousemove',e=>{if(dragging)setPos(getX(e,wrap)/wrap.offsetWidth*100);});
+  window.addEventListener('mouseup',()=>dragging=false);
+  wrap.addEventListener('touchstart',e=>{dragging=true;setPos(getX(e,wrap)/wrap.offsetWidth*100);},{passive:true});
+  wrap.addEventListener('touchmove',e=>{e.preventDefault();if(dragging)setPos(getX(e,wrap)/wrap.offsetWidth*100);},{passive:false});
+  window.addEventListener('touchend',()=>dragging=false);
+}
+
+function reset(){
+  file=null;origDataUrl=null;
+  document.getElementById('fi').value='';
+  document.getElementById('box').style.display='';
+  document.getElementById('ws').classList.remove('on');
+  document.getElementById('dlBox').classList.remove('on');
+  document.getElementById('baContainer').style.display='none';
+  document.getElementById('normalPreview').style.display='';
+  document.getElementById('previewLabel').textContent='Preview';
+}
+function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB';}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3200);}
+</script>
+</body>
+</html>

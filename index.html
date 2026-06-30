@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/lang.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLL Image – Free Online Image Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+
+  /* ───────────────────────────────
+     HERO
+  ─────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    position: relative; overflow: hidden;
+    background: var(--bg);
+    padding: 90px 24px 80px;
+  }
+  #particle-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none; z-index: 0;
+    width: 100%; height: 100%;
+  }
+  /* dot grid */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,.11) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 30%, transparent 100%);
+  }
+  /* aurora orbs */
+  .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 0; }
+  .orb-1 { width:700px;height:700px; background:radial-gradient(circle,rgba(124,58,237,.45),transparent 70%); top:-180px;left:-140px; animation:o1 16s ease-in-out infinite; }
+  .orb-2 { width:550px;height:550px; background:radial-gradient(circle,rgba(236,72,153,.35),transparent 70%); bottom:-140px;right:-100px; animation:o2 19s ease-in-out infinite; }
+  .orb-3 { width:380px;height:380px; background:radial-gradient(circle,rgba(6,182,212,.28),transparent 70%); top:35%;left:58%; animation:o3 13s ease-in-out infinite; }
+  .orb-4 { width:260px;height:260px; background:radial-gradient(circle,rgba(249,115,22,.22),transparent 70%); bottom:22%;left:8%; animation:o4 15s ease-in-out infinite; }
+  @keyframes o1 { 0%,100%{transform:translate(0,0)scale(1)} 33%{transform:translate(80px,-55px)scale(1.1)} 66%{transform:translate(-45px,70px)scale(.9)} }
+  @keyframes o2 { 0%,100%{transform:translate(0,0)scale(1)} 33%{transform:translate(-65px,45px)scale(1.05)} 66%{transform:translate(55px,-60px)scale(.95)} }
+  @keyframes o3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-90px,50px)} }
+  @keyframes o4 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(65px,-45px)} }
+
+  .hero-inner { position:relative;z-index:1; max-width:860px; }
+
+  /* badge */
+  .hero-badge {
+    display:inline-flex;align-items:center;gap:10px;
+    background:rgba(124,58,237,.12); border:1px solid rgba(124,58,237,.3);
+    color:var(--violet-l); font-size:13px; font-weight:600;
+    padding:7px 20px; border-radius:20px; margin-bottom:40px;
+    backdrop-filter:blur(14px);
+    animation:badgePop .7s cubic-bezier(.34,1.56,.64,1) .15s both;
+  }
+  @keyframes badgePop { from{opacity:0;transform:scale(.8)translateY(10px)} to{opacity:1;transform:scale(1)translateY(0)} }
+  .badge-dot {
+    width:7px;height:7px;border-radius:50%;background:#10b981;flex-shrink:0;
+    box-shadow:0 0 0 3px rgba(16,185,129,.25);
+    animation:live 2s ease-in-out infinite;
+  }
+  @keyframes live { 0%,100%{box-shadow:0 0 0 3px rgba(16,185,129,.25)} 50%{box-shadow:0 0 0 7px rgba(16,185,129,.08)} }
+
+  /* headline */
+  .hero h1 {
+    font-size: clamp(46px,8.5vw,94px);
+    font-weight:900; line-height:1.0; letter-spacing:-3px;
+    margin-bottom:12px; color:var(--text);
+    animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) .25s both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+
+  /* cycling word */
+  .hero-word {
+    display:block;
+    background:linear-gradient(135deg,#a78bfa,#f472b6 45%,#fb923c);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    background-size:200%;
+    animation:gradShift 5s ease infinite;
+    transition:opacity .28s, transform .28s;
+    min-height:1.1em;
+  }
+  @keyframes gradShift { 0%{background-position:0%} 50%{background-position:100%} 100%{background-position:0%} }
+  .hero-word::after { content:'|'; -webkit-text-fill-color:rgba(167,139,250,.6); animation:blink .85s step-end infinite; margin-left:3px; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* sub */
+  .hero-sub {
+    font-size:19px;color:var(--muted);max-width:550px;margin:28px auto 46px;line-height:1.7;
+    animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) .45s both;
+  }
+
+  /* CTA buttons */
+  .hero-btns {
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:72px;
+    animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) .6s both;
+  }
+  .btn-glow {
+    position:relative;display:inline-flex;align-items:center;gap:10px;
+    padding:16px 38px;font-size:16px;font-weight:800;border-radius:50px;
+    background:linear-gradient(135deg,#7c3aed,#ec4899);
+    color:#fff;border:none;cursor:pointer;text-decoration:none;
+    box-shadow:0 8px 32px rgba(124,58,237,.5);
+    transition:all .35s cubic-bezier(.34,1.56,.64,1);
+    overflow:hidden;
+  }
+  .btn-glow::before {
+    content:''; position:absolute;inset:0;
+    background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);
+    transform:translateX(-100%);transition:transform .55s;
+  }
+  .btn-glow:hover { transform:translateY(-4px)scale(1.04); box-shadow:0 16px 48px rgba(124,58,237,.65),0 0 0 8px rgba(124,58,237,.1); }
+  .btn-glow:hover::before { transform:translateX(100%); }
+  .btn-ghost-pill {
+    display:inline-flex;align-items:center;gap:10px;
+    padding:16px 32px;font-size:16px;font-weight:700;border-radius:50px;
+    background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);
+    color:var(--text);text-decoration:none;backdrop-filter:blur(12px);
+    transition:all .3s;
+  }
+  .btn-ghost-pill:hover { background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.28);transform:translateY(-2px); }
+
+  /* stats */
+  .hero-stats {
+    display:flex;justify-content:center;
+    animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) .75s both;
+  }
+  .hstat { display:flex;flex-direction:column;align-items:center;padding:0 36px;position:relative; }
+  .hstat:not(:last-child)::after { content:'';position:absolute;right:0;top:15%;bottom:15%;width:1px;background:var(--border); }
+  .hstat-n {
+    font-size:38px;font-weight:900;line-height:1;
+    background:linear-gradient(135deg,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .hstat-l { font-size:12px;color:var(--dim);font-weight:600;margin-top:5px;letter-spacing:.3px; }
+
+  /* scroll cue */
+  .scroll-cue {
+    position:absolute;bottom:32px;left:50%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    color:var(--dim);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    animation:fadeUp 1s 1s both;
+  }
+  .scroll-arrow {
+    width:22px;height:22px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+    transform:rotate(45deg);
+    animation:bounce 1.6s ease-in-out infinite;
+  }
+  @keyframes bounce { 0%,100%{transform:rotate(45deg)translateY(0)} 50%{transform:rotate(45deg)translateY(7px)} }
+
+  /* ───────────────────────────────
+     MARQUEE
+  ─────────────────────────────── */
+  .marquee-wrap {
+    overflow:hidden;padding:20px 0;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    background:var(--bg-1);
+  }
+  .marquee-track { display:flex;width:max-content;animation:mLeft 28s linear infinite; }
+  .marquee-item {
+    display:inline-flex;align-items:center;gap:9px;
+    padding:0 28px;font-size:13px;font-weight:700;color:var(--muted);white-space:nowrap;
+  }
+  .marquee-item i { color:var(--violet-l);font-size:13px; }
+  .marquee-sep { color:var(--border-hi);font-size:18px;line-height:1; }
+  @keyframes mLeft { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ───────────────────────────────
+     SECTION SHARED
+  ─────────────────────────────── */
+  .sec-wrap { max-width:1340px;margin:0 auto;padding:108px 28px; }
+  .sec-head { text-align:center;margin-bottom:64px; }
+  .eyepill {
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);
+    color:var(--violet-l);font-size:11px;font-weight:700;
+    padding:5px 16px;border-radius:20px;margin-bottom:18px;
+    text-transform:uppercase;letter-spacing:.8px;
+  }
+  .sec-title { font-size:clamp(28px,4.5vw,52px);font-weight:900;letter-spacing:-1.5px;margin-bottom:14px;line-height:1.05; }
+  .sec-sub { color:var(--muted);font-size:17px;max-width:500px;margin:0 auto; }
+
+  /* ───────────────────────────────
+     TOOLS GRID
+  ─────────────────────────────── */
+  .tools-grid {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+  }
+  @media(max-width:1100px){.tools-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:580px){.tools-grid{grid-template-columns:1fr}}
+
+  .tool-card {
+    position:relative;display:flex;flex-direction:column;gap:13px;
+    padding:28px 24px;border-radius:20px;
+    background:var(--surface);border:1px solid var(--border);
+    text-decoration:none;color:inherit;overflow:hidden;
+    transform-style:preserve-3d;will-change:transform;
+    transition:box-shadow .3s,border-color .3s;
+  }
+  /* gradient border glow */
+  .tool-card::before {
+    content:'';position:absolute;inset:-1.5px;border-radius:21.5px;
+    background:var(--cg,var(--grad));z-index:-1;opacity:0;transition:opacity .35s;
+  }
+  .tool-card:hover::before { opacity:1; }
+  .tool-card:hover { box-shadow:0 20px 56px rgba(0,0,0,.55);border-color:transparent; }
+  /* shimmer sweep */
+  .tool-card::after {
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.07) 50%,transparent 62%);
+    transform:translateX(-120%);transition:transform .6s;
+  }
+  .tool-card:hover::after { transform:translateX(120%); }
+  .tool-card:hover .card-ico { transform:scale(1.12)rotate(-4deg); }
+  .tool-card:hover .card-arrow { opacity:1;transform:translateX(0); }
+
+  .card-ico {
+    width:56px;height:56px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;font-size:24px;
+    background:var(--ci,rgba(124,58,237,.14));color:var(--cc,var(--violet-l));
+    flex-shrink:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  .card-name { font-size:17px;font-weight:800;letter-spacing:-.3px; }
+  .card-desc { font-size:13px;color:var(--muted);line-height:1.65;flex:1; }
+  .card-arrow {
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:700;color:var(--cc,var(--violet-l));
+    opacity:0;transform:translateX(-10px);transition:all .3s;
+  }
+  .card-tag {
+    position:absolute;top:15px;right:15px;
+    font-size:10px;font-weight:800;letter-spacing:.6px;
+    padding:3px 10px;border-radius:20px;text-transform:uppercase;
+  }
+  .tag-hot { background:rgba(236,72,153,.18);color:#f472b6;border:1px solid rgba(236,72,153,.28); }
+  .tag-new { background:rgba(16,185,129,.18);color:#34d399;border:1px solid rgba(16,185,129,.28); }
+
+  /* ───────────────────────────────
+     FEATURES
+  ─────────────────────────────── */
+  .feat-strip { background:var(--bg-1);border-top:1px solid var(--border);border-bottom:1px solid var(--border); }
+  .feat-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:64px; }
+  @media(max-width:1000px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.feat-grid{grid-template-columns:1fr}}
+
+  .feat-card {
+    background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:32px 28px;transition:all .3s;position:relative;overflow:hidden;
+  }
+  .feat-card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:var(--fc,var(--grad));
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  }
+  .feat-card:hover::before { transform:scaleX(1); }
+  .feat-card:hover { transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.38);border-color:var(--border-hi); }
+  .feat-ico {
+    width:54px;height:54px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;font-size:23px;
+    background:var(--fi,rgba(124,58,237,.14));color:var(--fic,var(--violet-l));
+    margin-bottom:20px;
+  }
+  .feat-card h3 { font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.3px; }
+  .feat-card p { font-size:14px;color:var(--muted);line-height:1.7; }
+
+  /* ───────────────────────────────
+     HOW IT WORKS
+  ─────────────────────────────── */
+  .how-sec { text-align:center; }
+  .steps { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;position:relative; }
+  .steps::before {
+    content:'';position:absolute;top:36px;
+    left:calc(16.7% + 12px);right:calc(16.7% + 12px);
+    height:2px;
+    background:linear-gradient(90deg,transparent,rgba(124,58,237,.5),rgba(236,72,153,.5),transparent);
+  }
+  @media(max-width:660px){.steps{grid-template-columns:1fr}.steps::before{display:none}}
+  .step {
+    display:flex;flex-direction:column;align-items:center;
+    padding:36px 24px;background:var(--surface);border:1px solid var(--border);
+    border-radius:20px;transition:all .3s;
+  }
+  .step:hover { transform:translateY(-5px);border-color:var(--border-hi);box-shadow:0 14px 44px rgba(0,0,0,.38); }
+  .step-n {
+    width:58px;height:58px;border-radius:50%;
+    background:var(--grad);display:flex;align-items:center;justify-content:center;
+    font-size:20px;font-weight:900;color:#fff;margin-bottom:22px;
+    box-shadow:0 6px 24px rgba(124,58,237,.4);position:relative;z-index:1;
+  }
+  .step h3 { font-size:18px;font-weight:800;margin-bottom:10px;letter-spacing:-.25px; }
+  .step p { font-size:14px;color:var(--muted);line-height:1.65; }
+
+  /* ───────────────────────────────
+     FORMAT STRIP
+  ─────────────────────────────── */
+  .fmt-strip {
+    background:var(--bg-1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    padding:64px 28px;
+  }
+  .fmt-inner { max-width:1000px;margin:0 auto;text-align:center; }
+  .fmt-row { display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:36px; }
+  .fmt-pill {
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 20px;border-radius:12px;
+    background:var(--surface);border:1px solid var(--border);
+    font-size:13px;font-weight:700;color:var(--muted);
+    transition:all .25s;
+  }
+  .fmt-pill:hover { border-color:var(--violet);color:var(--violet-l);background:rgba(124,58,237,.08);transform:translateY(-2px); }
+  .fmt-pill i { font-size:14px;color:var(--violet-l); }
+
+  /* ───────────────────────────────
+     CTA
+  ─────────────────────────────── */
+  .cta-sec {
+    position:relative;overflow:hidden;padding:128px 28px;text-align:center;
+  }
+  .cta-sec::before {
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(236,72,153,.16) 50%,rgba(249,115,22,.1));
+  }
+  .cta-sec::after {
+    content:'';position:absolute;inset:0;
+    background-image:radial-gradient(circle,rgba(255,255,255,.07) 1px,transparent 1px);
+    background-size:30px 30px;
+  }
+  .cta-orb { position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none; }
+  .cta-orb-1 { width:420px;height:420px;background:radial-gradient(circle,rgba(124,58,237,.4),transparent 70%);top:-110px;left:-90px;animation:o1 14s ease-in-out infinite; }
+  .cta-orb-2 { width:360px;height:360px;background:radial-gradient(circle,rgba(236,72,153,.3),transparent 70%);bottom:-90px;right:-70px;animation:o2 16s ease-in-out infinite; }
+  .cta-inner { position:relative;z-index:1;max-width:640px;margin:0 auto; }
+  .cta-sec h2 { font-size:clamp(32px,5.5vw,60px);font-weight:900;letter-spacing:-1.8px;margin-bottom:18px;line-height:1.03; }
+  .cta-sec p { color:var(--muted);font-size:18px;margin-bottom:48px;line-height:1.6; }
+  .cta-btns { display:flex;gap:16px;justify-content:center;flex-wrap:wrap; }
+
+  footer { margin-top:0; }
+
+  /* ── light mode overrides ── */
+  [data-theme="light"] .tool-card { background:rgba(255,255,255,.75); }
+  [data-theme="light"] .feat-card { background:rgba(255,255,255,.7); }
+  [data-theme="light"] .step { background:rgba(255,255,255,.7); }
+  [data-theme="light"] .fmt-pill { background:rgba(255,255,255,.7); }
+  [data-theme="light"] .marquee-wrap { background:rgba(248,246,255,.9); }
+  [data-theme="light"] .feat-strip { background:rgba(240,237,252,.9); }
+
+  </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<header>
+  <div class="nav-wrap">
+    <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--text);color:var(--text);background:none"> Image</span></a>
+    <nav>
+      <a href="compress.html">Compress</a>
+      <a href="resize.html">Resize</a>
+      <a href="crop.html">Crop</a>
+      <a href="convert.html">Convert</a>
+      <a href="rotate.html">Rotate</a>
+      <a href="watermark.html">Watermark</a>
+      <a href="filters.html">Filters</a>
+      <a href="meme.html">Meme</a>
+    </nav>
+    <div class="nav-end">
+      <a href="#tools" class="btn btn-grad btn-sm"><i class="fas fa-bolt"></i> Get Started</a>
+    </div>
+  </div>
+</header>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      <span data-i18n="hero-badge">100% private · runs entirely in your browser</span>
+    </div>
+
+    <h1>
+      <span data-i18n="hero-h1">Your images,</span><br>
+      <span class="hero-word" id="heroWord">transformed.</span>
+    </h1>
+
+    <p class="hero-sub" data-i18n="hero-sub">
+      8 powerful tools — resize, compress, crop, convert, filter & more.
+      No uploads. No account. No limits. Ever.
+    </p>
+
+    <div class="hero-btns">
+      <a href="#tools" class="btn-glow"><i class="fas fa-magic"></i> <span data-i18n="btn-explore">Explore All Tools</span></a>
+      <a href="compress.html" class="btn-ghost-pill"><i class="fas fa-compress-alt"></i> <span data-i18n="btn-compress-hero">Compress Image</span></a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-n" data-target="8" data-suffix="">8</div>
+        <div class="hstat-l" data-i18n="stat-tools">Free Tools</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-n" data-target="0" data-suffix="">0</div>
+        <div class="hstat-l" data-i18n="stat-uploads">Server Uploads</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-n" data-target="100" data-suffix="%">100%</div>
+        <div class="hstat-l" data-i18n="stat-private">Private</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-n">∞</div>
+        <div class="hstat-l" data-i18n="stat-images">Images</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ══════ MARQUEE ══════ -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- ══════ TOOLS ══════ -->
+<section id="tools">
+  <div class="sec-wrap">
+    <div class="sec-head reveal">
+      <div class="eyepill"><i class="fas fa-toolbox"></i> <span data-i18n="tools-eyepill">All 8 Tools</span></div>
+      <h2 class="sec-title" data-i18n="tools-title">Pick your tool.</h2>
+      <p class="sec-sub" data-i18n="tools-sub">Drop an image, adjust, download. Done in under 30 seconds — no account needed.</p>
+    </div>
+
+    <div class="tools-grid">
+
+      <a class="tool-card reveal rd1" href="compress.html"
+         style="--cg:linear-gradient(135deg,#ec4899,#ef4444);--cc:#f472b6;--ci:rgba(236,72,153,.13)">
+        <div class="card-ico"><i class="fas fa-compress-alt"></i></div>
+        <div class="card-name" data-i18n="tool-compress">Compress</div>
+        <div class="card-desc" data-i18n="tool-compress-desc">Shrink file size without losing visible quality. Live before/after drag preview.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+        <span class="card-tag tag-hot" data-i18n="badge-popular">Popular</span>
+      </a>
+
+      <a class="tool-card reveal rd2" href="resize.html"
+         style="--cg:linear-gradient(135deg,#f97316,#f59e0b);--cc:#fb923c;--ci:rgba(249,115,22,.13)">
+        <div class="card-ico"><i class="fas fa-expand-arrows-alt"></i></div>
+        <div class="card-name" data-i18n="tool-resize">Resize</div>
+        <div class="card-desc" data-i18n="tool-resize-desc">Change dimensions by pixels or percentage. Lock ratio. Quick-scale presets.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd3" href="crop.html"
+         style="--cg:linear-gradient(135deg,#7c3aed,#6366f1);--cc:#a78bfa;--ci:rgba(124,58,237,.13)">
+        <div class="card-ico"><i class="fas fa-crop-alt"></i></div>
+        <div class="card-name" data-i18n="tool-crop">Crop</div>
+        <div class="card-desc" data-i18n="tool-crop-desc">Draw a crop box, lock to ratio (16:9, 1:1…), or type exact pixel dimensions.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd4" href="convert.html"
+         style="--cg:linear-gradient(135deg,#06b6d4,#3b82f6);--cc:#67e8f9;--ci:rgba(6,182,212,.13)">
+        <div class="card-ico"><i class="fas fa-exchange-alt"></i></div>
+        <div class="card-name" data-i18n="tool-convert">Convert</div>
+        <div class="card-desc" data-i18n="tool-convert-desc">Switch between JPG, PNG, WebP and GIF instantly with quality control.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd5" href="rotate.html"
+         style="--cg:linear-gradient(135deg,#10b981,#06b6d4);--cc:#34d399;--ci:rgba(16,185,129,.13)">
+        <div class="card-ico"><i class="fas fa-redo-alt"></i></div>
+        <div class="card-name" data-i18n="tool-rotate">Rotate & Flip</div>
+        <div class="card-desc" data-i18n="tool-rotate-desc">90° / 180° rotation, flip horizontally or vertically, free-angle fine-tune.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd6" href="watermark.html"
+         style="--cg:linear-gradient(135deg,#14b8a6,#10b981);--cc:#5eead4;--ci:rgba(20,184,166,.13)">
+        <div class="card-ico"><i class="fas fa-copyright"></i></div>
+        <div class="card-name" data-i18n="tool-watermark">Watermark</div>
+        <div class="card-desc" data-i18n="tool-watermark-desc">Add text anywhere. Control position, opacity, color, size and tile mode.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd7" href="filters.html"
+         style="--cg:linear-gradient(135deg,#8b5cf6,#ec4899);--cc:#c4b5fd;--ci:rgba(139,92,246,.13)">
+        <div class="card-ico"><i class="fas fa-sliders-h"></i></div>
+        <div class="card-name" data-i18n="tool-filters">Photo Filters</div>
+        <div class="card-desc" data-i18n="tool-filters-desc">12 instant presets — Sepia, Noir, Vivid, Dreamy — plus 8 fine-tune sliders.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd8" href="meme.html"
+         style="--cg:linear-gradient(135deg,#f59e0b,#f97316);--cc:#fcd34d;--ci:rgba(245,158,11,.13)">
+        <div class="card-ico"><i class="fas fa-laugh-squint"></i></div>
+        <div class="card-name" data-i18n="tool-meme">Meme Generator</div>
+        <div class="card-desc" data-i18n="tool-meme-desc">Bold captions, Impact font, outline toggle. Upload your own or start blank.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+        <span class="card-tag tag-new" data-i18n="badge-new">New</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FEATURES ══════ -->
+<section class="feat-strip">
+  <div class="sec-wrap">
+    <div class="sec-head reveal">
+      <div class="eyepill"><i class="fas fa-star"></i> <span data-i18n="feat-eyepill">Why LLL Image</span></div>
+      <h2 class="sec-title" data-i18n="feat-title">Built different.</h2>
+      <p class="sec-sub" data-i18n="feat-sub">Not just another image tool. Here's what makes us stand out.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal rd1"
+           style="--fc:linear-gradient(90deg,#7c3aed,#ec4899);--fi:rgba(124,58,237,.13);--fic:var(--violet-l)">
+        <div class="feat-ico"><i class="fas fa-bolt"></i></div>
+        <h3 data-i18n="feat-1-title">Instant Results</h3>
+        <p data-i18n="feat-1-desc">Everything runs on the Canvas API in your browser tab. No upload queue, no processing delay — changes render as you type.</p>
+      </div>
+      <div class="feat-card reveal rd2"
+           style="--fc:linear-gradient(90deg,#10b981,#06b6d4);--fi:rgba(16,185,129,.13);--fic:var(--green-l)">
+        <div class="feat-ico"><i class="fas fa-shield-alt"></i></div>
+        <h3 data-i18n="feat-2-title">Zero Data Risk</h3>
+        <p data-i18n="feat-2-desc">Your images never leave your device. There's no server involved. It's physically impossible for us to see your files.</p>
+      </div>
+      <div class="feat-card reveal rd3"
+           style="--fc:linear-gradient(90deg,#f59e0b,#f97316);--fi:rgba(245,158,11,.13);--fic:var(--amber-l)">
+        <div class="feat-ico"><i class="fas fa-hand-pointer"></i></div>
+        <h3 data-i18n="feat-3-title">Zero Friction</h3>
+        <p data-i18n="feat-3-desc">No account. No signup. No app to install. Drop an image, adjust, download. Three clicks, every time.</p>
+      </div>
+      <div class="feat-card reveal rd4"
+           style="--fc:linear-gradient(90deg,#ec4899,#8b5cf6);--fi:rgba(236,72,153,.13);--fic:var(--pink-l)">
+        <div class="feat-ico"><i class="fas fa-infinity"></i></div>
+        <h3 data-i18n="feat-4-title">Actually Free</h3>
+        <p data-i18n="feat-4-desc">No paywalls. No watermarks on exports. No "free tier" limits. All 8 tools, all features, all formats — forever.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ HOW IT WORKS ══════ -->
+<section>
+  <div class="sec-wrap how-sec">
+    <div class="sec-head reveal">
+      <div class="eyepill"><i class="fas fa-route"></i> <span data-i18n="how-eyepill">How It Works</span></div>
+      <h2 class="sec-title" data-i18n="how-title">Three steps to done.</h2>
+      <p class="sec-sub" data-i18n="how-sub">Seriously — it's this simple.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal rd1">
+        <div class="step-n">1</div>
+        <h3 data-i18n="step-1-title">Choose a Tool</h3>
+        <p data-i18n="step-1-desc">Pick any tool from the grid above. Each opens instantly — no loading, no waiting.</p>
+      </div>
+      <div class="step reveal rd2">
+        <div class="step-n">2</div>
+        <h3 data-i18n="step-2-title">Drop Your Image</h3>
+        <p data-i18n="step-2-desc">Drag & drop or click to browse. Supports JPG, PNG, WebP, GIF, SVG and more.</p>
+      </div>
+      <div class="step reveal rd3">
+        <div class="step-n">3</div>
+        <h3 data-i18n="step-3-title">Download</h3>
+        <p data-i18n="step-3-desc">Adjust the settings, hit the button, and your processed image downloads instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FORMAT STRIP ══════ -->
+<section class="fmt-strip">
+  <div class="fmt-inner reveal">
+    <div class="eyepill"><i class="fas fa-layer-group"></i> Supported Formats</div>
+    <h2 class="sec-title" style="font-size:clamp(22px,3vw,34px);letter-spacing:-.8px;margin-bottom:0">Everything your browser can handle.</h2>
+    <div class="fmt-row">
+      <div class="fmt-pill"><i class="fas fa-image"></i> JPEG / JPG</div>
+      <div class="fmt-pill"><i class="fas fa-file-image"></i> PNG</div>
+      <div class="fmt-pill"><i class="fas fa-globe"></i> WebP</div>
+      <div class="fmt-pill"><i class="fas fa-film"></i> GIF</div>
+      <div class="fmt-pill"><i class="fas fa-bezier-curve"></i> SVG</div>
+      <div class="fmt-pill"><i class="fas fa-photo-video"></i> BMP</div>
+      <div class="fmt-pill"><i class="fas fa-compress-alt"></i> Compress</div>
+      <div class="fmt-pill"><i class="fas fa-expand-arrows-alt"></i> Resize</div>
+      <div class="fmt-pill"><i class="fas fa-crop-alt"></i> Crop</div>
+      <div class="fmt-pill"><i class="fas fa-sliders-h"></i> Filters</div>
+      <div class="fmt-pill"><i class="fas fa-copyright"></i> Watermark</div>
+      <div class="fmt-pill"><i class="fas fa-laugh-squint"></i> Meme</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CTA ══════ -->
+<section class="cta-sec">
+  <div class="cta-orb cta-orb-1"></div>
+  <div class="cta-orb cta-orb-2"></div>
+  <div class="cta-inner reveal">
+    <div class="eyepill" style="margin-bottom:22px"><i class="fas fa-rocket"></i> <span data-i18n="cta-eyepill">Start Now</span></div>
+    <h2 data-i18n="cta-h2" data-i18n-html>Ready to edit your<br><span class="gtext">first image?</span></h2>
+    <p data-i18n="cta-p" data-i18n-html>No account needed. Just pick a tool and go.<br>Takes about 10 seconds.</p>
+    <div class="cta-btns">
+      <a href="#tools" class="btn-glow"><i class="fas fa-bolt"></i> <span data-i18n="btn-browse">Browse All Tools</span></a>
+      <a href="compress.html" class="btn-ghost-pill"><i class="fas fa-compress-alt"></i> <span data-i18n="btn-compress-cta">Compress Now</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a>
+      <p>Free browser-based image tools. Zero uploads. Zero cost. Your images stay on your device.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Optimize</h4>
+      <a href="compress.html">Compress Image</a>
+      <a href="resize.html">Resize Image</a>
+      <a href="convert.html">Convert Format</a>
+    </div>
+    <div class="footer-col">
+      <h4>Edit</h4>
+      <a href="crop.html">Crop Image</a>
+      <a href="rotate.html">Rotate & Flip</a>
+      <a href="watermark.html">Add Watermark</a>
+      <a href="filters.html">Photo Filters</a>
+      <a href="meme.html">Meme Generator</a>
+    </div>
+    <div class="footer-col">
+      <h4>About</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">All Tools</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 LLL Image · All image processing happens locally in your browser.</div>
+</footer>
+
+<script>
+/* ── scroll progress ── */
+const prog = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  prog.style.width = (window.scrollY / (document.documentElement.scrollHeight - innerHeight) * 100) + '%';
+}, { passive: true });
+
+/* ── canvas particles ── */
+(function () {
+  const c = document.getElementById('particle-canvas');
+  const x = c.getContext('2d');
+  let W, H, pts = [];
+
+  function init() {
+    W = c.width = c.offsetWidth;
+    H = c.height = c.offsetHeight;
+    pts = Array.from({ length: 70 }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.4 + .4,
+      vx: (Math.random() - .5) * .28,
+      vy: (Math.random() - .5) * .28,
+      a: Math.random() * .45 + .08,
+    }));
+  }
+
+  window.addEventListener('resize', init);
+  init();
+
+  function draw() {
+    x.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      x.beginPath();
+      x.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      x.fillStyle = `rgba(167,139,250,${p.a})`;
+      x.fill();
+      p.x = (p.x + p.vx + W) % W;
+      p.y = (p.y + p.vy + H) % H;
+    });
+
+    /* draw connecting lines between nearby particles */
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x;
+        const dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 100) {
+          x.beginPath();
+          x.moveTo(pts[i].x, pts[i].y);
+          x.lineTo(pts[j].x, pts[j].y);
+          x.strokeStyle = `rgba(167,139,250,${.12 * (1 - d / 100)})`;
+          x.lineWidth = .6;
+          x.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── cycling hero word ── */
+(function () {
+  var words = ['transformed.', 'compressed.', 'resized.', 'cropped.', 'converted.', 'filtered.', 'perfected.'];
+  var el = document.getElementById('heroWord');
+  var i = 0;
+  el.style.cssText += 'transition:opacity .3s,transform .3s';
+
+  window._heroSetWords = function(w) { if (w && w.length) { words = w; } };
+
+  setInterval(function() {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(14px)';
+    setTimeout(function() {
+      i = (i + 1) % words.length;
+      el.textContent = words[i];
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 310);
+  }, 2800);
+})();
+
+/* ── animated stat counters ── */
+(function () {
+  const els = document.querySelectorAll('[data-target]');
+  let done = false;
+  const obs = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || done) return;
+    done = true;
+    els.forEach(el => {
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      if (target === 0) { el.textContent = '0' + suffix; return; }
+      let start;
+      const step = ts => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 1400, 1);
+        const v = Math.round((1 - Math.pow(1 - p, 3)) * target);
+        el.textContent = v + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }, { threshold: .5 });
+  if (els[0]) obs.observe(els[0].closest('.hero-stats'));
+})();
+
+/* ── marquee ── */
+(function () {
+  const items = [
+    ['fas fa-image',        'JPEG / JPG'],
+    ['fas fa-file-image',   'PNG'],
+    ['fas fa-globe',        'WebP'],
+    ['fas fa-film',         'GIF'],
+    ['fas fa-bezier-curve', 'SVG'],
+    ['fas fa-photo-video',  'BMP'],
+    ['fas fa-compress-alt', 'Compress'],
+    ['fas fa-expand',       'Resize'],
+    ['fas fa-crop-alt',     'Crop'],
+    ['fas fa-exchange-alt', 'Convert'],
+    ['fas fa-sliders-h',    'Filters'],
+    ['fas fa-copyright',    'Watermark'],
+    ['fas fa-redo-alt',     'Rotate'],
+    ['fas fa-laugh-squint', 'Meme'],
+  ];
+  const html = items.map(([ic, lbl]) =>
+    `<span class="marquee-item"><i class="${ic}"></i>${lbl}</span><span class="marquee-sep">·</span>`
+  ).join('');
+  const t = document.getElementById('marqueeTrack');
+  t.innerHTML = html + html;
+})();
+
+/* ── 3D card tilt ── */
+document.querySelectorAll('.tool-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const rx = -(((e.clientY - r.top) / r.height) - .5) * 10;
+    const ry =  (((e.clientX - r.left) / r.width) - .5) * 12;
+    card.style.transition = 'transform .06s ease,box-shadow .3s,border-color .3s';
+    card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(8px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transition = 'transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s';
+    card.style.transform = 'perspective(900px) rotateX(0) rotateY(0) translateZ(0)';
+  });
+});
+
+/* ── scroll reveal ── */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

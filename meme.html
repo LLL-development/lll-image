@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/lang.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meme Generator – LLL Image</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .tpl-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .tpl-card { border: 1.5px solid var(--border); border-radius: var(--r-sm); overflow: hidden; cursor: pointer; transition: all .2s; background: var(--bg-2); }
+    .tpl-card:hover, .tpl-card.sel { border-color: var(--amber); }
+    .tpl-card canvas { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+    .tpl-lbl { text-align:center; font-size: 10px; font-weight: 700; padding: 4px; color: var(--muted); }
+    .tpl-card.sel .tpl-lbl { color: var(--amber-l); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--text);color:var(--text);background:none"> Image</span></a>
+    <nav>
+      <a href="compress.html">Compress</a>
+      <a href="resize.html">Resize</a>
+      <a href="crop.html">Crop</a>
+      <a href="convert.html">Convert</a>
+      <a href="rotate.html">Rotate</a>
+      <a href="watermark.html">Watermark</a>
+      <a href="filters.html">Filters</a>
+      <a href="meme.html" class="active">Meme</a>
+    </nav>
+    <div class="nav-end">
+      <a href="index.html" class="btn btn-ghost btn-sm"><i class="fas fa-th-large"></i> All Tools</a></div>
+  </div>
+</header>
+
+<section class="tool-hero">
+  <h1><span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-laugh-squint"></i></span> Meme Generator</h1>
+  <p>Add bold captions to any image. Upload your own or start from a blank canvas.</p>
+</section>
+
+<div class="tool-wrap">
+
+  <div class="upload-drop" id="box">
+    <div class="up-icon"><i class="fas fa-laugh-squint"></i></div>
+    <h2>Choose a Starting Image</h2>
+    <p>Upload your own or pick a blank template below</p>
+    <div class="up-row">
+      <button class="btn btn-grad" onclick="document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Upload Image</button>
+      <button class="btn btn-glass" onclick="useBlank()"><i class="fas fa-square"></i> Blank Canvas</button>
+    </div>
+    <input type="file" id="fi" accept="image/*" hidden>
+    <p class="up-note">JPG · PNG · WebP · or use a blank template</p>
+  </div>
+
+  <div class="workspace" id="ws">
+    <div class="ws-layout">
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Meme Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change Image</button>
+        </div>
+        <div class="panel-body">
+          <canvas id="cvs" style="max-width:100%;max-height:440px;border-radius:8px;display:block;"></canvas>
+        </div>
+        <div class="panel-foot">
+          <span id="iDims">—</span>
+        </div>
+      </div>
+
+      <div class="opts-panel" style="max-height:calc(100vh - 80px);overflow-y:auto">
+        <div class="opts-head">Caption Options</div>
+        <div class="opts-body">
+
+          <div class="opt-g">
+            <div class="opt-label">Top Caption</div>
+            <input class="inp" type="text" id="topTxt" placeholder="TOP TEXT" oninput="render()" style="text-transform:uppercase;font-weight:700;letter-spacing:.5px">
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Bottom Caption</div>
+            <input class="inp" type="text" id="botTxt" placeholder="BOTTOM TEXT" oninput="render()" style="text-transform:uppercase;font-weight:700;letter-spacing:.5px">
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Font</div>
+            <div class="chips">
+              <button class="chip sel" id="f-impact" onclick="setFont('Impact,Arial Black,sans-serif','f-impact')">Impact</button>
+              <button class="chip" id="f-comic" onclick="setFont('\"Comic Sans MS\",cursive','f-comic')">Comic</button>
+              <button class="chip" id="f-black" onclick="setFont('Arial Black,Gadget,sans-serif','f-black')">Arial Black</button>
+              <button class="chip" id="f-inter" onclick="setFont('Inter,sans-serif','f-inter')">Inter</button>
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Font Size</div>
+            <div class="range-val" id="fsVal">13%</div>
+            <input type="range" id="fsR" min="4" max="28" value="13" oninput="onFS()">
+            <div class="range-limits"><span>Tiny</span><span>Huge</span></div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Text Color</div>
+            <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+              <div class="swatch sel" style="background:#fff" id="tc-w" onclick="setTC('#ffffff','tc-w')"></div>
+              <div class="swatch" style="background:#000" id="tc-b" onclick="setTC('#000000','tc-b')"></div>
+              <div class="swatch" style="background:#fcd34d" id="tc-y" onclick="setTC('#fcd34d','tc-y')"></div>
+              <div class="swatch" style="background:#f472b6" id="tc-p" onclick="setTC('#f472b6','tc-p')"></div>
+              <div class="swatch" style="background:#34d399" id="tc-g" onclick="setTC('#34d399','tc-g')"></div>
+              <input type="color" id="tcPick" value="#ffffff" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border-hi);cursor:pointer;padding:1px;background:transparent" oninput="setTCcustom()">
+            </div>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Text Style</div>
+            <label class="toggle-row"><input type="checkbox" id="ckOutline" checked onchange="render()"> Black outline (classic meme style)</label>
+            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckShadow" onchange="render()"> Drop shadow</label>
+            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckUpper" checked onchange="render()"> ALL CAPS</label>
+          </div>
+
+          <div class="opt-g">
+            <div class="opt-label">Vertical Padding</div>
+            <div class="range-val" id="padVal">6%</div>
+            <input type="range" id="padR" min="1" max="20" value="6" oninput="onPad()">
+          </div>
+
+        </div>
+        <div class="opts-foot" style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn btn-block" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;box-shadow:0 4px 20px rgba(245,158,11,.4)" onclick="doSave('image/png','png')">
+            <i class="fas fa-download"></i> Download PNG
+          </button>
+          <button class="btn btn-block btn-ghost" onclick="doSave('image/jpeg','jpg')">
+            <i class="fas fa-download"></i> Download JPG
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="dl-box" id="dlBox">
+      <div class="dl-ico" style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-laugh-squint"></i></div>
+      <h3 class="gtext">Meme Ready!</h3>
+      <p id="dlInfo">Your meme is ready to share.</p>
+      <div class="dl-row">
+        <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Make Another</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
+    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a></div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 LLL Image</div>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+let file=null,origImg=null,mFont='Impact,Arial Black,sans-serif',mColor='#ffffff';
+
+const box=document.getElementById('box');
+box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
+box.addEventListener('dragleave',()=>box.classList.remove('over'));
+box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
+document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
+
+function load(files){
+  if(!files.length)return;
+  file=files[0];
+  const r=new FileReader();
+  r.onload=e=>{
+    origImg=new Image();
+    origImg.onload=()=>{
+      document.getElementById('iDims').textContent=origImg.naturalWidth+' × '+origImg.naturalHeight+' px';
+      box.style.display='none';
+      document.getElementById('ws').classList.add('on');
+      render();
+    };
+    origImg.src=e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+
+function useBlank(){
+  const colors=['#1a1a2e','#0f3460','#16213e','#0d0d0d','#1e1e1e'];
+  const c=colors[Math.floor(Math.random()*colors.length)];
+  const tmp=document.createElement('canvas');
+  tmp.width=800;tmp.height=600;
+  const ctx=tmp.getContext('2d');
+  ctx.fillStyle=c;ctx.fillRect(0,0,800,600);
+  // subtle gradient
+  const grd=ctx.createLinearGradient(0,0,800,600);
+  grd.addColorStop(0,'rgba(124,58,237,.15)');
+  grd.addColorStop(1,'rgba(236,72,153,.1)');
+  ctx.fillStyle=grd;ctx.fillRect(0,0,800,600);
+  origImg=new Image();
+  origImg.onload=()=>{
+    document.getElementById('iDims').textContent='800 × 600 px (blank)';
+    box.style.display='none';
+    document.getElementById('ws').classList.add('on');
+    render();
+  };
+  origImg.src=tmp.toDataURL();
+}
+
+function onFS(){document.getElementById('fsVal').textContent=document.getElementById('fsR').value+'%';render();}
+function onPad(){document.getElementById('padVal').textContent=document.getElementById('padR').value+'%';render();}
+function setFont(f,id){mFont=f;document.querySelectorAll('.chip[id^="f-"]').forEach(c=>c.classList.remove('sel'));document.getElementById(id).classList.add('sel');render();}
+function setTC(c,id){mColor=c;document.querySelectorAll('.swatch[id^="tc-"]').forEach(s=>s.classList.remove('sel'));document.getElementById(id).classList.add('sel');render();}
+function setTCcustom(){mColor=document.getElementById('tcPick').value;document.querySelectorAll('.swatch[id^="tc-"]').forEach(s=>s.classList.remove('sel'));render();}
+
+function render(){
+  if(!origImg)return;
+  const cvs=document.getElementById('cvs');
+  const iw=origImg.naturalWidth,ih=origImg.naturalHeight;
+  cvs.width=iw;cvs.height=ih;
+  const ctx=cvs.getContext('2d');
+  ctx.drawImage(origImg,0,0);
+
+  const upper=document.getElementById('ckUpper').checked;
+  let top=(document.getElementById('topTxt').value||'');
+  let bot=(document.getElementById('botTxt').value||'');
+  if(upper){top=top.toUpperCase();bot=bot.toUpperCase();}
+
+  const fsP=+document.getElementById('fsR').value/100;
+  const fs=Math.round(iw*fsP);
+  const pad=Math.round(iw*(+document.getElementById('padR').value/100));
+  const outline=document.getElementById('ckOutline').checked;
+  const shadow=document.getElementById('ckShadow').checked;
+  const outW=Math.max(2,Math.round(fs/14));
+
+  ctx.font=`900 ${fs}px ${mFont}`;
+  ctx.fillStyle=mColor;
+  ctx.textAlign='center';
+
+  if(shadow){ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=fs*.15;ctx.shadowOffsetY=fs*.06;}
+
+  function drawText(text,y,baseline){
+    if(!text)return;
+    ctx.textBaseline=baseline;
+    if(outline){
+      ctx.strokeStyle='#000';ctx.lineWidth=outW*2;ctx.lineJoin='round';
+      ctx.strokeText(text,iw/2,y,iw-pad*2);
+    }
+    ctx.fillText(text,iw/2,y,iw-pad*2);
+  }
+
+  ctx.shadowColor='transparent';
+  drawText(top,pad,'top');
+  drawText(bot,ih-pad,'bottom');
+}
+
+function doSave(mime,ext){
+  if(!origImg)return;
+  render();
+  const cvs=document.getElementById('cvs');
+  const a=document.getElementById('dlA');
+  a.href=cvs.toDataURL(mime,.95);a.download='meme.'+ext;
+  document.getElementById('dlInfo').textContent=cvs.width+' × '+cvs.height+' px — go share it!';
+  document.getElementById('dlBox').classList.add('on');
+  document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ Meme saved as '+ext.toUpperCase());
+}
+
+function reset(){
+  file=null;origImg=null;
+  document.getElementById('fi').value='';
+  document.getElementById('box').style.display='';
+  document.getElementById('ws').classList.remove('on');
+  document.getElementById('dlBox').classList.remove('on');
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+</script>
+</body>
+</html>
