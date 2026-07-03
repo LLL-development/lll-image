@@ -199,6 +199,17 @@
     var navKeys = ['nav-compress','nav-resize','nav-crop','nav-convert','nav-rotate','nav-watermark','nav-filters','nav-meme'];
     navLinks.forEach(function (a, i) { if (navKeys[i]) a.textContent = t(navKeys[i]); });
 
+    /* 4b. Mobile hamburger menu links (icon + text) */
+    var mobileLinks = document.querySelectorAll('.mobile-menu a:not(.mobile-menu-cta)');
+    mobileLinks.forEach(function (a, i) {
+      if (!navKeys[i]) return;
+      var icon = a.querySelector('i');
+      a.textContent = ' ' + t(navKeys[i]);
+      if (icon) a.insertBefore(icon, a.firstChild);
+    });
+    var mobileCta = document.querySelector('.mobile-menu .mobile-menu-cta');
+    if (mobileCta) { var mcI = mobileCta.querySelector('i'); mobileCta.textContent = ' ' + t('nav-get-started'); if (mcI) mobileCta.insertBefore(mcI, mobileCta.firstChild); }
+
     /* 5. Get Started button (nav-end) */
     var gsBtn = document.querySelector('.nav-end a.btn-grad');
     if (gsBtn) { var gsI = gsBtn.querySelector('i'); gsBtn.textContent = ' ' + t('nav-get-started'); if (gsI) gsBtn.insertBefore(gsI, gsBtn.firstChild); }
@@ -251,6 +262,23 @@
     });
 
     navEnd.insertBefore(picker, navEnd.firstChild);
+
+    /* also inject a copy into the mobile hamburger menu, if present,
+       since the header picker is hidden on very small screens */
+    var mobileSlot = document.getElementById('mobileLangPicker');
+    if (mobileSlot) {
+      ['en','zh','ja'].forEach(function (code) {
+        var label = code === 'en' ? 'EN' : code === 'zh' ? '中' : '日';
+        var btn = document.createElement('button');
+        btn.className = 'lang-btn';
+        btn.dataset.lang = code;
+        btn.textContent = label;
+        btn.title = code === 'en' ? 'English' : code === 'zh' ? '中文' : '日本語';
+        btn.onclick = function () { setLang(code); };
+        mobileSlot.appendChild(btn);
+      });
+    }
+
     applyLang();
   });
 
