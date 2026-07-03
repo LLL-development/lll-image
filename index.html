@@ -518,9 +518,25 @@
     /* tighter letter-spacing */
     .hero h1 { letter-spacing: -0.5px; }
 
-    /* hide lang picker at very small widths to prevent overflow */
+    /* hide the compact header lang picker at very small widths to prevent
+       overflow — the mobile hamburger menu provides the language switcher
+       instead (see .mobile-lang-picker below) */
     .lang-picker { display: none; }
   }
+
+  /* language switcher inside the mobile hamburger menu */
+  .mobile-lang-picker {
+    display: flex; gap: 8px; margin: 4px 0 8px;
+  }
+  .mobile-lang-picker .lang-btn {
+    flex: 1; padding: 10px 0; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--muted); font-size: 13px; font-weight: 700;
+  }
+  .mobile-lang-picker .lang-btn.lang-active {
+    background: var(--violet); color: #fff; border-color: transparent;
+  }
+  [data-theme="dark"] .mobile-lang-picker .lang-btn.lang-active { background: var(--violet-l); color: #121212; }
 
   /* marquee icon accent */
   .marquee-item i { color:var(--violet); }
@@ -565,6 +581,7 @@
   <a href="filters.html"><i class="fas fa-sliders-h"></i> Photo Filters</a>
   <a href="meme.html"><i class="fas fa-laugh-squint"></i> Meme Generator</a>
   <div class="mobile-menu-divider"></div>
+  <div class="mobile-lang-picker" id="mobileLangPicker"></div>
   <a href="#tools" class="mobile-menu-cta"><i class="fas fa-bolt"></i> Get Started</a>
 </div>
 
