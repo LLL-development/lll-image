@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     .tpl-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
     .tpl-card { border: 1.5px solid var(--border); border-radius: var(--r-sm); overflow: hidden; cursor: pointer; transition: all .2s; background: var(--bg-2); }
@@ -57,8 +58,8 @@
       <button class="btn btn-grad" onclick="document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Upload Image</button>
       <button class="btn btn-glass" onclick="useBlank()"><i class="fas fa-square"></i> Blank Canvas</button>
     </div>
-    <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP · or use a blank template</p>
+    <input type="file" id="fi" accept="image/*" multiple hidden>
+    <p class="up-note">JPG · PNG · WebP · or use a blank template · Select multiple to batch caption</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -69,6 +70,7 @@
           <h3>Meme Preview</h3>
           <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change Image</button>
         </div>
+        <div class="file-strip" id="fileStrip" style="display:none"></div>
         <div class="panel-body">
           <canvas id="cvs" style="max-width:100%;max-height:440px;border-radius:8px;display:block;"></canvas>
         </div>
@@ -135,11 +137,11 @@
 
         </div>
         <div class="opts-foot" style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn btn-block" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;box-shadow:0 4px 20px rgba(245,158,11,.4)" onclick="doSave('image/png','png')">
-            <i class="fas fa-download"></i> Download PNG
+          <button class="btn btn-block" id="actionBtnPng" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;box-shadow:0 4px 20px rgba(245,158,11,.4)" onclick="doSave('image/png','png')">
+            <i class="fas fa-download"></i> <span id="actionLabelPng" class="action-label">Download PNG</span>
           </button>
-          <button class="btn btn-block btn-ghost" onclick="doSave('image/jpeg','jpg')">
-            <i class="fas fa-download"></i> Download JPG
+          <button class="btn btn-block btn-ghost" id="actionBtnJpg" onclick="doSave('image/jpeg','jpg')">
+            <i class="fas fa-download"></i> <span id="actionLabelJpg" class="action-label">Download JPG</span>
           </button>
         </div>
       </div>
@@ -153,6 +155,20 @@
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
         <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Make Another</button>
       </div>
+    </div>
+
+    <div class="dl-box" id="batchBox">
+      <div class="batch-toolbar">
+        <div>
+          <h3 class="gtext" style="margin-bottom:4px">Memes Ready!</h3>
+          <p id="batchInfo" style="color:var(--muted);font-size:14px">0 images processed</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-green btn-lg" onclick="downloadZip()"><i class="fas fa-file-archive"></i> Download All (.zip)</button>
+          <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Start Over</button>
+        </div>
+      </div>
+      <div class="batch-grid" id="batchGrid"></div>
     </div>
   </div>
 </div>
@@ -168,6 +184,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
+let files=[],thumbUrls=[],activeIdx=0,batchResults=[];
 let file=null,origImg=null,mFont='Impact,Arial Black,sans-serif',mColor='#ffffff';
 
 const box=document.getElementById('box');
@@ -176,14 +193,29 @@ box.addEventListener('dragleave',()=>box.classList.remove('over'));
 box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
 document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
 
-function load(files){
-  if(!files.length)return;
-  file=files[0];
+function load(fileList){
+  if(!fileList.length)return;
+  files=Array.from(fileList);
+  activeIdx=0;batchResults=[];
+  document.getElementById('dlBox').classList.remove('on');
+  document.getElementById('batchBox').classList.remove('on');
+  thumbUrls=new Array(files.length).fill(null);
+  Promise.all(files.map((f,i)=>new Promise(res=>{
+    const rd=new FileReader();
+    rd.onload=e=>{thumbUrls[i]=e.target.result;res();};
+    rd.readAsDataURL(f);
+  }))).then(renderFileStrip);
+  loadActive();
+}
+
+function loadActive(){
+  file=files[activeIdx];
   const r=new FileReader();
   r.onload=e=>{
     origImg=new Image();
     origImg.onload=()=>{
       document.getElementById('iDims').textContent=origImg.naturalWidth+' × '+origImg.naturalHeight+' px';
+      updateActionLabel();
       box.style.display='none';
       document.getElementById('ws').classList.add('on');
       render();
@@ -193,7 +225,56 @@ function load(files){
   r.readAsDataURL(file);
 }
 
+function renderFileStrip(){
+  const strip=document.getElementById('fileStrip');
+  strip.innerHTML='';
+  if(files.length<=1){strip.style.display='none';return;}
+  strip.style.display='flex';
+  const count=document.createElement('span');
+  count.className='file-strip-count';count.textContent=files.length+' images';
+  strip.appendChild(count);
+  files.forEach((f,i)=>{
+    const chip=document.createElement('div');
+    chip.className='file-chip'+(i===activeIdx?' active':'');
+    chip.title=f.name;
+    chip.onclick=()=>{activeIdx=i;loadActive();renderFileStrip();};
+    if(thumbUrls[i]){const img=document.createElement('img');img.src=thumbUrls[i];chip.appendChild(img);}
+    const rm=document.createElement('div');
+    rm.className='rm';rm.innerHTML='<i class="fas fa-times"></i>';
+    rm.onclick=ev=>{ev.stopPropagation();removeFile(i);};
+    chip.appendChild(rm);
+    strip.appendChild(chip);
+  });
+}
+
+function removeFile(i){
+  files.splice(i,1);thumbUrls.splice(i,1);
+  if(!files.length){reset();return;}
+  if(activeIdx>=files.length)activeIdx=files.length-1;
+  else if(i<activeIdx)activeIdx--;
+  loadActive();renderFileStrip();
+}
+
+function updateActionLabel(){
+  const n=files.length>1?files.length:0;
+  document.getElementById('actionLabelPng').textContent=n?('Download '+n+' PNGs'):'Download PNG';
+  document.getElementById('actionLabelJpg').textContent=n?('Download '+n+' JPGs'):'Download JPG';
+}
+
+function baseName(n){return n.replace(/\.[^.]+$/,'');}
+function uniqueName(name,used){
+  if(!used.has(name)){used.add(name);return name;}
+  const dot=name.lastIndexOf('.');
+  const base=dot===-1?name:name.slice(0,dot);
+  const ext=dot===-1?'':name.slice(dot);
+  let n=2,cand;
+  do{cand=base+' ('+n+')'+ext;n++;}while(used.has(cand));
+  used.add(cand);return cand;
+}
+
 function useBlank(){
+  files=[];thumbUrls=[];activeIdx=0;batchResults=[];
+  document.getElementById('fileStrip').style.display='none';
   const colors=['#1a1a2e','#0f3460','#16213e','#0d0d0d','#1e1e1e'];
   const c=colors[Math.floor(Math.random()*colors.length)];
   const tmp=document.createElement('canvas');
@@ -208,6 +289,7 @@ function useBlank(){
   origImg=new Image();
   origImg.onload=()=>{
     document.getElementById('iDims').textContent='800 × 600 px (blank)';
+    updateActionLabel();
     box.style.display='none';
     document.getElementById('ws').classList.add('on');
     render();
@@ -262,7 +344,113 @@ function render(){
   drawText(bot,ih-pad,'bottom');
 }
 
-function doSave(mime,ext){
+async function doSave(mime,ext){
+  if(!files.length&&!origImg)return;
+  if(files.length<=1){doSaveSingle(mime,ext);return;}
+
+  const upper=document.getElementById('ckUpper').checked;
+  let topTxt=document.getElementById('topTxt').value||'';
+  let botTxt=document.getElementById('botTxt').value||'';
+  const fsP=+document.getElementById('fsR').value/100;
+  const padP=+document.getElementById('padR').value/100;
+  const outline=document.getElementById('ckOutline').checked;
+  const shadow=document.getElementById('ckShadow').checked;
+  const btn=document.getElementById(ext==='png'?'actionBtnPng':'actionBtnJpg');
+  btn.disabled=true;
+  const used=new Set();
+  const results=[];
+  for(const f of files){
+    const r=await processOne(f,{topTxt,botTxt,upper,fsP,padP,outline,shadow,font:mFont,color:mColor,mime,ext});
+    r.name=uniqueName(r.name,used);
+    results.push(r);
+  }
+  btn.disabled=false;
+  batchResults=results;
+  showBatchResults(ext);
+}
+
+function processOne(f,opts){
+  return new Promise(resolve=>{
+    const rd=new FileReader();
+    rd.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const iw=img.naturalWidth,ih=img.naturalHeight;
+        const c=document.createElement('canvas');
+        c.width=iw;c.height=ih;
+        const ctx=c.getContext('2d');
+        ctx.drawImage(img,0,0);
+
+        let top=opts.topTxt,bot=opts.botTxt;
+        if(opts.upper){top=top.toUpperCase();bot=bot.toUpperCase();}
+
+        const fs=Math.round(iw*opts.fsP);
+        const pad=Math.round(iw*opts.padP);
+        const outW=Math.max(2,Math.round(fs/14));
+
+        ctx.font=`900 ${fs}px ${opts.font}`;
+        ctx.fillStyle=opts.color;
+        ctx.textAlign='center';
+
+        if(opts.shadow){ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=fs*.15;ctx.shadowOffsetY=fs*.06;}
+
+        function drawText(text,y,baseline){
+          if(!text)return;
+          ctx.textBaseline=baseline;
+          if(opts.outline){
+            ctx.strokeStyle='#000';ctx.lineWidth=outW*2;ctx.lineJoin='round';
+            ctx.strokeText(text,iw/2,y,iw-pad*2);
+          }
+          ctx.fillText(text,iw/2,y,iw-pad*2);
+        }
+
+        ctx.shadowColor='transparent';
+        drawText(top,pad,'top');
+        drawText(bot,ih-pad,'bottom');
+
+        c.toBlob(blob=>{
+          resolve({name:baseName(f.name)+'.'+opts.ext,blob,url:URL.createObjectURL(blob),iw,ih});
+        },opts.mime,.95);
+      };
+      img.src=e.target.result;
+    };
+    rd.readAsDataURL(f);
+  });
+}
+
+function showBatchResults(ext){
+  const grid=document.getElementById('batchGrid');
+  grid.innerHTML='';
+  batchResults.forEach(r=>{
+    const card=document.createElement('div');
+    card.className='batch-card';
+    card.innerHTML='<img src="'+r.url+'" alt="'+r.name+'">'+
+      '<div class="batch-card-body">'+
+      '<div class="batch-card-name">'+r.name+'</div>'+
+      '<div class="batch-card-meta">'+r.iw+' × '+r.ih+' px</div>'+
+      '<a class="batch-card-dl" href="'+r.url+'" download="'+r.name+'"><i class="fas fa-download"></i> Save</a>'+
+      '</div>';
+    grid.appendChild(card);
+  });
+  document.getElementById('batchInfo').textContent=batchResults.length+' memes saved as '+ext.toUpperCase();
+  document.getElementById('batchBox').classList.add('on');
+  document.getElementById('batchBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ Saved '+batchResults.length+' memes!');
+}
+
+async function downloadZip(){
+  if(!batchResults.length)return;
+  const zip=new JSZip();
+  batchResults.forEach(r=>zip.file(r.name,r.blob));
+  const blob=await zip.generateAsync({type:'blob'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='memes.zip';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+
+function doSaveSingle(mime,ext){
   if(!origImg)return;
   render();
   const cvs=document.getElementById('cvs');
@@ -275,10 +463,12 @@ function doSave(mime,ext){
 }
 
 function reset(){
-  file=null;origImg=null;
+  file=null;origImg=null;files=[];thumbUrls=[];activeIdx=0;batchResults=[];
   document.getElementById('fi').value='';
   document.getElementById('box').style.display='';
   document.getElementById('ws').classList.remove('on');
+  document.getElementById('batchBox').classList.remove('on');
+  document.getElementById('fileStrip').style.display='none';
   document.getElementById('dlBox').classList.remove('on');
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
