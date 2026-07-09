@@ -563,6 +563,7 @@
       <a href="watermark.html">Watermark</a>
       <a href="filters.html">Filters</a>
       <a href="meme.html">Meme</a>
+      <a href="ai.html">AI Convert</a>
     </nav>
     <div class="nav-end">
       <a href="#tools" class="btn btn-grad btn-sm"><i class="fas fa-bolt"></i> Get Started</a>
@@ -583,6 +584,7 @@
   <a href="watermark.html"><i class="fas fa-copyright"></i> Watermark</a>
   <a href="filters.html"><i class="fas fa-sliders-h"></i> Photo Filters</a>
   <a href="meme.html"><i class="fas fa-laugh-squint"></i> Meme Generator</a>
+  <a href="ai.html"><i class="fas fa-bezier-curve"></i> AI Convert</a>
   <div class="mobile-menu-divider"></div>
   <div class="mobile-lang-picker" id="mobileLangPicker"></div>
   <a href="#tools" class="mobile-menu-cta"><i class="fas fa-bolt"></i> Get Started</a>
@@ -608,7 +610,7 @@
     </h1>
 
     <p class="hero-sub" data-i18n="hero-sub">
-      8 powerful tools — resize, compress, crop, convert, filter & more.
+      9 powerful tools — resize, compress, crop, convert, filter & more.
       No uploads. No account. No limits. Ever.
     </p>
 
@@ -619,7 +621,7 @@
 
     <div class="hero-stats">
       <div class="hstat">
-        <div class="hstat-n" data-target="8" data-suffix="">8</div>
+        <div class="hstat-n" data-target="9" data-suffix="">9</div>
         <div class="hstat-l" data-i18n="stat-tools">Free Tools</div>
       </div>
       <div class="hstat">
@@ -652,7 +654,7 @@
 <section id="tools">
   <div class="sec-wrap">
     <div class="sec-head reveal">
-      <div class="eyepill"><i class="fas fa-toolbox"></i> <span data-i18n="tools-eyepill">All 8 Tools</span></div>
+      <div class="eyepill"><i class="fas fa-toolbox"></i> <span data-i18n="tools-eyepill">All 9 Tools</span></div>
       <h2 class="sec-title" data-i18n="tools-title">Pick your tool.</h2>
       <p class="sec-sub" data-i18n="tools-sub">Drop an image, adjust, download. Done in under 30 seconds — no account needed.</p>
     </div>
@@ -722,6 +724,14 @@
         <div class="card-name" data-i18n="tool-meme">Meme Generator</div>
         <div class="card-desc" data-i18n="tool-meme-desc">Bold captions, Impact font, outline toggle. Upload your own or start blank.</div>
         <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="tool-card reveal rd9" href="ai.html"
+         style="--cg:linear-gradient(135deg,#fb923c,#9a3412);--cc:#fdba74;--ci:rgba(251,146,60,.13)">
+        <div class="card-ico"><i class="fas fa-bezier-curve"></i></div>
+        <div class="card-name" data-i18n="tool-ai">AI Convert</div>
+        <div class="card-desc" data-i18n="tool-ai-desc">Turn PNG, JPG, WebP or BMP into an Adobe Illustrator–compatible .ai file.</div>
+        <div class="card-arrow"><span data-i18n="card-open">Open tool</span> <i class="fas fa-arrow-right"></i></div>
         <span class="card-tag tag-new" data-i18n="badge-new">New</span>
       </a>
 
@@ -760,7 +770,7 @@
            style="--fc:linear-gradient(90deg,#ec4899,#8b5cf6);--fi:rgba(236,72,153,.13);--fic:var(--pink-l)">
         <div class="feat-ico"><i class="fas fa-infinity"></i></div>
         <h3 data-i18n="feat-4-title">Actually Free</h3>
-        <p data-i18n="feat-4-desc">No paywalls. No watermarks on exports. No "free tier" limits. All 8 tools, all features, all formats — forever.</p>
+        <p data-i18n="feat-4-desc">No paywalls. No watermarks on exports. No "free tier" limits. All 9 tools, all features, all formats — forever.</p>
       </div>
     </div>
   </div>
@@ -851,6 +861,7 @@
       <a href="watermark.html">Add Watermark</a>
       <a href="filters.html">Photo Filters</a>
       <a href="meme.html">Meme Generator</a>
+      <a href="ai.html">AI Convert</a>
     </div>
     <div class="footer-col">
       <h4>About</h4>
@@ -1017,38 +1028,6 @@ const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
 }, { threshold: .1 });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
-
-/* ── mobile hamburger menu ── */
-(function () {
-  var burger = document.getElementById('navBurger');
-  var menu = document.getElementById('mobileMenu');
-  if (!burger || !menu) return;
-
-  function closeMenu() {
-    menu.classList.remove('open');
-    menu.setAttribute('aria-hidden', 'true');
-    burger.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
-  burger.addEventListener('click', function () {
-    var opening = !menu.classList.contains('open');
-    if (opening) {
-      menu.classList.add('open');
-      menu.setAttribute('aria-hidden', 'false');
-      burger.classList.add('open');
-      burger.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
-    } else {
-      closeMenu();
-    }
-  });
-
-  menu.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', closeMenu);
-  });
-})();
 </script>
 </body>
 </html>

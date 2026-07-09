@@ -64,4 +64,34 @@ document.addEventListener('DOMContentLoaded', function () {
   navEnd.insertBefore(btn, navEnd.firstChild);
 
   syncSwitch(document.documentElement.getAttribute('data-theme') || 'dark');
+
+  /* ── mobile hamburger menu (shared across every page) ── */
+  var burger = document.getElementById('navBurger');
+  var menu = document.getElementById('mobileMenu');
+  if (burger && menu) {
+    var closeMenu = function () {
+      menu.classList.remove('open');
+      menu.setAttribute('aria-hidden', 'true');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    burger.addEventListener('click', function () {
+      var opening = !menu.classList.contains('open');
+      if (opening) {
+        menu.classList.add('open');
+        menu.setAttribute('aria-hidden', 'false');
+        burger.classList.add('open');
+        burger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      } else {
+        closeMenu();
+      }
+    });
+
+    menu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', closeMenu);
+    });
+  }
 });
