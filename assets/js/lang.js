@@ -10,17 +10,17 @@
       'logo-live': 'Live', 'logo-laugh': 'Laugh', 'logo-love': 'Love',
       'nav-compress':'Compress','nav-resize':'Resize','nav-crop':'Crop',
       'nav-convert':'Convert','nav-rotate':'Rotate','nav-watermark':'Watermark',
-      'nav-filters':'Filters','nav-meme':'Meme',
+      'nav-filters':'Filters','nav-meme':'Meme','nav-ai':'AI Convert',
       'nav-get-started':'Get Started', 'nav-all-tools':'All Tools',
 
       'hero-badge':'100% private · runs entirely in your browser',
       'hero-h1':'Your images,',
       'hero-words':['transformed.','compressed.','resized.','cropped.','converted.','filtered.','perfected.'],
-      'hero-sub':'8 powerful tools — resize, compress, crop, convert, filter & more. No uploads. No account. No limits. Ever.',
+      'hero-sub':'9 powerful tools — resize, compress, crop, convert, filter & more. No uploads. No account. No limits. Ever.',
       'btn-explore':'Explore All Tools', 'btn-compress-hero':'Compress Image',
       'stat-tools':'Free Tools','stat-uploads':'Server Uploads','stat-private':'Private','stat-images':'Images',
 
-      'tools-eyepill':'All 8 Tools','tools-title':'Pick your tool.',
+      'tools-eyepill':'All 9 Tools','tools-title':'Pick your tool.',
       'tools-sub':'Drop an image, adjust, download. Done in under 30 seconds — no account needed.',
       'card-open':'Open tool','badge-popular':'Popular','badge-new':'New',
 
@@ -32,13 +32,14 @@
       'tool-watermark':'Watermark','tool-watermark-desc':'Add text anywhere. Control position, opacity, color, size and tile mode.',
       'tool-filters':'Photo Filters','tool-filters-desc':'12 instant presets — Sepia, Noir, Vivid, Dreamy — plus 8 fine-tune sliders.',
       'tool-meme':'Meme Generator','tool-meme-desc':'Bold captions, Impact font, outline toggle. Upload your own or start blank.',
+      'tool-ai':'AI Convert','tool-ai-desc':'Turn PNG, JPG, WebP or BMP into an Adobe Illustrator–compatible .ai file.',
 
       'feat-eyepill':'Why LLL Image','feat-title':'Built different.',
       'feat-sub':'Not just another image tool. Here\'s what makes us stand out.',
       'feat-1-title':'Instant Results','feat-1-desc':'Everything runs on the Canvas API in your browser tab. No upload queue, no processing delay — changes render as you type.',
       'feat-2-title':'Zero Data Risk','feat-2-desc':'Your images never leave your device. There\'s no server involved. It\'s physically impossible for us to see your files.',
       'feat-3-title':'Zero Friction','feat-3-desc':'No account. No signup. No app to install. Drop an image, adjust, download. Three clicks, every time.',
-      'feat-4-title':'Actually Free','feat-4-desc':'No paywalls. No watermarks on exports. No "free tier" limits. All 8 tools, all features, all formats — forever.',
+      'feat-4-title':'Actually Free','feat-4-desc':'No paywalls. No watermarks on exports. No "free tier" limits. All 9 tools, all features, all formats — forever.',
 
       'how-eyepill':'How It Works','how-title':'Three steps to done.','how-sub':'Seriously — it\'s this simple.',
       'step-1-title':'Choose a Tool','step-1-desc':'Pick any tool from the grid above. Each opens instantly — no loading, no waiting.',
@@ -63,17 +64,17 @@
       'logo-live': '生活', 'logo-laugh': '欢笑', 'logo-love': '爱',
       'nav-compress':'压缩','nav-resize':'调整大小','nav-crop':'裁剪',
       'nav-convert':'转换','nav-rotate':'旋转','nav-watermark':'水印',
-      'nav-filters':'滤镜','nav-meme':'表情包',
+      'nav-filters':'滤镜','nav-meme':'表情包','nav-ai':'AI转换',
       'nav-get-started':'开始使用', 'nav-all-tools':'所有工具',
 
       'hero-badge':'100% 隐私 · 完全在您的浏览器中运行',
       'hero-h1':'您的图片，',
       'hero-words':['已变换。','已压缩。','已调整。','已裁剪。','已转换。','已滤镜。','已完美。'],
-      'hero-sub':'8款强大工具 — 调整大小、压缩、裁剪、转换、滤镜等。无需上传，无需账号，无任何限制。',
+      'hero-sub':'9款强大工具 — 调整大小、压缩、裁剪、转换、滤镜等。无需上传，无需账号，无任何限制。',
       'btn-explore':'探索所有工具', 'btn-compress-hero':'压缩图片',
       'stat-tools':'免费工具','stat-uploads':'服务器上传','stat-private':'完全隐私','stat-images':'处理图片',
 
-      'tools-eyepill':'全部 8 个工具','tools-title':'选择您的工具。',
+      'tools-eyepill':'全部 9 个工具','tools-title':'选择您的工具。',
       'tools-sub':'拖入图片，调整参数，下载。全程不超过30秒，无需账号。',
       'card-open':'打开工具','badge-popular':'热门','badge-new':'新增',
 
@@ -85,13 +86,14 @@
       'tool-watermark':'添加水印','tool-watermark-desc':'在任意位置添加文字，控制位置、透明度、颜色、大小和平铺。',
       'tool-filters':'照片滤镜','tool-filters-desc':'12种即时预设（复古、黑白、鲜艳、梦幻等）加8个微调滑块。',
       'tool-meme':'表情包生成器','tool-meme-desc':'粗体字幕，Impact字体，轮廓切换。上传图片或使用空白画布。',
+      'tool-ai':'AI转换','tool-ai-desc':'将PNG、JPG、WebP或BMP转换为兼容Adobe Illustrator的.ai文件。',
 
       'feat-eyepill':'为什么选择 LLL Image','feat-title':'与众不同。',
       'feat-sub':'不只是另一个图片工具，这是我们的独特之处。',
       'feat-1-title':'即时结果','feat-1-desc':'一切运行在浏览器的Canvas API上。无上传队列，无处理延迟，输入即生效。',
       'feat-2-title':'零数据风险','feat-2-desc':'您的图片永不离开您的设备。没有服务器参与，我们从物理上无法查看您的文件。',
       'feat-3-title':'零摩擦','feat-3-desc':'无需账号，无需注册，无需安装应用。拖入图片，调整，下载。每次三步完成。',
-      'feat-4-title':'真正免费','feat-4-desc':'无付费墙，导出无水印，无"免费版"限制。8个工具，全部功能，所有格式，永久免费。',
+      'feat-4-title':'真正免费','feat-4-desc':'无付费墙，导出无水印，无"免费版"限制。9个工具，全部功能，所有格式，永久免费。',
 
       'how-eyepill':'使用方法','how-title':'三步完成。','how-sub':'真的就这么简单。',
       'step-1-title':'选择工具','step-1-desc':'从上方网格中选择任意工具，每个工具即时打开，无需等待。',
@@ -116,17 +118,17 @@
       'logo-live': '生きる', 'logo-laugh': '笑う', 'logo-love': '愛する',
       'nav-compress':'圧縮','nav-resize':'リサイズ','nav-crop':'トリミング',
       'nav-convert':'変換','nav-rotate':'回転','nav-watermark':'透かし',
-      'nav-filters':'フィルター','nav-meme':'ミーム',
+      'nav-filters':'フィルター','nav-meme':'ミーム','nav-ai':'AI変換',
       'nav-get-started':'始める', 'nav-all-tools':'全ツール',
 
       'hero-badge':'100%プライベート · ブラウザで完全動作',
       'hero-h1':'あなたの画像を',
       'hero-words':['変換しました。','圧縮しました。','リサイズしました。','トリミングしました。','フォーマット変換。','フィルター適用。','完璧にしました。'],
-      'hero-sub':'8つの強力なツール — リサイズ、圧縮、トリミング、変換、フィルターなど。アップロード不要。アカウント不要。制限なし。',
+      'hero-sub':'9つの強力なツール — リサイズ、圧縮、トリミング、変換、フィルターなど。アップロード不要。アカウント不要。制限なし。',
       'btn-explore':'すべてのツールを見る', 'btn-compress-hero':'画像を圧縮',
       'stat-tools':'無料ツール','stat-uploads':'サーバー送信','stat-private':'プライベート','stat-images':'処理画像',
 
-      'tools-eyepill':'全 8 ツール','tools-title':'ツールを選択。',
+      'tools-eyepill':'全 9 ツール','tools-title':'ツールを選択。',
       'tools-sub':'画像をドロップして調整し、ダウンロード。30秒以内に完了 — アカウント不要。',
       'card-open':'ツールを開く','badge-popular':'人気','badge-new':'新機能',
 
@@ -138,13 +140,14 @@
       'tool-watermark':'透かし追加','tool-watermark-desc':'画像の任意の場所にテキストを追加。位置、透明度、色、サイズ、タイルを制御。',
       'tool-filters':'フォトフィルター','tool-filters-desc':'12種類のインスタントプリセット（セピア、ノワール、鮮やか、夢幻等）と8つのスライダー。',
       'tool-meme':'ミームジェネレーター','tool-meme-desc':'ボールドキャプション、Impactフォント、アウトライン切替。画像アップロードまたは白紙から開始。',
+      'tool-ai':'AI変換','tool-ai-desc':'PNG、JPG、WebP、BMPをAdobe Illustrator互換の.aiファイルに変換。',
 
       'feat-eyepill':'LLL Image の特徴','feat-title':'他とは違う。',
       'feat-sub':'ただの画像ツールではありません。違いをご覧ください。',
       'feat-1-title':'即座に結果','feat-1-desc':'すべてブラウザのCanvas APIで動作。アップロード待ちなし、処理遅延なし — 入力と同時に反映。',
       'feat-2-title':'データリスクゼロ','feat-2-desc':'画像はデバイスから送信されません。サーバー不使用。私たちがファイルを見ることは物理的に不可能です。',
       'feat-3-title':'ストレスゼロ','feat-3-desc':'アカウント不要。登録不要。アプリ不要。画像をドロップして調整してダウンロード。',
-      'feat-4-title':'本当に無料','feat-4-desc':'有料プランなし。透かしなし。制限なし。8ツール、全機能、全フォーマット — 永久無料。',
+      'feat-4-title':'本当に無料','feat-4-desc':'有料プランなし。透かしなし。制限なし。9ツール、全機能、全フォーマット — 永久無料。',
 
       'how-eyepill':'使い方','how-title':'3ステップで完了。','how-sub':'これだけシンプルです。',
       'step-1-title':'ツールを選ぶ','step-1-desc':'上のグリッドからツールを選択。瞬時に起動 — ロードも待ち時間もありません。',
@@ -196,7 +199,7 @@
 
     /* 4. Nav links */
     var navLinks = document.querySelectorAll('header nav a');
-    var navKeys = ['nav-compress','nav-resize','nav-crop','nav-convert','nav-rotate','nav-watermark','nav-filters','nav-meme'];
+    var navKeys = ['nav-compress','nav-resize','nav-crop','nav-convert','nav-rotate','nav-watermark','nav-filters','nav-meme','nav-ai'];
     navLinks.forEach(function (a, i) { if (navKeys[i]) a.textContent = t(navKeys[i]); });
 
     /* 4b. Mobile hamburger menu links (icon + text) */
@@ -208,7 +211,10 @@
       if (icon) a.insertBefore(icon, a.firstChild);
     });
     var mobileCta = document.querySelector('.mobile-menu .mobile-menu-cta');
-    if (mobileCta) { var mcI = mobileCta.querySelector('i'); mobileCta.textContent = ' ' + t('nav-get-started'); if (mcI) mobileCta.insertBefore(mcI, mobileCta.firstChild); }
+    if (mobileCta) {
+      var mcKey = document.querySelector('.nav-end a.btn-grad') ? 'nav-get-started' : 'nav-all-tools';
+      var mcI = mobileCta.querySelector('i'); mobileCta.textContent = ' ' + t(mcKey); if (mcI) mobileCta.insertBefore(mcI, mobileCta.firstChild);
+    }
 
     /* 5. Get Started button (nav-end) */
     var gsBtn = document.querySelector('.nav-end a.btn-grad');
