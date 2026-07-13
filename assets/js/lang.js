@@ -66,6 +66,14 @@
       'common-download-btn':'Download','q-failed-load':'Failed to load',
       'theme-light':'Light','theme-dark':'Dark',
       'q-remove-title':'Remove','watermark-custom-color-title':'Custom color',
+      'q-strip-count':'{n} images','q-strip-processed':'{n} images processed','q-card-save':'Save','q-download-zip':'Download All (.zip)',
+      'compress-toast-batch-done':'{n} images compressed!',
+      'resize-toast-batch-done':'{n} images resized!',
+      'convert-toast-batch-done':'{n} images converted!','convert-strip-processed':'{n} images converted to {f}',
+      'rotate-toast-batch-done':'{n} images saved!',
+      'watermark-toast-batch-done':'{n} images watermarked!',
+      'filters-toast-batch-done':'{n} images filtered!','filters-strip-processed':'{n} images filtered with "{p}"',
+      'meme-toast-batch-done':'{n} memes created!','meme-strip-processed':'{n} memes saved as {f}',
 
       /* AI Convert page */
       'ai-h1':'Convert to AI',
@@ -84,7 +92,7 @@
       /* Compress page */
       'compress-h1':'Compress Image',
       'compress-hero-p':'Reduce file size while preserving quality. Drag the slider to compare before and after.',
-      'compress-upload-note':'JPG · PNG · WebP · Best results with JPEG photos',
+      'compress-upload-note':'JPG · PNG · WebP · Best results with JPEG photos · select multiple to batch compress',
       'compress-panel-h3':'Preview','compress-panel-h3-compare':'Before / After Compare','compress-change-btn':'Change',
       'compress-opts-head':'Compression Options',
       'compress-opt-quality':'Quality','compress-range-lo':'🗜 Smallest','compress-range-hi':'✨ Best Quality',
@@ -269,6 +277,14 @@
       'common-download-btn':'下载','q-failed-load':'加载失败',
       'theme-light':'浅色','theme-dark':'深色',
       'q-remove-title':'移除','watermark-custom-color-title':'自定义颜色',
+      'q-strip-count':'{n} 张图片','q-strip-processed':'已处理 {n} 张图片','q-card-save':'保存','q-download-zip':'下载全部（.zip）',
+      'compress-toast-batch-done':'已压缩 {n} 张图片！',
+      'resize-toast-batch-done':'已调整 {n} 张图片大小！',
+      'convert-toast-batch-done':'已转换 {n} 张图片！','convert-strip-processed':'已将 {n} 张图片转换为 {f}',
+      'rotate-toast-batch-done':'已保存 {n} 张图片！',
+      'watermark-toast-batch-done':'已为 {n} 张图片添加水印！',
+      'filters-toast-batch-done':'已为 {n} 张图片应用滤镜！','filters-strip-processed':'已用"{p}"滤镜处理 {n} 张图片',
+      'meme-toast-batch-done':'已生成 {n} 个表情包！','meme-strip-processed':'已将 {n} 个表情包保存为 {f}',
 
       /* AI 转换页面 */
       'ai-h1':'转换为AI格式',
@@ -287,7 +303,7 @@
       /* 压缩页面 */
       'compress-h1':'压缩图片',
       'compress-hero-p':'在保持画质的同时减小文件体积。拖动滑块对比压缩前后效果。',
-      'compress-upload-note':'JPG · PNG · WebP · JPEG照片效果最佳',
+      'compress-upload-note':'JPG · PNG · WebP · JPEG照片效果最佳 · 可选择多个文件批量压缩',
       'compress-panel-h3':'预览','compress-panel-h3-compare':'压缩前 / 后对比','compress-change-btn':'更换',
       'compress-opts-head':'压缩选项',
       'compress-opt-quality':'质量','compress-range-lo':'🗜 体积最小','compress-range-hi':'✨ 质量最佳',
@@ -472,6 +488,14 @@
       'common-download-btn':'ダウンロード','q-failed-load':'読み込み失敗',
       'theme-light':'ライト','theme-dark':'ダーク',
       'q-remove-title':'削除','watermark-custom-color-title':'カスタムカラー',
+      'q-strip-count':'{n}枚の画像','q-strip-processed':'{n}枚の画像を処理しました','q-card-save':'保存','q-download-zip':'すべてダウンロード（.zip）',
+      'compress-toast-batch-done':'{n}枚の画像を圧縮しました！',
+      'resize-toast-batch-done':'{n}枚の画像をリサイズしました！',
+      'convert-toast-batch-done':'{n}枚の画像を変換しました！','convert-strip-processed':'{n}枚の画像を{f}に変換しました',
+      'rotate-toast-batch-done':'{n}枚の画像を保存しました！',
+      'watermark-toast-batch-done':'{n}枚の画像に透かしを追加しました！',
+      'filters-toast-batch-done':'{n}枚の画像にフィルターを適用しました！','filters-strip-processed':'「{p}」で{n}枚の画像を処理しました',
+      'meme-toast-batch-done':'{n}個のミームを作成しました！','meme-strip-processed':'{n}個のミームを{f}として保存しました',
 
       /* AI変換ページ */
       'ai-h1':'AIに変換',
@@ -490,7 +514,7 @@
       /* 圧縮ページ */
       'compress-h1':'画像を圧縮',
       'compress-hero-p':'画質を保ちながらファイルサイズを削減。スライダーをドラッグして前後を比較できます。',
-      'compress-upload-note':'JPG · PNG · WebP · JPEG写真で最良の結果',
+      'compress-upload-note':'JPG · PNG · WebP · JPEG写真で最良の結果 · 複数選択でまとめて圧縮',
       'compress-panel-h3':'プレビュー','compress-panel-h3-compare':'前後比較','compress-change-btn':'変更',
       'compress-opts-head':'圧縮設定',
       'compress-opt-quality':'品質','compress-range-lo':'🗜 最小サイズ','compress-range-hi':'✨ 最高品質',

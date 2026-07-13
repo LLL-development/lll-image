@@ -13,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 
@@ -67,8 +68,8 @@
     <div class="up-row">
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
-    <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note" data-i18n="watermark-upload-note">JPG · PNG · WebP</p>
+    <input type="file" id="fi" accept="image/*" multiple hidden>
+    <p class="up-note" data-i18n="watermark-upload-note">JPG · PNG · WebP · select multiple to batch watermark</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -79,6 +80,7 @@
           <h3 data-i18n="watermark-panel-h3">Live Preview</h3>
           <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="watermark-change-btn">Change</span></button>
         </div>
+        <div class="file-strip" id="fileStrip" style="display:none"></div>
         <div class="panel-body">
           <canvas id="cvs" style="max-width:100%;max-height:430px;border-radius:8px;display:block;"></canvas>
         </div>
@@ -145,8 +147,8 @@
 
         </div>
         <div class="opts-foot">
-          <button class="btn btn-block" style="background:linear-gradient(135deg,#14b8a6,#10b981);color:#fff;box-shadow:0 4px 20px rgba(20,184,166,.35)" onclick="doSave()">
-            <i class="fas fa-download"></i> <span data-i18n="watermark-btn">Save Watermarked Image</span>
+          <button class="btn btn-block" id="actionBtn" style="background:linear-gradient(135deg,#14b8a6,#10b981);color:#fff;box-shadow:0 4px 20px rgba(20,184,166,.35)" onclick="doSave()">
+            <i class="fas fa-download"></i> <span id="actionLabel" class="action-label" data-i18n="watermark-btn">Save Watermarked Image</span>
           </button>
         </div>
       </div>
@@ -160,6 +162,20 @@
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
         <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="watermark-dl-btn">Watermark Another</span></button>
       </div>
+    </div>
+
+    <div class="dl-box" id="batchBox">
+      <div class="batch-toolbar">
+        <div>
+          <h3 class="gtext" style="margin-bottom:4px" data-i18n="watermark-dl-h3">Watermark Applied!</h3>
+          <p id="batchInfo" style="color:var(--muted);font-size:14px"></p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-green btn-lg" onclick="downloadZip()"><i class="fas fa-file-archive"></i> <span data-i18n="q-download-zip">Download All (.zip)</span></button>
+          <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="rotate-dl-btn">Start Over</span></button>
+        </div>
+      </div>
+      <div class="batch-grid" id="batchGrid"></div>
     </div>
   </div>
 </div>
@@ -175,6 +191,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
+let files=[],thumbUrls=[],activeIdx=0,batchResults=[];
 let file=null,origImg=null,wmPos='bc',wmColor='#ffffff';
 function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
 
@@ -184,15 +201,30 @@ box.addEventListener('dragleave',()=>box.classList.remove('over'));
 box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');load(e.dataTransfer.files);});
 document.getElementById('fi').addEventListener('change',e=>load(e.target.files));
 
-function load(files){
-  if(!files.length)return;
-  file=files[0];
+function load(fileList){
+  if(!fileList.length)return;
+  files=Array.from(fileList);
+  activeIdx=0;batchResults=[];
+  document.getElementById('dlBox').classList.remove('on');
+  document.getElementById('batchBox').classList.remove('on');
+  thumbUrls=new Array(files.length).fill(null);
+  Promise.all(files.map((f,i)=>new Promise(res=>{
+    const rd=new FileReader();
+    rd.onload=e=>{thumbUrls[i]=e.target.result;res();};
+    rd.readAsDataURL(f);
+  }))).then(renderFileStrip);
+  loadActive();
+}
+
+function loadActive(){
+  file=files[activeIdx];
   const r=new FileReader();
   r.onload=e=>{
     origImg=new Image();
     origImg.onload=()=>{
       document.getElementById('iDims').textContent=origImg.naturalWidth+' × '+origImg.naturalHeight+' px';
       document.getElementById('iSize').textContent=fmt(file.size);
+      updateActionLabel();
       box.style.display='none';
       document.getElementById('ws').classList.add('on');
       render();
@@ -200,6 +232,52 @@ function load(files){
     origImg.src=e.target.result;
   };
   r.readAsDataURL(file);
+}
+
+function renderFileStrip(){
+  const strip=document.getElementById('fileStrip');
+  strip.innerHTML='';
+  if(files.length<=1){strip.style.display='none';return;}
+  strip.style.display='flex';
+  const count=document.createElement('span');
+  count.className='file-strip-count';count.textContent=lt('q-strip-count').replace('{n}',files.length);
+  strip.appendChild(count);
+  files.forEach((f,i)=>{
+    const chip=document.createElement('div');
+    chip.className='file-chip'+(i===activeIdx?' active':'');
+    chip.title=f.name;
+    chip.onclick=()=>{activeIdx=i;loadActive();renderFileStrip();};
+    if(thumbUrls[i]){const img=document.createElement('img');img.src=thumbUrls[i];chip.appendChild(img);}
+    const rm=document.createElement('div');
+    rm.className='rm';rm.innerHTML='<i class="fas fa-times"></i>';
+    rm.onclick=ev=>{ev.stopPropagation();removeFile(i);};
+    chip.appendChild(rm);
+    strip.appendChild(chip);
+  });
+}
+
+function removeFile(i){
+  files.splice(i,1);thumbUrls.splice(i,1);
+  if(!files.length){reset();return;}
+  if(activeIdx>=files.length)activeIdx=files.length-1;
+  else if(i<activeIdx)activeIdx--;
+  loadActive();renderFileStrip();
+}
+
+function updateActionLabel(){
+  document.getElementById('actionLabel').textContent=lt('watermark-btn')+(files.length>1?' ('+files.length+')':'');
+}
+document.addEventListener('lllangchange',()=>{if(files.length){updateActionLabel();renderFileStrip();}});
+
+function baseName(n){return n.replace(/\.[^.]+$/,'');}
+function uniqueName(name,used){
+  if(!used.has(name)){used.add(name);return name;}
+  const dot=name.lastIndexOf('.');
+  const base=dot===-1?name:name.slice(0,dot);
+  const ext=dot===-1?'':name.slice(dot);
+  let n=2,cand;
+  do{cand=base+' ('+n+')'+ext;n++;}while(used.has(cand));
+  used.add(cand);return cand;
 }
 
 function onFS(){document.getElementById('fsVal').textContent=document.getElementById('fsR').value+'px';render();}
@@ -267,7 +345,103 @@ function hexRgba(hex,a){
   return `rgba(${r},${g},${b},${a})`;
 }
 
-function doSave(){
+async function doSave(){
+  if(!files.length)return;
+  if(files.length===1){doSaveSingle();return;}
+
+  const text=document.getElementById('wmText').value||'© Watermark';
+  const fs=+document.getElementById('fsR').value;
+  const op=+document.getElementById('opR').value/100;
+  const tile=document.getElementById('ckTile').checked;
+  const btn=document.getElementById('actionBtn');
+  btn.disabled=true;
+  const used=new Set();
+  const results=[];
+  for(const f of files){
+    const r=await processOne(f,{text,fs,op,tile,pos:wmPos,color:wmColor});
+    r.name=uniqueName(r.name,used);
+    results.push(r);
+  }
+  btn.disabled=false;
+  batchResults=results;
+  showBatchResults();
+}
+
+function processOne(f,opts){
+  return new Promise(resolve=>{
+    const rd=new FileReader();
+    rd.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const iw=img.naturalWidth,ih=img.naturalHeight;
+        const c=document.createElement('canvas');
+        c.width=iw;c.height=ih;
+        const ctx=c.getContext('2d');
+        ctx.drawImage(img,0,0);
+
+        ctx.font=`bold ${opts.fs}px Inter, Arial, sans-serif`;
+        ctx.fillStyle=hexRgba(opts.color,opts.op);
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+
+        const pad=Math.max(opts.fs*.8,20);
+        const tw=ctx.measureText(opts.text).width;
+
+        if(opts.tile){
+          const xStep=tw+pad*2,yStep=opts.fs*2.8;
+          ctx.save();ctx.rotate(-Math.PI/7);
+          for(let y=-ih;y<iw+ih;y+=yStep)for(let x=-iw;x<iw*2;x+=xStep)ctx.fillText(opts.text,x,y);
+          ctx.restore();
+        }else{
+          const [x,y]=getPosXY(iw,ih,opts.pos,tw,opts.fs,pad);
+          ctx.fillText(opts.text,x,y,iw-pad*2);
+        }
+
+        const mime=f.type||'image/jpeg';
+        const ext=mime==='image/png'?'png':'jpg';
+        c.toBlob(blob=>{
+          resolve({name:baseName(f.name)+'.'+ext,blob,url:URL.createObjectURL(blob),iw,ih});
+        },mime,.92);
+      };
+      img.src=e.target.result;
+    };
+    rd.readAsDataURL(f);
+  });
+}
+
+function showBatchResults(){
+  const grid=document.getElementById('batchGrid');
+  grid.innerHTML='';
+  batchResults.forEach(r=>{
+    const card=document.createElement('div');
+    card.className='batch-card';
+    card.innerHTML='<img src="'+r.url+'" alt="'+r.name+'">'+
+      '<div class="batch-card-body">'+
+      '<div class="batch-card-name">'+r.name+'</div>'+
+      '<div class="batch-card-meta">'+r.iw+' × '+r.ih+' px</div>'+
+      '<a class="batch-card-dl" href="'+r.url+'" download="'+r.name+'"><i class="fas fa-download"></i> '+lt('q-card-save')+'</a>'+
+      '</div>';
+    grid.appendChild(card);
+  });
+  document.getElementById('batchInfo').textContent=lt('q-strip-processed').replace('{n}',batchResults.length);
+  document.getElementById('batchBox').classList.add('on');
+  document.getElementById('batchBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+  toast('✓ '+lt('watermark-toast-batch-done').replace('{n}',batchResults.length));
+}
+
+async function downloadZip(){
+  if(!batchResults.length)return;
+  const zip=new JSZip();
+  batchResults.forEach(r=>zip.file(r.name,r.blob));
+  const blob=await zip.generateAsync({type:'blob'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='watermarked-images.zip';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+}
+
+function doSaveSingle(){
   if(!origImg)return;
   render();
   const cvs=document.getElementById('cvs');
@@ -282,11 +456,13 @@ function doSave(){
 }
 
 function reset(){
-  file=null;origImg=null;
+  file=null;origImg=null;files=[];thumbUrls=[];activeIdx=0;batchResults=[];
   document.getElementById('fi').value='';
   document.getElementById('box').style.display='';
   document.getElementById('ws').classList.remove('on');
   document.getElementById('dlBox').classList.remove('on');
+  document.getElementById('batchBox').classList.remove('on');
+  document.getElementById('fileStrip').style.display='none';
 }
 function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB';}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
