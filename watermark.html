@@ -54,8 +54,8 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#14b8a6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-copyright"></i></span> Watermark Image</h1>
-  <p>Add custom text to protect your images. Control position, size, color, opacity — all live.</p>
+  <h1><span style="background:linear-gradient(135deg,#14b8a6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-copyright"></i></span> <span data-i18n="watermark-h1">Watermark Image</span></h1>
+  <p data-i18n="watermark-hero-p">Add custom text to protect your images. Control position, size, color, opacity — all live.</p>
 </section>
 
 <div class="tool-wrap">
@@ -68,7 +68,7 @@
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
     <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP</p>
+    <p class="up-note" data-i18n="watermark-upload-note">JPG · PNG · WebP</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -76,8 +76,8 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Live Preview</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+          <h3 data-i18n="watermark-panel-h3">Live Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="watermark-change-btn">Change</span></button>
         </div>
         <div class="panel-body">
           <canvas id="cvs" style="max-width:100%;max-height:430px;border-radius:8px;display:block;"></canvas>
@@ -89,64 +89,64 @@
       </div>
 
       <div class="opts-panel">
-        <div class="opts-head">Watermark Options</div>
+        <div class="opts-head" data-i18n="watermark-opts-head">Watermark Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Watermark Text</div>
-            <input class="inp" type="text" id="wmText" value="© LLL Image" placeholder="Your text…" oninput="render()">
+            <div class="opt-label" data-i18n="watermark-opt-text">Watermark Text</div>
+            <input class="inp" type="text" id="wmText" value="© LLL Image" placeholder="Your text…" data-i18n-placeholder="watermark-ph-text" oninput="render()">
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Position</div>
+            <div class="opt-label" data-i18n="watermark-opt-position">Position</div>
             <div class="pos-grid">
               <button class="pos-btn" id="pos-tl" onclick="setPos('tl')">↖ TL</button>
-              <button class="pos-btn" id="pos-tc" onclick="setPos('tc')">↑ Top</button>
+              <button class="pos-btn" id="pos-tc" onclick="setPos('tc')">↑ <span data-i18n="watermark-pos-top">Top</span></button>
               <button class="pos-btn" id="pos-tr" onclick="setPos('tr')">↗ TR</button>
               <button class="pos-btn" id="pos-ml" onclick="setPos('ml')">← ML</button>
-              <button class="pos-btn" id="pos-mc" onclick="setPos('mc')">⊙ Center</button>
+              <button class="pos-btn" id="pos-mc" onclick="setPos('mc')">⊙ <span data-i18n="watermark-pos-center">Center</span></button>
               <button class="pos-btn" id="pos-mr" onclick="setPos('mr')">→ MR</button>
               <button class="pos-btn" id="pos-bl" onclick="setPos('bl')">↙ BL</button>
-              <button class="pos-btn sel" id="pos-bc" onclick="setPos('bc')">↓ Bottom</button>
+              <button class="pos-btn sel" id="pos-bc" onclick="setPos('bc')">↓ <span data-i18n="watermark-pos-bottom">Bottom</span></button>
               <button class="pos-btn" id="pos-br" onclick="setPos('br')">↘ BR</button>
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Font Size</div>
+            <div class="opt-label" data-i18n="watermark-opt-fontsize">Font Size</div>
             <div class="range-val" id="fsVal">40px</div>
             <input type="range" id="fsR" min="8" max="220" value="40" oninput="onFS()">
-            <div class="range-limits"><span>Tiny</span><span>Huge</span></div>
+            <div class="range-limits"><span data-i18n="watermark-range-tiny">Tiny</span><span data-i18n="watermark-range-huge">Huge</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Opacity</div>
+            <div class="opt-label" data-i18n="watermark-opt-opacity">Opacity</div>
             <div class="range-val" id="opVal">60%</div>
             <input type="range" id="opR" min="5" max="100" value="60" oninput="onOP()">
-            <div class="range-limits"><span>Invisible</span><span>Solid</span></div>
+            <div class="range-limits"><span data-i18n="watermark-range-invisible">Invisible</span><span data-i18n="watermark-range-solid">Solid</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Color</div>
+            <div class="opt-label" data-i18n="watermark-opt-color">Color</div>
             <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
               <div class="swatch sel" style="background:#fff" id="sw-w" onclick="setClr('#ffffff','sw-w')"></div>
               <div class="swatch" style="background:#000" id="sw-b" onclick="setClr('#000000','sw-b')"></div>
               <div class="swatch" style="background:#f472b6" id="sw-p" onclick="setClr('#f472b6','sw-p')"></div>
               <div class="swatch" style="background:#fcd34d" id="sw-y" onclick="setClr('#fcd34d','sw-y')"></div>
               <div class="swatch" style="background:#34d399" id="sw-g" onclick="setClr('#34d399','sw-g')"></div>
-              <input type="color" id="clrPick" value="#ffffff" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border-hi);cursor:pointer;padding:1px;background:transparent" oninput="setClrCustom()" title="Custom color">
+              <input type="color" id="clrPick" value="#ffffff" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border-hi);cursor:pointer;padding:1px;background:transparent" oninput="setClrCustom()" title="Custom color" data-i18n-title="watermark-custom-color-title">
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Repeat / Tile</div>
-            <label class="toggle-row"><input type="checkbox" id="ckTile" onchange="render()"> Tile watermark across entire image</label>
+            <div class="opt-label" data-i18n="watermark-opt-tile">Repeat / Tile</div>
+            <label class="toggle-row"><input type="checkbox" id="ckTile" onchange="render()"> <span data-i18n="watermark-toggle-tile">Tile watermark across entire image</span></label>
           </div>
 
         </div>
         <div class="opts-foot">
           <button class="btn btn-block" style="background:linear-gradient(135deg,#14b8a6,#10b981);color:#fff;box-shadow:0 4px 20px rgba(20,184,166,.35)" onclick="doSave()">
-            <i class="fas fa-download"></i> Save Watermarked Image
+            <i class="fas fa-download"></i> <span data-i18n="watermark-btn">Save Watermarked Image</span>
           </button>
         </div>
       </div>
@@ -154,11 +154,11 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#14b8a6,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Watermark Applied!</h3>
+      <h3 class="gtext" data-i18n="watermark-dl-h3">Watermark Applied!</h3>
       <p id="dlInfo">Your protected image is ready.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Watermark Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="watermark-dl-btn">Watermark Another</span></button>
       </div>
     </div>
   </div>
@@ -166,9 +166,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -176,6 +176,7 @@
 
 <script>
 let file=null,origImg=null,wmPos='bc',wmColor='#ffffff';
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -274,10 +275,10 @@ function doSave(){
   const ext=mime==='image/png'?'png':'jpg';
   const a=document.getElementById('dlA');
   a.href=cvs.toDataURL(mime,.92);a.download='watermarked.'+ext;
-  document.getElementById('dlInfo').textContent='Watermark added to '+origImg.naturalWidth+' × '+origImg.naturalHeight+' px image';
+  document.getElementById('dlInfo').textContent=lt('watermark-dl-info-prefix')+' '+origImg.naturalWidth+' × '+origImg.naturalHeight+' px '+lt('watermark-dl-info-suffix');
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Watermark applied!');
+  toast('✓ '+lt('watermark-toast-applied'));
 }
 
 function reset(){

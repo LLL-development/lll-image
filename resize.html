@@ -61,8 +61,8 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span class="ico"><i class="fas fa-expand-arrows-alt"></i></span> Resize Image</h1>
-  <p>Change dimensions by pixels or percentage. Lock aspect ratio. Live output preview.</p>
+  <h1><span class="ico"><i class="fas fa-expand-arrows-alt"></i></span> <span data-i18n="resize-h1">Resize Image</span></h1>
+  <p data-i18n="resize-hero-p">Change dimensions by pixels or percentage. Lock aspect ratio. Live output preview.</p>
 </section>
 
 <div class="tool-wrap">
@@ -71,14 +71,14 @@
   <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
     <div class="up-icon"><i class="fas fa-expand-arrows-alt"></i></div>
     <h2>Drop your image here</h2>
-    <p>or click anywhere to browse files</p>
+    <p data-i18n="resize-upload-p">or click anywhere to browse files</p>
     <div class="up-row" onclick="e=>e.stopPropagation()">
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()">
         <i class="fas fa-folder-open"></i> Choose File
       </button>
     </div>
     <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP · GIF · SVG · Max any size</p>
+    <p class="up-note" data-i18n="resize-upload-note">JPG · PNG · WebP · GIF · SVG · Max any size</p>
   </div>
 
   <!-- WORKSPACE -->
@@ -88,8 +88,8 @@
       <!-- Preview -->
       <div class="panel">
         <div class="panel-head">
-          <h3>Preview</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+          <h3 data-i18n="resize-panel-h3">Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="resize-change-btn">Change</span></button>
         </div>
         <div class="panel-body"><img id="prev" src="" alt="Preview"></div>
         <div class="panel-foot">
@@ -101,38 +101,38 @@
 
       <!-- Options -->
       <div class="opts-panel">
-        <div class="opts-head">Resize Options</div>
+        <div class="opts-head" data-i18n="resize-opts-head">Resize Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Mode</div>
+            <div class="opt-label" data-i18n="resize-opt-mode">Mode</div>
             <div class="radio-row">
-              <button class="r-btn sel" id="mPx" onclick="setMode('px')">By Pixels</button>
-              <button class="r-btn" id="mPct" onclick="setMode('pct')">By Percent</button>
+              <button class="r-btn sel" id="mPx" data-i18n="resize-mode-px" onclick="setMode('px')">By Pixels</button>
+              <button class="r-btn" id="mPct" data-i18n="resize-mode-pct" onclick="setMode('pct')">By Percent</button>
             </div>
           </div>
 
           <!-- pixel inputs -->
           <div class="opt-g" id="pxOpts">
-            <div class="opt-label">Target Dimensions</div>
+            <div class="opt-label" data-i18n="resize-opt-target">Target Dimensions</div>
             <div class="two-col">
-              <div><input class="inp" type="number" id="wInp" placeholder="Width" min="1" oninput="syncW()">
-                <div class="field-note">Width px</div></div>
-              <div><input class="inp" type="number" id="hInp" placeholder="Height" min="1" oninput="syncH()">
-                <div class="field-note">Height px</div></div>
+              <div><input class="inp" type="number" id="wInp" placeholder="Width" data-i18n-placeholder="resize-ph-width" min="1" oninput="syncW()">
+                <div class="field-note" data-i18n="resize-note-width">Width px</div></div>
+              <div><input class="inp" type="number" id="hInp" placeholder="Height" data-i18n-placeholder="resize-ph-height" min="1" oninput="syncH()">
+                <div class="field-note" data-i18n="resize-note-height">Height px</div></div>
             </div>
-            <div class="opt-label" style="margin-top:4px">Quick Scale</div>
+            <div class="opt-label" style="margin-top:4px" data-i18n="resize-opt-quickscale">Quick Scale</div>
             <div class="chips">
               <button class="chip" onclick="qPct(25)">25%</button>
               <button class="chip" onclick="qPct(50)">50%</button>
               <button class="chip" onclick="qPct(75)">75%</button>
-              <button class="chip" onclick="qPct(100)">Original</button>
+              <button class="chip" data-i18n="resize-scale-original" onclick="qPct(100)">Original</button>
             </div>
           </div>
 
           <!-- percent mode -->
           <div class="opt-g" id="pctOpts" style="display:none">
-            <div class="opt-label">Scale Factor</div>
+            <div class="opt-label" data-i18n="resize-opt-scalefactor">Scale Factor</div>
             <div class="range-val" id="pctVal">50%</div>
             <input type="range" id="pctR" min="1" max="300" value="50" oninput="onPct()">
             <div class="range-limits"><span>1%</span><span>300%</span></div>
@@ -141,19 +141,19 @@
           <!-- output preview -->
           <div class="out-dims" id="outDims" style="display:none">
             <i class="fas fa-arrow-right" style="color:var(--orange)"></i>
-            Output: <strong id="outLabel">— × —</strong>
+            <span data-i18n="resize-output-label">Output:</span> <strong id="outLabel">— × —</strong>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Constraints</div>
-            <label class="toggle-row"><input type="checkbox" id="ckRatio" checked onchange="updateOutDims()"> Lock aspect ratio</label>
-            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckNoUp"> Prevent upscaling</label>
+            <div class="opt-label" data-i18n="resize-opt-constraints">Constraints</div>
+            <label class="toggle-row"><input type="checkbox" id="ckRatio" checked onchange="updateOutDims()"> <span data-i18n="resize-lock-ratio">Lock aspect ratio</span></label>
+            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckNoUp"> <span data-i18n="resize-prevent-upscale">Prevent upscaling</span></label>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Output Format</div>
+            <div class="opt-label" data-i18n="resize-opt-format">Output Format</div>
             <select class="inp" id="fmt">
-              <option value="original">Same as original</option>
+              <option value="original" data-i18n="resize-fmt-original">Same as original</option>
               <option value="image/jpeg">JPEG</option>
               <option value="image/png">PNG</option>
               <option value="image/webp">WebP</option>
@@ -163,7 +163,7 @@
         </div>
         <div class="opts-foot">
           <button class="btn btn-grad btn-block" onclick="doResize()">
-            <i class="fas fa-magic"></i> Resize Image
+            <i class="fas fa-magic"></i> <span data-i18n="resize-h1">Resize Image</span>
           </button>
         </div>
       </div>
@@ -173,11 +173,11 @@
     <!-- Download -->
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#f97316,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Image Resized!</h3>
+      <h3 class="gtext" data-i18n="resize-dl-h3">Image Resized!</h3>
       <p id="dlInfo">Ready to download.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Resize Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="resize-dl-btn">Resize Another</span></button>
       </div>
     </div>
   </div>
@@ -188,10 +188,10 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a>
-      <p>Free browser-based image tools. Zero uploads.</p>
+      <p data-i18n="footer-brand-tool-uploads">Free browser-based image tools. Zero uploads.</p>
     </div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -199,6 +199,7 @@
 
 <script>
 let file=null,ow=0,oh=0,mode='px',locking=false;
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -289,10 +290,10 @@ function doResize(){
   const url=mime==='image/jpeg'?c.toDataURL(mime,.92):c.toDataURL(mime);
   const a=document.getElementById('dlA');
   a.href=url;a.download='resized.'+ext;
-  document.getElementById('dlInfo').textContent='Output: '+tw+' × '+th+' px  ·  '+ext.toUpperCase();
+  document.getElementById('dlInfo').textContent=lt('resize-output-label')+' '+tw+' × '+th+' px  ·  '+ext.toUpperCase();
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Resized to '+tw+' × '+th+' px');
+  toast('✓ '+lt('resize-toast').replace('{w}',tw).replace('{h}',th));
 }
 
 function reset(){

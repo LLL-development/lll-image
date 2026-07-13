@@ -54,8 +54,8 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#06b6d4,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-exchange-alt"></i></span> Convert Image</h1>
-  <p>Switch your image between JPG, PNG, WebP, and GIF formats instantly — right in your browser.</p>
+  <h1><span style="background:linear-gradient(135deg,#06b6d4,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-exchange-alt"></i></span> <span data-i18n="convert-h1">Convert Image</span></h1>
+  <p data-i18n="convert-hero-p">Switch your image between JPG, PNG, WebP, and GIF formats instantly — right in your browser.</p>
 </section>
 
 <div class="tool-wrap">
@@ -68,7 +68,7 @@
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
     <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP · GIF · BMP · SVG</p>
+    <p class="up-note" data-i18n="convert-upload-note">JPG · PNG · WebP · GIF · BMP · SVG</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -76,8 +76,8 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Preview</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+          <h3 data-i18n="convert-panel-h3">Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="convert-change-btn">Change</span></button>
         </div>
         <div class="panel-body"><img id="prev" src="" alt="Preview"></div>
         <div class="panel-foot">
@@ -88,56 +88,56 @@
       </div>
 
       <div class="opts-panel">
-        <div class="opts-head">Convert Options</div>
+        <div class="opts-head" data-i18n="convert-opts-head">Convert Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Convert To</div>
+            <div class="opt-label" data-i18n="convert-opt-convertto">Convert To</div>
             <div class="fmt-grid">
               <div class="fmt-card sel" id="fmt-jpg" onclick="selFmt('image/jpeg','jpg')">
                 <div><span class="fmt-name">JPG</span><i class="fas fa-check-circle fmt-ck"></i></div>
-                <div class="fmt-desc">Photos · Small file size</div>
+                <div class="fmt-desc" data-i18n="convert-fmt-jpg-desc">Photos · Small file size</div>
               </div>
               <div class="fmt-card" id="fmt-png" onclick="selFmt('image/png','png')">
                 <div><span class="fmt-name">PNG</span><i class="fas fa-check-circle fmt-ck"></i></div>
-                <div class="fmt-desc">Lossless · Transparency</div>
+                <div class="fmt-desc" data-i18n="convert-fmt-png-desc">Lossless · Transparency</div>
               </div>
               <div class="fmt-card" id="fmt-webp" onclick="selFmt('image/webp','webp')">
                 <div><span class="fmt-name">WebP</span><i class="fas fa-check-circle fmt-ck"></i></div>
-                <div class="fmt-desc">Modern · Best compression</div>
+                <div class="fmt-desc" data-i18n="convert-fmt-webp-desc">Modern · Best compression</div>
               </div>
               <div class="fmt-card" id="fmt-gif" onclick="selFmt('image/gif','gif')">
                 <div><span class="fmt-name">GIF</span><i class="fas fa-check-circle fmt-ck"></i></div>
-                <div class="fmt-desc">Animation · 256 colors</div>
+                <div class="fmt-desc" data-i18n="convert-fmt-gif-desc">Animation · 256 colors</div>
               </div>
             </div>
           </div>
 
           <div class="opt-g" id="qualityG">
-            <div class="opt-label">Quality (JPG / WebP)</div>
+            <div class="opt-label" data-i18n="convert-opt-quality">Quality (JPG / WebP)</div>
             <div class="range-val" id="qVal">90%</div>
             <input type="range" id="qR" min="10" max="100" value="90" oninput="onQ()">
-            <div class="range-limits"><span>Smaller file</span><span>Better quality</span></div>
+            <div class="range-limits"><span data-i18n="convert-range-lo">Smaller file</span><span data-i18n="convert-range-hi">Better quality</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Background Color</div>
+            <div class="opt-label" data-i18n="convert-opt-bg">Background Color</div>
             <div style="display:flex;align-items:center;gap:12px">
               <input type="color" id="bgClr" value="#ffffff" style="width:44px;height:38px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;padding:3px;background:transparent">
-              <span style="font-size:13px;color:var(--muted)">Applied when converting transparent PNG → JPG</span>
+              <span style="font-size:13px;color:var(--muted)" data-i18n="convert-opt-bg-desc">Applied when converting transparent PNG → JPG</span>
             </div>
           </div>
 
           <div class="opt-g" style="background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.15);border-radius:var(--r-sm);padding:14px">
             <div style="font-size:13px;color:var(--muted);line-height:1.6">
-              <strong style="color:var(--cyan-l)">Tip:</strong> WebP gives 25–35% smaller files than JPEG at the same visual quality — ideal for web use.
+              <strong style="color:var(--cyan-l)" data-i18n="convert-tip-label">Tip:</strong> <span data-i18n="convert-tip-desc">WebP gives 25–35% smaller files than JPEG at the same visual quality — ideal for web use.</span>
             </div>
           </div>
 
         </div>
         <div class="opts-foot">
           <button class="btn btn-block" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;box-shadow:0 4px 20px rgba(6,182,212,.35)" onclick="doConvert()">
-            <i class="fas fa-exchange-alt"></i> Convert Image
+            <i class="fas fa-exchange-alt"></i> <span data-i18n="convert-h1">Convert Image</span>
           </button>
         </div>
       </div>
@@ -145,11 +145,11 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#06b6d4,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Conversion Complete!</h3>
+      <h3 class="gtext" data-i18n="convert-dl-h3">Conversion Complete!</h3>
       <p id="dlInfo">Your converted image is ready.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Convert Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="convert-dl-btn">Convert Another</span></button>
       </div>
     </div>
   </div>
@@ -157,9 +157,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -167,6 +167,7 @@
 
 <script>
 let file=null,ow=0,oh=0,outMime='image/jpeg',outExt='jpg';
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -226,7 +227,7 @@ function doConvert(){
   document.getElementById('dlInfo').textContent=from+' → '+outExt.toUpperCase()+' · '+ow+' × '+oh+' px';
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Converted to '+outExt.toUpperCase());
+  toast('✓ '+lt('convert-toast').replace('{f}',outExt.toUpperCase()));
 }
 
 function reset(){

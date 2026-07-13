@@ -54,8 +54,8 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-crop-alt"></i></span> Crop Image</h1>
-  <p>Click and drag on your image to select a crop area. Lock to aspect ratio presets or enter exact pixels.</p>
+  <h1><span style="background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-crop-alt"></i></span> <span data-i18n="crop-h1">Crop Image</span></h1>
+  <p data-i18n="crop-hero-p">Click and drag on your image to select a crop area. Lock to aspect ratio presets or enter exact pixels.</p>
 </section>
 
 <div class="tool-wrap">
@@ -68,7 +68,7 @@
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
     <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP · GIF</p>
+    <p class="up-note" data-i18n="crop-upload-note">JPG · PNG · WebP · GIF</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -76,8 +76,8 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Draw Crop Area</h3>
-          <button class="btn btn-ghost btn-sm" onclick="clearCrop()"><i class="fas fa-times"></i> Clear</button>
+          <h3 data-i18n="crop-panel-h3">Draw Crop Area</h3>
+          <button class="btn btn-ghost btn-sm" onclick="clearCrop()"><i class="fas fa-times"></i> <span data-i18n="crop-clear-btn">Clear</span></button>
         </div>
         <div style="padding:16px;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;min-height:300px;overflow:auto">
           <div class="crop-stage" id="cropStage">
@@ -93,13 +93,13 @@
       </div>
 
       <div class="opts-panel">
-        <div class="opts-head">Crop Options</div>
+        <div class="opts-head" data-i18n="crop-opts-head">Crop Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Aspect Ratio</div>
+            <div class="opt-label" data-i18n="crop-opt-aspect">Aspect Ratio</div>
             <div class="asp-grid">
-              <button class="asp-btn sel" id="asp-free" onclick="setAsp(0,0,'free')">Free</button>
+              <button class="asp-btn sel" id="asp-free" data-i18n="crop-asp-free" onclick="setAsp(0,0,'free')">Free</button>
               <button class="asp-btn" id="asp-1:1" onclick="setAsp(1,1,'1:1')">1 : 1</button>
               <button class="asp-btn" id="asp-4:3" onclick="setAsp(4,3,'4:3')">4 : 3</button>
               <button class="asp-btn" id="asp-16:9" onclick="setAsp(16,9,'16:9')">16 : 9</button>
@@ -109,35 +109,35 @@
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Manual Coordinates (px)</div>
+            <div class="opt-label" data-i18n="crop-opt-manual">Manual Coordinates (px)</div>
             <div class="two-col">
-              <div><input class="inp" id="cx" type="number" placeholder="X" min="0" oninput="manualCrop()"><div class="field-note">Left (X)</div></div>
-              <div><input class="inp" id="cy" type="number" placeholder="Y" min="0" oninput="manualCrop()"><div class="field-note">Top (Y)</div></div>
+              <div><input class="inp" id="cx" type="number" placeholder="X" min="0" oninput="manualCrop()"><div class="field-note" data-i18n="crop-note-left">Left (X)</div></div>
+              <div><input class="inp" id="cy" type="number" placeholder="Y" min="0" oninput="manualCrop()"><div class="field-note" data-i18n="crop-note-top">Top (Y)</div></div>
             </div>
             <div class="two-col" style="margin-top:8px">
-              <div><input class="inp" id="cw" type="number" placeholder="W" min="1" oninput="manualCrop()"><div class="field-note">Width</div></div>
-              <div><input class="inp" id="ch" type="number" placeholder="H" min="1" oninput="manualCrop()"><div class="field-note">Height</div></div>
+              <div><input class="inp" id="cw" type="number" placeholder="W" min="1" oninput="manualCrop()"><div class="field-note" data-i18n="crop-note-width">Width</div></div>
+              <div><input class="inp" id="ch" type="number" placeholder="H" min="1" oninput="manualCrop()"><div class="field-note" data-i18n="crop-note-height">Height</div></div>
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Output Format</div>
+            <div class="opt-label" data-i18n="crop-opt-format">Output Format</div>
             <select class="inp" id="fmt">
-              <option value="original">Same as original</option>
+              <option value="original" data-i18n="crop-fmt-original">Same as original</option>
               <option value="image/jpeg">JPEG</option>
-              <option value="image/png">PNG (preserves transparency)</option>
+              <option value="image/png" data-i18n="crop-fmt-png">PNG (preserves transparency)</option>
               <option value="image/webp">WebP</option>
             </select>
           </div>
 
           <div class="opt-g" style="background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.15);border-radius:var(--r-sm);padding:14px">
-            <div style="font-size:13px;color:var(--muted);line-height:1.6"><i class="fas fa-info-circle" style="color:var(--violet-l)"></i> Click and drag on the image to draw your crop area. Use presets above to lock the ratio.</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.6"><i class="fas fa-info-circle" style="color:var(--violet-l)"></i> <span data-i18n="crop-info-note">Click and drag on the image to draw your crop area. Use presets above to lock the ratio.</span></div>
           </div>
 
         </div>
         <div class="opts-foot">
           <button class="btn btn-block" style="background:linear-gradient(135deg,#7c3aed,#6366f1);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,.4)" onclick="doCrop()">
-            <i class="fas fa-crop-alt"></i> Crop Image
+            <i class="fas fa-crop-alt"></i> <span data-i18n="crop-h1">Crop Image</span>
           </button>
         </div>
       </div>
@@ -146,11 +146,11 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Image Cropped!</h3>
+      <h3 class="gtext" data-i18n="crop-dl-h3">Image Cropped!</h3>
       <p id="dlInfo">Ready to download.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Crop Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="crop-dl-btn">Crop Another</span></button>
       </div>
     </div>
   </div>
@@ -158,9 +158,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -170,6 +170,8 @@
 let file=null,ow=0,oh=0,scale=1,aspW=0,aspH=0;
 let crop={x:0,y:0,w:0,h:0,active:false};
 let drag={on:false,sx:0,sy:0};
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
+document.addEventListener('lllangchange',()=>{if(!crop.active)document.getElementById('selDims').textContent=lt('crop-no-selection');});
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -188,6 +190,7 @@ function load(files){
       ow=img.naturalWidth;oh=img.naturalHeight;
       scale=img.offsetWidth/ow;
       document.getElementById('iDims').textContent=ow+' × '+oh+' px';
+      document.getElementById('selDims').textContent=lt('crop-no-selection');
       box.style.display='none';
       document.getElementById('ws').classList.add('on');
       setupDrag();
@@ -251,7 +254,7 @@ function drawBox(bx,by,bw,bh){
   }else{
     cb.style.display='none';
     document.getElementById('dimPill').style.display='none';
-    document.getElementById('selDims').textContent='No selection';
+    document.getElementById('selDims').textContent=lt('crop-no-selection');
   }
 }
 
@@ -266,7 +269,7 @@ function clearCrop(){
   crop.active=false;
   document.getElementById('cropBox').style.display='none';
   document.getElementById('dimPill').style.display='none';
-  document.getElementById('selDims').textContent='No selection';
+  document.getElementById('selDims').textContent=lt('crop-no-selection');
   ['cx','cy','cw','ch'].forEach(id=>document.getElementById(id).value='');
 }
 
@@ -282,7 +285,7 @@ function manualCrop(){
 }
 
 function doCrop(){
-  if(!file||!crop.active||crop.w<=0||crop.h<=0){toast('Draw a crop area first!');return;}
+  if(!file||!crop.active||crop.w<=0||crop.h<=0){toast(lt('crop-toast-none'));return;}
   const img=document.getElementById('prev');
   const c=document.createElement('canvas');
   c.width=crop.w;c.height=crop.h;
@@ -292,10 +295,10 @@ function doCrop(){
   const ext={['image/jpeg']:'jpg',['image/png']:'png',['image/webp']:'webp'}[mime]||'jpg';
   const a=document.getElementById('dlA');
   a.href=c.toDataURL(mime,.92);a.download='cropped.'+ext;
-  document.getElementById('dlInfo').textContent='Cropped to '+crop.w+' × '+crop.h+' px';
+  document.getElementById('dlInfo').textContent=lt('crop-dl-info-prefix')+' '+crop.w+' × '+crop.h+' px';
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Crop applied!');
+  toast('✓ '+lt('crop-toast-applied'));
 }
 
 function reset(){

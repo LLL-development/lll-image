@@ -62,22 +62,22 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-laugh-squint"></i></span> Meme Generator</h1>
-  <p>Add bold captions to any image. Upload your own or start from a blank canvas.</p>
+  <h1><span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-laugh-squint"></i></span> <span data-i18n="meme-h1">Meme Generator</span></h1>
+  <p data-i18n="meme-hero-p">Add bold captions to any image. Upload your own or start from a blank canvas.</p>
 </section>
 
 <div class="tool-wrap">
 
   <div class="upload-drop" id="box">
     <div class="up-icon"><i class="fas fa-laugh-squint"></i></div>
-    <h2>Choose a Starting Image</h2>
-    <p>Upload your own or pick a blank template below</p>
+    <h2 data-i18n="meme-upload-h2">Choose a Starting Image</h2>
+    <p data-i18n="meme-upload-p">Upload your own or pick a blank template below</p>
     <div class="up-row">
-      <button class="btn btn-grad" onclick="document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Upload Image</button>
-      <button class="btn btn-glass" onclick="useBlank()"><i class="fas fa-square"></i> Blank Canvas</button>
+      <button class="btn btn-grad" data-i18n-skip onclick="document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> <span data-i18n="meme-upload-btn">Upload Image</span></button>
+      <button class="btn btn-glass" onclick="useBlank()"><i class="fas fa-square"></i> <span data-i18n="meme-blank-btn">Blank Canvas</span></button>
     </div>
     <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP · or use a blank template</p>
+    <p class="up-note" data-i18n="meme-upload-note">JPG · PNG · WebP · or use a blank template</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -85,8 +85,8 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Meme Preview</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change Image</button>
+          <h3 data-i18n="meme-panel-h3">Meme Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="meme-change-btn">Change Image</span></button>
         </div>
         <div class="panel-body">
           <canvas id="cvs" style="max-width:100%;max-height:440px;border-radius:8px;display:block;"></canvas>
@@ -97,21 +97,21 @@
       </div>
 
       <div class="opts-panel" style="max-height:calc(100vh - 80px);overflow-y:auto">
-        <div class="opts-head">Caption Options</div>
+        <div class="opts-head" data-i18n="meme-opts-head">Caption Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Top Caption</div>
-            <input class="inp" type="text" id="topTxt" placeholder="TOP TEXT" oninput="render()" style="text-transform:uppercase;font-weight:700;letter-spacing:.5px">
+            <div class="opt-label" data-i18n="meme-opt-top">Top Caption</div>
+            <input class="inp" type="text" id="topTxt" placeholder="TOP TEXT" data-i18n-placeholder="meme-ph-top" oninput="render()" style="text-transform:uppercase;font-weight:700;letter-spacing:.5px">
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Bottom Caption</div>
-            <input class="inp" type="text" id="botTxt" placeholder="BOTTOM TEXT" oninput="render()" style="text-transform:uppercase;font-weight:700;letter-spacing:.5px">
+            <div class="opt-label" data-i18n="meme-opt-bottom">Bottom Caption</div>
+            <input class="inp" type="text" id="botTxt" placeholder="BOTTOM TEXT" data-i18n-placeholder="meme-ph-bottom" oninput="render()" style="text-transform:uppercase;font-weight:700;letter-spacing:.5px">
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Font</div>
+            <div class="opt-label" data-i18n="meme-opt-font">Font</div>
             <div class="chips">
               <button class="chip sel" id="f-impact" onclick="setFont('Impact,Arial Black,sans-serif','f-impact')">Impact</button>
               <button class="chip" id="f-comic" onclick="setFont('\"Comic Sans MS\",cursive','f-comic')">Comic</button>
@@ -121,14 +121,14 @@
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Font Size</div>
+            <div class="opt-label" data-i18n="meme-opt-fontsize">Font Size</div>
             <div class="range-val" id="fsVal">13%</div>
             <input type="range" id="fsR" min="4" max="28" value="13" oninput="onFS()">
-            <div class="range-limits"><span>Tiny</span><span>Huge</span></div>
+            <div class="range-limits"><span data-i18n="watermark-range-tiny">Tiny</span><span data-i18n="watermark-range-huge">Huge</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Text Color</div>
+            <div class="opt-label" data-i18n="meme-opt-textcolor">Text Color</div>
             <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
               <div class="swatch sel" style="background:#fff" id="tc-w" onclick="setTC('#ffffff','tc-w')"></div>
               <div class="swatch" style="background:#000" id="tc-b" onclick="setTC('#000000','tc-b')"></div>
@@ -140,14 +140,14 @@
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Text Style</div>
-            <label class="toggle-row"><input type="checkbox" id="ckOutline" checked onchange="render()"> Black outline (classic meme style)</label>
-            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckShadow" onchange="render()"> Drop shadow</label>
-            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckUpper" checked onchange="render()"> ALL CAPS</label>
+            <div class="opt-label" data-i18n="meme-opt-textstyle">Text Style</div>
+            <label class="toggle-row"><input type="checkbox" id="ckOutline" checked onchange="render()"> <span data-i18n="meme-toggle-outline">Black outline (classic meme style)</span></label>
+            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckShadow" onchange="render()"> <span data-i18n="meme-toggle-shadow">Drop shadow</span></label>
+            <label class="toggle-row" style="margin-top:8px"><input type="checkbox" id="ckUpper" checked onchange="render()"> <span data-i18n="meme-toggle-caps">ALL CAPS</span></label>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Vertical Padding</div>
+            <div class="opt-label" data-i18n="meme-opt-padding">Vertical Padding</div>
             <div class="range-val" id="padVal">6%</div>
             <input type="range" id="padR" min="1" max="20" value="6" oninput="onPad()">
           </div>
@@ -155,10 +155,10 @@
         </div>
         <div class="opts-foot" style="display:flex;flex-direction:column;gap:8px">
           <button class="btn btn-block" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;box-shadow:0 4px 20px rgba(245,158,11,.4)" onclick="doSave('image/png','png')">
-            <i class="fas fa-download"></i> Download PNG
+            <i class="fas fa-download"></i> <span data-i18n="meme-btn-png">Download PNG</span>
           </button>
           <button class="btn btn-block btn-ghost" onclick="doSave('image/jpeg','jpg')">
-            <i class="fas fa-download"></i> Download JPG
+            <i class="fas fa-download"></i> <span data-i18n="meme-btn-jpg">Download JPG</span>
           </button>
         </div>
       </div>
@@ -166,11 +166,11 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-laugh-squint"></i></div>
-      <h3 class="gtext">Meme Ready!</h3>
+      <h3 class="gtext" data-i18n="meme-dl-h3">Meme Ready!</h3>
       <p id="dlInfo">Your meme is ready to share.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Make Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="meme-dl-btn">Make Another</span></button>
       </div>
     </div>
   </div>
@@ -178,9 +178,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -188,6 +188,7 @@
 
 <script>
 let file=null,origImg=null,mFont='Impact,Arial Black,sans-serif',mColor='#ffffff';
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -226,7 +227,7 @@ function useBlank(){
   ctx.fillStyle=grd;ctx.fillRect(0,0,800,600);
   origImg=new Image();
   origImg.onload=()=>{
-    document.getElementById('iDims').textContent='800 × 600 px (blank)';
+    document.getElementById('iDims').textContent='800 × 600 px ('+lt('meme-blank-dims-suffix')+')';
     box.style.display='none';
     document.getElementById('ws').classList.add('on');
     render();
@@ -287,10 +288,10 @@ function doSave(mime,ext){
   const cvs=document.getElementById('cvs');
   const a=document.getElementById('dlA');
   a.href=cvs.toDataURL(mime,.95);a.download='meme.'+ext;
-  document.getElementById('dlInfo').textContent=cvs.width+' × '+cvs.height+' px — go share it!';
+  document.getElementById('dlInfo').textContent=cvs.width+' × '+cvs.height+' px — '+lt('meme-dl-info-suffix');
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Meme saved as '+ext.toUpperCase());
+  toast('✓ '+lt('meme-toast-saved-as')+' '+ext.toUpperCase());
 }
 
 function reset(){

@@ -76,18 +76,18 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#fb923c,#9a3412);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-bezier-curve"></i></span> Convert to AI</h1>
-  <p>Turn PNG, JPG, WebP or BMP images into Adobe Illustrator–compatible .ai files — right in your browser, no Illustrator required. Select multiple files to batch-convert.</p>
+  <h1><span style="background:linear-gradient(135deg,#fb923c,#9a3412);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-bezier-curve"></i></span> <span data-i18n="ai-h1">Convert to AI</span></h1>
+  <p data-i18n="ai-hero-p">Turn PNG, JPG, WebP or BMP images into Adobe Illustrator–compatible .ai files — right in your browser, no Illustrator required. Select multiple files to batch-convert.</p>
 </section>
 
 <div class="tool-wrap">
 
   <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
     <div class="up-icon"><i class="fas fa-bezier-curve"></i></div>
-    <h2>Drop your images here</h2>
-    <p>or click to browse — select one or many</p>
+    <h2 data-i18n="ai-upload-h2">Drop your images here</h2>
+    <p data-i18n="ai-upload-p">or click to browse — select one or many</p>
     <div class="up-row">
-      <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose Files</button>
+      <button class="btn btn-grad" data-i18n-skip onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> <span data-i18n="ai-upload-btn">Choose Files</span></button>
     </div>
     <input type="file" id="fi" accept="image/png,image/jpeg,image/webp,image/bmp" multiple hidden>
     <p class="up-note">PNG · JPG · WebP · BMP → .AI</p>
@@ -98,8 +98,8 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Queue (<span id="qCount">0</span>)</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-plus"></i> Add Images</button>
+          <h3><span data-i18n="ai-queue">Queue</span> (<span id="qCount">0</span>)</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-plus"></i> <span data-i18n="ai-add-images">Add Images</span></button>
         </div>
         <div class="panel-body">
           <div class="q-grid" id="qGrid"></div>
@@ -107,35 +107,35 @@
       </div>
 
       <div class="opts-panel">
-        <div class="opts-head">AI Export Options</div>
+        <div class="opts-head" data-i18n="ai-opts-head">AI Export Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Output</div>
+            <div class="opt-label" data-i18n="ai-opt-output">Output</div>
             <div class="fmt-card sel" style="cursor:default">
               <div><span class="fmt-name">.AI</span><i class="fas fa-check-circle fmt-ck"></i></div>
-              <div class="fmt-desc">PDF-compatible · opens directly in Adobe Illustrator</div>
+              <div class="fmt-desc" data-i18n="ai-opt-output-desc">PDF-compatible · opens directly in Adobe Illustrator</div>
             </div>
           </div>
 
           <div class="opt-g" id="qualityG">
-            <div class="opt-label">Embed Quality</div>
+            <div class="opt-label" data-i18n="ai-opt-quality">Embed Quality</div>
             <div class="range-val" id="qVal">92%</div>
             <input type="range" id="qR" min="10" max="100" value="92" oninput="onQ()">
-            <div class="range-limits"><span>Smaller file</span><span>Better quality</span></div>
+            <div class="range-limits"><span data-i18n="ai-range-lo">Smaller file</span><span data-i18n="ai-range-hi">Better quality</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Background Color</div>
+            <div class="opt-label" data-i18n="ai-opt-bg">Background Color</div>
             <div style="display:flex;align-items:center;gap:12px">
               <input type="color" id="bgClr" value="#ffffff" style="width:44px;height:38px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;padding:3px;background:transparent">
-              <span style="font-size:13px;color:var(--muted)">Applied to every image when flattening transparent layers</span>
+              <span style="font-size:13px;color:var(--muted)" data-i18n="ai-opt-bg-desc">Applied to every image when flattening transparent layers</span>
             </div>
           </div>
 
           <div class="opt-g" style="background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.2);border-radius:var(--r-sm);padding:14px">
             <div style="font-size:13px;color:var(--muted);line-height:1.6">
-              <strong style="color:#fb923c">How it works:</strong> Each image is embedded as a placed raster inside a real, valid vector-format .ai file — no Adobe account, license or server needed. Convert several at once and you'll get a single .zip of .ai files. Once open in Illustrator, use <em>Object → Image Trace</em> if you want true editable vector paths.
+              <strong style="color:#fb923c" data-i18n="ai-how-label">How it works:</strong> <span data-i18n="ai-how-desc" data-i18n-html>Each image is embedded as a placed raster inside a real, valid vector-format .ai file — no Adobe account, license or server needed. Convert several at once and you'll get a single .zip of .ai files. Once open in Illustrator, use <em>Object → Image Trace</em> if you want true editable vector paths.</span>
             </div>
           </div>
 
@@ -150,11 +150,11 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#fb923c,#9a3412);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">AI File Ready!</h3>
+      <h3 class="gtext" data-i18n="ai-dl-h3">AI File Ready!</h3>
       <p id="dlInfo">Your .ai file is ready to open in Illustrator.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Convert Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="ai-dl-btn">Convert Another</span></button>
       </div>
     </div>
   </div>
@@ -162,9 +162,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -180,10 +180,17 @@ box.addEventListener('dragleave',()=>box.classList.remove('over'));
 box.addEventListener('drop',e=>{e.preventDefault();box.classList.remove('over');addFiles(e.dataTransfer.files);});
 document.getElementById('fi').addEventListener('change',e=>{addFiles(e.target.files);e.target.value='';});
 
+const ACCEPTED_TYPES=new Set(['image/png','image/jpeg','image/webp','image/bmp']);
+
 function addFiles(files){
   if(!files.length)return;
+  let rejectedCount=0;
   Array.from(files).forEach(file=>{
-    const item={id:nextId++,file,name:file.name,dataURL:null,width:0,height:0};
+    if(!ACCEPTED_TYPES.has(file.type)){
+      rejectedCount++;
+      return;
+    }
+    const item={id:nextId++,file,name:file.name,dataURL:null,width:0,height:0,status:'loading'};
     queue.push(item);
     const r=new FileReader();
     r.onload=e=>{
@@ -192,14 +199,30 @@ function addFiles(files){
         item.dataURL=e.target.result;
         item.width=img.naturalWidth;
         item.height=img.naturalHeight;
+        item.status='ready';
         renderQueue();
+      };
+      img.onerror=()=>{
+        item.status='error';
+        renderQueue();
+        toast('⚠ Could not read '+item.name+' — file may be corrupted or unsupported');
       };
       img.src=e.target.result;
     };
+    r.onerror=()=>{
+      item.status='error';
+      renderQueue();
+      toast('⚠ Could not read '+item.name);
+    };
     r.readAsDataURL(file);
   });
-  box.style.display='none';
-  document.getElementById('ws').classList.add('on');
+  if(rejectedCount){
+    toast('⚠ Skipped '+rejectedCount+' unsupported file'+(rejectedCount>1?'s':'')+' — only PNG, JPG, WebP or BMP are supported');
+  }
+  if(queue.length){
+    box.style.display='none';
+    document.getElementById('ws').classList.add('on');
+  }
   renderQueue();
 }
 
@@ -213,27 +236,42 @@ function removeItem(id){
   }
 }
 
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
+
+function updateConvertState(){
+  const btn=document.getElementById('convertBtn');
+  const lbl=document.getElementById('convertLbl');
+  const pending=queue.some(q=>q.status==='loading');
+  const readyCount=queue.filter(q=>q.status==='ready').length;
+  btn.disabled=pending||readyCount===0;
+  lbl.textContent=pending?lt('ai-loading'):(readyCount>1?(lt('ai-convert-btn')+' ('+readyCount+')'):lt('ai-convert-btn'));
+}
+
 function renderQueue(){
   const grid=document.getElementById('qGrid');
   document.getElementById('qCount').textContent=queue.length;
-  document.getElementById('convertLbl').textContent=queue.length>1?('Convert '+queue.length+' Images to AI'):'Convert to AI';
   grid.innerHTML='';
   queue.forEach(item=>{
     const el=document.createElement('div');
     el.className='q-item';
+    let dims;
+    if(item.status==='error')dims='<span style="color:#dc2626">'+lt('q-failed-load')+'</span>';
+    else if(item.status==='loading')dims=lt('ai-loading');
+    else dims=item.width+' × '+item.height+' px · '+fmt(item.file.size);
     el.innerHTML=
-      '<button class="q-remove" title="Remove"><i class="fas fa-times"></i></button>'+
+      '<button class="q-remove" title="'+lt('q-remove-title')+'"><i class="fas fa-times"></i></button>'+
       '<div class="q-thumb-wrap">'+(item.dataURL?'<img class="q-thumb" src="'+item.dataURL+'">':'')+'</div>'+
       '<div class="q-meta"><div class="q-name">'+escapeHtml(item.name)+'</div>'+
-      '<div class="q-dims">'+(item.width?item.width+' × '+item.height+' px · ':'')+fmt(item.file.size)+'</div></div>';
+      '<div class="q-dims">'+dims+'</div></div>';
     el.querySelector('.q-remove').onclick=()=>removeItem(item.id);
     grid.appendChild(el);
   });
   const addTile=document.createElement('div');
   addTile.className='q-add-tile';
-  addTile.innerHTML='<i class="fas fa-plus"></i> Add more';
+  addTile.innerHTML='<i class="fas fa-plus"></i> '+lt('ai-add-more');
   addTile.onclick=()=>document.getElementById('fi').click();
   grid.appendChild(addTile);
+  updateConvertState();
 }
 
 function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
@@ -398,9 +436,17 @@ function toAiName(originalName,usedNames){
   return name;
 }
 
+function loadImage(src){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>reject(new Error('Image failed to decode'));
+    img.src=src;
+  });
+}
+
 async function convertOne(item){
-  const img=new Image();
-  await new Promise(res=>{img.onload=res;img.src=item.dataURL;});
+  const img=await loadImage(item.dataURL);
   const c=document.createElement('canvas');
   c.width=item.width;c.height=item.height;
   const ctx=c.getContext('2d');
@@ -415,38 +461,49 @@ async function convertOne(item){
 }
 
 async function doConvert(){
-  if(!queue.length)return;
+  const ready=queue.filter(q=>q.status==='ready');
+  if(!ready.length)return;
   const btn=document.getElementById('convertBtn');
   btn.disabled=true;
-  const originalLbl=document.getElementById('convertLbl').textContent;
 
-  const usedNames=new Set();
-  const results=[];
-  for(let i=0;i<queue.length;i++){
-    document.getElementById('convertLbl').textContent='Converting '+(i+1)+' / '+queue.length+'…';
-    const aiBytes=await convertOne(queue[i]);
-    results.push({name:toAiName(queue[i].name,usedNames),data:aiBytes});
+  try{
+    const usedNames=new Set();
+    const results=[];
+    for(let i=0;i<ready.length;i++){
+      document.getElementById('convertLbl').textContent=lt('ai-converting')+' '+(i+1)+' / '+ready.length+'…';
+      try{
+        const aiBytes=await convertOne(ready[i]);
+        results.push({name:toAiName(ready[i].name,usedNames),data:aiBytes,src:ready[i]});
+      }catch(err){
+        toast('⚠ Skipped '+ready[i].name+' — conversion failed');
+      }
+    }
+
+    if(!results.length){
+      toast('⚠ No images could be converted');
+      return;
+    }
+
+    const a=document.getElementById('dlA');
+    if(results.length===1){
+      const aiBlob=new Blob([results[0].data],{type:'application/postscript'});
+      const url=URL.createObjectURL(aiBlob);
+      a.href=url;a.download=results[0].name;
+      document.getElementById('dlInfo').textContent=results[0].src.name+' → '+results[0].name+' · '+results[0].src.width+' × '+results[0].src.height+' px · '+fmt(aiBlob.size);
+    } else {
+      const zipBytes=buildZip(results.map(r=>({name:r.name,data:r.data})));
+      const zipBlob=new Blob([zipBytes],{type:'application/zip'});
+      const url=URL.createObjectURL(zipBlob);
+      a.href=url;a.download='converted-ai-files.zip';
+      document.getElementById('dlInfo').textContent=results.length+' images → AI · 1 ZIP file · '+fmt(zipBlob.size);
+    }
+
+    document.getElementById('dlBox').classList.add('on');
+    document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+    toast('✓ Converted to AI');
+  } finally {
+    updateConvertState();
   }
-
-  const a=document.getElementById('dlA');
-  if(results.length===1){
-    const aiBlob=new Blob([results[0].data],{type:'application/postscript'});
-    const url=URL.createObjectURL(aiBlob);
-    a.href=url;a.download=results[0].name;
-    document.getElementById('dlInfo').textContent=queue[0].name+' → '+results[0].name+' · '+queue[0].width+' × '+queue[0].height+' px · '+fmt(aiBlob.size);
-  } else {
-    const zipBytes=buildZip(results);
-    const zipBlob=new Blob([zipBytes],{type:'application/zip'});
-    const url=URL.createObjectURL(zipBlob);
-    a.href=url;a.download='converted-ai-files.zip';
-    document.getElementById('dlInfo').textContent=results.length+' images → AI · 1 ZIP file · '+fmt(zipBlob.size);
-  }
-
-  document.getElementById('convertLbl').textContent=originalLbl;
-  btn.disabled=false;
-  document.getElementById('dlBox').classList.add('on');
-  document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Converted to AI');
 }
 
 function reset(){
@@ -457,6 +514,8 @@ function reset(){
   document.getElementById('dlBox').classList.remove('on');
   renderQueue();
 }
+document.addEventListener('lllangchange',renderQueue);
+updateConvertState();
 function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB';}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
 </script>

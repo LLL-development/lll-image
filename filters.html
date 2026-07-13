@@ -54,21 +54,21 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-sliders-h"></i></span> Photo Filters</h1>
-  <p>12 instant presets plus 8 fine-tune sliders. All live — see every change in real time.</p>
+  <h1><span style="background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-sliders-h"></i></span> <span data-i18n="filters-h1">Photo Filters</span></h1>
+  <p data-i18n="filters-hero-p">12 instant presets plus 8 fine-tune sliders. All live — see every change in real time.</p>
 </section>
 
 <div class="tool-wrap">
 
   <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
     <div class="up-icon"><i class="fas fa-sliders-h"></i></div>
-    <h2>Drop a photo here</h2>
+    <h2 data-i18n="filters-upload-h2">Drop a photo here</h2>
     <p>or click to browse</p>
     <div class="up-row">
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
     <input type="file" id="fi" accept="image/*" hidden>
-    <p class="up-note">JPG · PNG · WebP</p>
+    <p class="up-note" data-i18n="filters-upload-note">JPG · PNG · WebP</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -76,10 +76,10 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Live Preview</h3>
+          <h3 data-i18n="filters-panel-h3">Live Preview</h3>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-ghost btn-sm" onclick="applyPreset(0)"><i class="fas fa-undo"></i> Reset</button>
-            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+            <button class="btn btn-ghost btn-sm" onclick="applyPreset(0)"><i class="fas fa-undo"></i> <span data-i18n="filters-reset-btn">Reset</span></button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="filters-change-btn">Change</span></button>
           </div>
         </div>
         <div class="panel-body">
@@ -92,46 +92,46 @@
       </div>
 
       <div class="opts-panel" style="max-height:calc(100vh - 80px);overflow-y:auto">
-        <div class="opts-head">Presets &amp; Adjustments</div>
+        <div class="opts-head" data-i18n="filters-opts-head">Presets &amp; Adjustments</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Filter Presets</div>
+            <div class="opt-label" data-i18n="filters-opt-presets">Filter Presets</div>
             <div class="filter-grid" id="filterGrid"></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Fine Adjustments</div>
+            <div class="opt-label" data-i18n="filters-opt-adjustments">Fine Adjustments</div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Brightness</span><span class="adj-v" id="vB">100%</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-brightness">Brightness</span><span class="adj-v" id="vB">100%</span></div>
               <input type="range" id="sB" min="0" max="200" value="100" oninput="onAdj('B',value+'%');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Contrast</span><span class="adj-v" id="vC">100%</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-contrast">Contrast</span><span class="adj-v" id="vC">100%</span></div>
               <input type="range" id="sC" min="0" max="200" value="100" oninput="onAdj('C',value+'%');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Saturation</span><span class="adj-v" id="vS">100%</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-saturation">Saturation</span><span class="adj-v" id="vS">100%</span></div>
               <input type="range" id="sS" min="0" max="200" value="100" oninput="onAdj('S',value+'%');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Hue Rotate</span><span class="adj-v" id="vH">0°</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-hue">Hue Rotate</span><span class="adj-v" id="vH">0°</span></div>
               <input type="range" id="sH" min="0" max="360" value="0" oninput="onAdj('H',value+'°');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Blur</span><span class="adj-v" id="vBl">0px</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-blur">Blur</span><span class="adj-v" id="vBl">0px</span></div>
               <input type="range" id="sBl" min="0" max="20" value="0" oninput="onAdj('Bl',value+'px');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Invert</span><span class="adj-v" id="vI">0%</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-invert">Invert</span><span class="adj-v" id="vI">0%</span></div>
               <input type="range" id="sI" min="0" max="100" value="0" oninput="onAdj('I',value+'%');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Sepia</span><span class="adj-v" id="vSp">0%</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-sepia">Sepia</span><span class="adj-v" id="vSp">0%</span></div>
               <input type="range" id="sSp" min="0" max="100" value="0" oninput="onAdj('Sp',value+'%');render()"></div>
 
-            <div class="adj-row"><div class="adj-head"><span class="adj-name">Grayscale</span><span class="adj-v" id="vG">0%</span></div>
+            <div class="adj-row"><div class="adj-head"><span class="adj-name" data-i18n="filters-adj-grayscale">Grayscale</span><span class="adj-v" id="vG">0%</span></div>
               <input type="range" id="sG" min="0" max="100" value="0" oninput="onAdj('G',value+'%');render()"></div>
           </div>
 
         </div>
         <div class="opts-foot">
           <button class="btn btn-block" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;box-shadow:0 4px 20px rgba(139,92,246,.4)" onclick="doSave()">
-            <i class="fas fa-download"></i> Save Filtered Image
+            <i class="fas fa-download"></i> <span data-i18n="filters-btn">Save Filtered Image</span>
           </button>
         </div>
       </div>
@@ -139,11 +139,11 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Filter Saved!</h3>
+      <h3 class="gtext" data-i18n="filters-dl-h3">Filter Saved!</h3>
       <p id="dlInfo">Your filtered image is ready.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Filter Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="filters-dl-btn">Filter Another</span></button>
       </div>
     </div>
   </div>
@@ -151,9 +151,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -161,6 +161,13 @@
 
 <script>
 let file=null,origImg=null,selP=0;
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
+const PRESET_KEYS={Original:'filters-preset-original',Grayscale:'filters-preset-grayscale',Sepia:'filters-preset-sepia',Vintage:'filters-preset-vintage',Vivid:'filters-preset-vivid',Cool:'filters-preset-cool',Warm:'filters-preset-warm',Noir:'filters-preset-noir',Faded:'filters-preset-faded',Invert:'filters-preset-invert',Dreamy:'filters-preset-dreamy',Punch:'filters-preset-punch'};
+function presetLabel(name){return lt(PRESET_KEYS[name]||name);}
+document.addEventListener('lllangchange',()=>{
+  document.querySelectorAll('.filt-lbl').forEach((el,i)=>{el.textContent=presetLabel(PRESETS[i][0]);});
+  if(origImg)document.getElementById('iActive').textContent=presetLabel(PRESETS[selP][0]);
+});
 
 const PRESETS=[
   ['Original',  '',{sB:100,sC:100,sS:100,sH:0,sBl:0,sI:0,sSp:0,sG:0}],
@@ -219,7 +226,7 @@ function buildThumbs(){
     ctx.drawImage(origImg,(80-dw)/2,(80-dh)/2,dw,dh);
     d.appendChild(mc);
     const lbl=document.createElement('div');
-    lbl.className='filt-lbl';lbl.textContent=p[0];d.appendChild(lbl);
+    lbl.className='filt-lbl';lbl.textContent=presetLabel(p[0]);d.appendChild(lbl);
     const ck=document.createElement('div');
     ck.className='filt-ck';ck.innerHTML='<i class="fas fa-check"></i>';d.appendChild(ck);
     grid.appendChild(d);
@@ -229,7 +236,7 @@ function buildThumbs(){
 function applyPreset(idx){
   selP=idx;
   document.querySelectorAll('.filt-thumb').forEach((el,i)=>el.classList.toggle('sel',i===idx));
-  document.getElementById('iActive').textContent=PRESETS[idx][0];
+  document.getElementById('iActive').textContent=presetLabel(PRESETS[idx][0]);
   const ov=PRESETS[idx][2];
   Object.keys(DEFAULTS).forEach(id=>{
     const v=ov[id]!==undefined?ov[id]:DEFAULTS[id];
@@ -272,10 +279,10 @@ function doSave(){
   const ext=mime==='image/png'?'png':'jpg';
   const a=document.getElementById('dlA');
   a.href=cvs.toDataURL(mime,.93);a.download='filtered.'+ext;
-  document.getElementById('dlInfo').textContent='Filter "'+PRESETS[selP][0]+'" applied · '+cvs.width+' × '+cvs.height+' px';
+  document.getElementById('dlInfo').textContent='"'+presetLabel(PRESETS[selP][0])+'" '+lt('filters-dl-info-applied')+' · '+cvs.width+' × '+cvs.height+' px';
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Filter "'+PRESETS[selP][0]+'" saved!');
+  toast('✓ "'+presetLabel(PRESETS[selP][0])+'" '+lt('filters-toast-saved'));
 }
 
 function reset(){
