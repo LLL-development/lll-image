@@ -55,8 +55,8 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-redo-alt"></i></span> Rotate &amp; Flip</h1>
-  <p>Rotate 90°/180°, flip horizontally or vertically, or fine-tune with a free-angle slider. Live preview.</p>
+  <h1><span style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-redo-alt"></i></span> <span data-i18n="rotate-h1">Rotate &amp; Flip</span></h1>
+  <p data-i18n="rotate-hero-p">Rotate 90°/180°, flip horizontally or vertically, or fine-tune with a free-angle slider. Live preview.</p>
 </section>
 
 <div class="tool-wrap">
@@ -69,7 +69,7 @@
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
     <input type="file" id="fi" accept="image/*" multiple hidden>
-    <p class="up-note">JPG · PNG · WebP · GIF · Select multiple to batch rotate/flip</p>
+    <p class="up-note" data-i18n="rotate-upload-note">JPG · PNG · WebP · GIF · select multiple to batch rotate/flip</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -77,8 +77,8 @@
 
       <div class="panel">
         <div class="panel-head">
-          <h3>Live Preview</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+          <h3 data-i18n="rotate-panel-h3">Live Preview</h3>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="rotate-change-btn">Change</span></button>
         </div>
         <div class="file-strip" id="fileStrip" style="display:none"></div>
         <div class="panel-body">
@@ -86,54 +86,54 @@
         </div>
         <div class="panel-foot">
           <span id="iDims">—</span>
-          <span id="iRot" style="color:var(--green-l);font-weight:700">0° · No flip</span>
+          <span id="iRot" style="color:var(--green-l);font-weight:700">0° · <span data-i18n="rotate-no-flip">No flip</span></span>
         </div>
       </div>
 
       <div class="opts-panel">
-        <div class="opts-head">Transform Options</div>
+        <div class="opts-head" data-i18n="rotate-opts-head">Transform Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Rotate</div>
+            <div class="opt-label" data-i18n="rotate-opt-rotate">Rotate</div>
             <div class="act-grid">
-              <button class="act-btn" onclick="doRot(-90)"><i class="fas fa-undo"></i><span>90° Left</span></button>
-              <button class="act-btn" onclick="doRot(90)"><i class="fas fa-redo"></i><span>90° Right</span></button>
+              <button class="act-btn" onclick="doRot(-90)"><i class="fas fa-undo"></i><span data-i18n="rotate-rot-left">90° Left</span></button>
+              <button class="act-btn" onclick="doRot(90)"><i class="fas fa-redo"></i><span data-i18n="rotate-rot-right">90° Right</span></button>
               <button class="act-btn" onclick="doRot(180)"><i class="fas fa-sync-alt"></i><span>180°</span></button>
-              <button class="act-btn" onclick="resetAll()"><i class="fas fa-home"></i><span>Reset All</span></button>
+              <button class="act-btn" onclick="resetAll()"><i class="fas fa-home"></i><span data-i18n="rotate-reset-all">Reset All</span></button>
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Flip</div>
+            <div class="opt-label" data-i18n="rotate-opt-flip">Flip</div>
             <div class="act-grid">
-              <button class="act-btn" onclick="doFlip('h')"><i class="fas fa-arrows-alt-h"></i><span>Flip H</span></button>
-              <button class="act-btn" onclick="doFlip('v')"><i class="fas fa-arrows-alt-v"></i><span>Flip V</span></button>
+              <button class="act-btn" onclick="doFlip('h')"><i class="fas fa-arrows-alt-h"></i><span data-i18n="rotate-flip-h">Flip H</span></button>
+              <button class="act-btn" onclick="doFlip('v')"><i class="fas fa-arrows-alt-v"></i><span data-i18n="rotate-flip-v">Flip V</span></button>
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Fine Angle</div>
+            <div class="opt-label" data-i18n="rotate-opt-fineangle">Fine Angle</div>
             <div class="range-val" id="fineVal">0°</div>
             <input type="range" id="fineR" min="-180" max="180" value="0" oninput="onFine()">
             <div class="range-limits"><span>-180°</span><span>+180°</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Canvas Background</div>
+            <div class="opt-label" data-i18n="rotate-opt-canvasbg">Canvas Background</div>
             <div style="display:flex;align-items:center;gap:10px">
               <input type="color" id="bgClr" value="#000000" style="width:44px;height:38px;border:1.5px solid var(--border);border-radius:var(--r-sm);cursor:pointer;padding:3px;background:transparent" oninput="render()">
               <select class="inp" id="bgPng" onchange="render()" style="flex:1">
-                <option value="transparent">Transparent (PNG output)</option>
-                <option value="color">Use color picker</option>
+                <option value="transparent" data-i18n="rotate-bg-transparent">Transparent (PNG output)</option>
+                <option value="color" data-i18n="rotate-bg-color">Use color picker</option>
               </select>
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Output Format</div>
+            <div class="opt-label" data-i18n="rotate-opt-format">Output Format</div>
             <select class="inp" id="fmt">
-              <option value="original">Same as original</option>
+              <option value="original" data-i18n="rotate-fmt-original">Same as original</option>
               <option value="image/jpeg">JPEG</option>
               <option value="image/png">PNG</option>
               <option value="image/webp">WebP</option>
@@ -143,7 +143,7 @@
         </div>
         <div class="opts-foot">
           <button class="btn btn-block" id="actionBtn" style="background:linear-gradient(135deg,#10b981,#06b6d4);color:#fff;box-shadow:0 4px 20px rgba(16,185,129,.35)" onclick="doSave()">
-            <i class="fas fa-download"></i> <span id="actionLabel" class="action-label">Save Image</span>
+            <i class="fas fa-download"></i> <span id="actionLabel" class="action-label" data-i18n="rotate-btn">Save Image</span>
           </button>
         </div>
       </div>
@@ -151,23 +151,23 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Image Ready!</h3>
+      <h3 class="gtext" data-i18n="rotate-dl-h3">Image Ready!</h3>
       <p id="dlInfo">Your transformed image is ready.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Start Over</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="rotate-dl-btn">Start Over</span></button>
       </div>
     </div>
 
     <div class="dl-box" id="batchBox">
       <div class="batch-toolbar">
         <div>
-          <h3 class="gtext" style="margin-bottom:4px">Images Ready!</h3>
-          <p id="batchInfo" style="color:var(--muted);font-size:14px">0 images processed</p>
+          <h3 class="gtext" style="margin-bottom:4px" data-i18n="rotate-dl-h3">Image Ready!</h3>
+          <p id="batchInfo" style="color:var(--muted);font-size:14px"></p>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-green btn-lg" onclick="downloadZip()"><i class="fas fa-file-archive"></i> Download All (.zip)</button>
-          <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Start Over</button>
+          <button class="btn btn-green btn-lg" onclick="downloadZip()"><i class="fas fa-file-archive"></i> <span data-i18n="q-download-zip">Download All (.zip)</span></button>
+          <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="rotate-dl-btn">Start Over</span></button>
         </div>
       </div>
       <div class="batch-grid" id="batchGrid"></div>
@@ -177,9 +177,9 @@
 
 <footer>
   <div class="footer-grid">
-    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p>Free browser-based image tools.</p></div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-brand"><a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a><p data-i18n="footer-brand-tool-short">Free browser-based image tools.</p></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -188,6 +188,7 @@
 <script>
 let files=[],thumbUrls=[],activeIdx=0,batchResults=[];
 let file=null,origImg=null,totalRot=0,flipH=false,flipV=false,fineRot=0;
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -236,7 +237,7 @@ function renderFileStrip(){
   if(files.length<=1){strip.style.display='none';return;}
   strip.style.display='flex';
   const count=document.createElement('span');
-  count.className='file-strip-count';count.textContent=files.length+' images';
+  count.className='file-strip-count';count.textContent=lt('q-strip-count').replace('{n}',files.length);
   strip.appendChild(count);
   files.forEach((f,i)=>{
     const chip=document.createElement('div');
@@ -261,8 +262,9 @@ function removeFile(i){
 }
 
 function updateActionLabel(){
-  document.getElementById('actionLabel').textContent=files.length>1?('Save '+files.length+' Images'):'Save Image';
+  document.getElementById('actionLabel').textContent=lt('rotate-btn')+(files.length>1?' ('+files.length+')':'');
 }
+document.addEventListener('lllangchange',()=>{if(files.length){updateActionLabel();renderFileStrip();}});
 
 function baseName(n){return n.replace(/\.[^.]+$/,'');}
 function uniqueName(name,used){
@@ -366,14 +368,14 @@ function showBatchResults(){
       '<div class="batch-card-body">'+
       '<div class="batch-card-name">'+r.name+'</div>'+
       '<div class="batch-card-meta">'+r.cw+' × '+r.ch+' px</div>'+
-      '<a class="batch-card-dl" href="'+r.url+'" download="'+r.name+'"><i class="fas fa-download"></i> Save</a>'+
+      '<a class="batch-card-dl" href="'+r.url+'" download="'+r.name+'"><i class="fas fa-download"></i> '+lt('q-card-save')+'</a>'+
       '</div>';
     grid.appendChild(card);
   });
-  document.getElementById('batchInfo').textContent=batchResults.length+' images saved';
+  document.getElementById('batchInfo').textContent=lt('q-strip-processed').replace('{n}',batchResults.length);
   document.getElementById('batchBox').classList.add('on');
   document.getElementById('batchBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Saved '+batchResults.length+' images!');
+  toast('✓ '+lt('rotate-toast-batch-done').replace('{n}',batchResults.length));
 }
 
 async function downloadZip(){
@@ -397,10 +399,10 @@ function doSaveSingle(){
   const url=mime==='image/jpeg'?cvs.toDataURL(mime,.93):cvs.toDataURL(mime);
   const a=document.getElementById('dlA');
   a.href=url;a.download='rotated.'+ext;
-  document.getElementById('dlInfo').textContent='Output: '+cvs.width+' × '+cvs.height+' px · '+ext.toUpperCase();
+  document.getElementById('dlInfo').textContent=lt('resize-output-label')+' '+cvs.width+' × '+cvs.height+' px · '+ext.toUpperCase();
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Image saved!');
+  toast('✓ '+lt('rotate-toast-saved'));
 }
 
 function reset(){

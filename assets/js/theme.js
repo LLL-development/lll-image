@@ -16,8 +16,13 @@ function toggleTheme() {
 function syncSwitch(theme) {
   var lbl = document.getElementById('switchLabel');
   if (!lbl) return;
-  lbl.textContent = theme === 'dark' ? 'Dark' : 'Light';
+  var key = theme === 'dark' ? 'theme-dark' : 'theme-light';
+  lbl.textContent = window.LLLLang ? window.LLLLang.t(key) : (theme === 'dark' ? 'Dark' : 'Light');
 }
+
+document.addEventListener('lllangchange', function () {
+  syncSwitch(document.documentElement.getAttribute('data-theme') || 'dark');
+});
 
 document.addEventListener('DOMContentLoaded', function () {
   /* ── SVG logo (currentColor so it works in light + dark) ── */

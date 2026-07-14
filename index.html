@@ -640,7 +640,7 @@
   </div>
 
   <div class="scroll-cue">
-    <span>Scroll</span>
+    <span data-i18n="hero-scroll">Scroll</span>
     <div class="scroll-arrow"></div>
   </div>
 </section>
@@ -807,8 +807,8 @@
 <!-- ══════ FORMAT STRIP ══════ -->
 <section class="fmt-strip">
   <div class="fmt-inner reveal">
-    <div class="eyepill"><i class="fas fa-layer-group"></i> Supported Formats</div>
-    <h2 class="sec-title" style="font-size:clamp(22px,3vw,34px);letter-spacing:-.8px;margin-bottom:0">Everything your browser can handle.</h2>
+    <div class="eyepill"><i class="fas fa-layer-group"></i> <span data-i18n="fmt-eyepill">Supported Formats</span></div>
+    <h2 class="sec-title" style="font-size:clamp(22px,3vw,34px);letter-spacing:-.8px;margin-bottom:0" data-i18n="fmt-title">Everything your browser can handle.</h2>
     <div class="fmt-row">
       <div class="fmt-pill"><i class="fas fa-image"></i> JPEG / JPG</div>
       <div class="fmt-pill"><i class="fas fa-file-image"></i> PNG</div>
@@ -816,12 +816,12 @@
       <div class="fmt-pill"><i class="fas fa-film"></i> GIF</div>
       <div class="fmt-pill"><i class="fas fa-bezier-curve"></i> SVG</div>
       <div class="fmt-pill"><i class="fas fa-photo-video"></i> BMP</div>
-      <div class="fmt-pill"><i class="fas fa-compress-alt"></i> Compress</div>
-      <div class="fmt-pill"><i class="fas fa-expand-arrows-alt"></i> Resize</div>
-      <div class="fmt-pill"><i class="fas fa-crop-alt"></i> Crop</div>
-      <div class="fmt-pill"><i class="fas fa-sliders-h"></i> Filters</div>
-      <div class="fmt-pill"><i class="fas fa-copyright"></i> Watermark</div>
-      <div class="fmt-pill"><i class="fas fa-laugh-squint"></i> Meme</div>
+      <div class="fmt-pill"><i class="fas fa-compress-alt"></i> <span data-i18n="nav-compress">Compress</span></div>
+      <div class="fmt-pill"><i class="fas fa-expand-arrows-alt"></i> <span data-i18n="nav-resize">Resize</span></div>
+      <div class="fmt-pill"><i class="fas fa-crop-alt"></i> <span data-i18n="nav-crop">Crop</span></div>
+      <div class="fmt-pill"><i class="fas fa-sliders-h"></i> <span data-i18n="nav-filters">Filters</span></div>
+      <div class="fmt-pill"><i class="fas fa-copyright"></i> <span data-i18n="nav-watermark">Watermark</span></div>
+      <div class="fmt-pill"><i class="fas fa-laugh-squint"></i> <span data-i18n="nav-meme">Meme</span></div>
     </div>
   </div>
 </section>
@@ -846,31 +846,31 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a>
-      <p>Free browser-based image tools. Zero uploads. Zero cost. Your images stay on your device.</p>
+      <p data-i18n="footer-brand">Free browser-based image tools. Zero uploads. Zero cost. Your images stay on your device.</p>
     </div>
     <div class="footer-col">
-      <h4>Optimize</h4>
-      <a href="compress.html">Compress Image</a>
-      <a href="resize.html">Resize Image</a>
-      <a href="convert.html">Convert Format</a>
+      <h4 data-i18n="footer-optimize">Optimize</h4>
+      <a href="compress.html" data-i18n="footer-link-compress">Compress Image</a>
+      <a href="resize.html" data-i18n="footer-link-resize">Resize Image</a>
+      <a href="convert.html" data-i18n="footer-link-convert">Convert Format</a>
     </div>
     <div class="footer-col">
-      <h4>Edit</h4>
-      <a href="crop.html">Crop Image</a>
-      <a href="rotate.html">Rotate & Flip</a>
-      <a href="watermark.html">Add Watermark</a>
-      <a href="filters.html">Photo Filters</a>
-      <a href="meme.html">Meme Generator</a>
-      <a href="ai.html">AI Convert</a>
+      <h4 data-i18n="footer-edit">Edit</h4>
+      <a href="crop.html" data-i18n="footer-link-crop">Crop Image</a>
+      <a href="rotate.html" data-i18n="footer-link-rotate">Rotate & Flip</a>
+      <a href="watermark.html" data-i18n="footer-link-watermark">Add Watermark</a>
+      <a href="filters.html" data-i18n="footer-link-filters">Photo Filters</a>
+      <a href="meme.html" data-i18n="footer-link-meme">Meme Generator</a>
+      <a href="ai.html" data-i18n="nav-ai">AI Convert</a>
     </div>
     <div class="footer-col">
-      <h4>About</h4>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Use</a>
-      <a href="#">All Tools</a>
+      <h4 data-i18n="footer-about">About</h4>
+      <a href="#" data-i18n="footer-privacy">Privacy Policy</a>
+      <a href="#" data-i18n="footer-terms">Terms of Use</a>
+      <a href="#" data-i18n="footer-all">All Tools</a>
     </div>
   </div>
-  <div class="footer-bottom">&copy; 2026 LLL Image · All image processing happens locally in your browser.</div>
+  <div class="footer-bottom" data-i18n="footer-copy">&copy; 2026 LLL Image · All image processing happens locally in your browser.</div>
 </footer>
 
 <script>
@@ -944,7 +944,7 @@ window.addEventListener('scroll', () => {
   var i = 0;
   el.style.cssText += 'transition:opacity .3s,transform .3s';
 
-  window._heroSetWords = function(w) { if (w && w.length) { words = w; } };
+  window._heroSetWords = function(w) { if (w && w.length) { words = w; el.textContent = words[i % words.length]; } };
 
   setInterval(function() {
     el.style.opacity = '0';

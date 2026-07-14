@@ -25,6 +25,29 @@
     .ba-pill { position:absolute; bottom:12px; font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; background:rgba(0,0,0,.7); color:#fff; backdrop-filter:blur(6px); }
     .ba-pill.l { left:12px; }
     .ba-pill.r { right:12px; }
+
+    /* batch (target-size) mode */
+    .mode-toggle-wrap { max-width:960px; margin:0 auto 22px; padding:0 20px; }
+    .q-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(140px,1fr)); gap: 12px; padding:16px; }
+    .q-item { position: relative; border: 1.5px solid var(--border); border-radius: var(--r-sm); overflow: hidden; background: var(--bg-2); }
+    .q-thumb-wrap { aspect-ratio: 4/3; overflow: hidden; background: repeating-conic-gradient(#e5e7eb 0% 25%, #f3f4f6 0% 50%) 50% / 16px 16px; }
+    [data-theme="dark"] .q-thumb-wrap { background: repeating-conic-gradient(#222 0% 25%, #2c2c2c 0% 50%) 50% / 16px 16px; }
+    .q-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .q-meta { padding: 8px 10px; }
+    .q-name { font-size: 12px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .q-dims { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .q-remove {
+      position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(0,0,0,.55); color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 11px; transition: background .2s;
+    }
+    .q-remove:hover { background: rgba(220,38,38,.9); }
+    .q-add-tile {
+      aspect-ratio: 4/3; border: 1.5px dashed var(--border); border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px;
+      color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer; transition: all .2s;
+    }
+    .q-add-tile:hover { border-color: var(--pink-l,#ec4899); color: var(--text); background: var(--surface-md); }
   </style>
 </head>
 <body>
@@ -68,11 +91,20 @@
 </div>
 
 <section class="tool-hero">
-  <h1><span style="background:linear-gradient(135deg,#ec4899,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-compress-alt"></i></span> Compress Image</h1>
-  <p>Reduce file size while preserving quality. Drag the slider to compare before and after.</p>
+  <h1><span style="background:linear-gradient(135deg,#ec4899,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-compress-alt"></i></span> <span data-i18n="compress-h1">Compress Image</span></h1>
+  <p data-i18n="compress-hero-p">Reduce file size while preserving quality. Drag the slider to compare before and after.</p>
 </section>
 
 <div class="tool-wrap">
+
+  <div class="mode-toggle-wrap">
+    <div class="radio-row">
+      <button class="r-btn sel" id="modeSingleBtn" onclick="setToolMode('single')"><span data-i18n="compress-mode-single">Single Image</span></button>
+      <button class="r-btn" id="modeBatchBtn" onclick="setToolMode('batch')"><span data-i18n="compress-mode-batch">Batch — Target Size</span></button>
+    </div>
+  </div>
+
+  <div id="singleSection">
 
   <div class="upload-drop" id="box" onclick="document.getElementById('fi').click()">
     <div class="up-icon"><i class="fas fa-compress-alt"></i></div>
@@ -82,7 +114,7 @@
       <button class="btn btn-grad" onclick="event.stopPropagation();document.getElementById('fi').click()"><i class="fas fa-folder-open"></i> Choose File</button>
     </div>
     <input type="file" id="fi" accept="image/*" multiple hidden>
-    <p class="up-note">JPG · PNG · WebP · Select multiple images to batch compress</p>
+    <p class="up-note" data-i18n="compress-upload-note">JPG · PNG · WebP · Best results with JPEG photos · select multiple to batch compress</p>
   </div>
 
   <div class="workspace" id="ws">
@@ -92,7 +124,7 @@
       <div class="panel">
         <div class="panel-head">
           <h3 id="previewLabel">Preview</h3>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> Change</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fi').click()"><i class="fas fa-sync-alt"></i> <span data-i18n="compress-change-btn">Change</span></button>
         </div>
         <div class="file-strip" id="fileStrip" style="display:none"></div>
         <!-- normal preview (before compress) -->
@@ -104,10 +136,10 @@
             <div class="ba-top" id="baTop"><img id="baComp" src="" alt="Compressed"></div>
             <div class="ba-line" id="baLine"></div>
             <div class="ba-handle" id="baHandle"><i class="fas fa-chevron-left"></i><i class="fas fa-chevron-right"></i></div>
-            <div class="ba-pill l">Original</div>
-            <div class="ba-pill r">Compressed</div>
+            <div class="ba-pill l" data-i18n="compress-sz-original">Original</div>
+            <div class="ba-pill r" data-i18n="compress-sz-compressed">Compressed</div>
           </div>
-          <p style="text-align:center;font-size:12px;color:var(--dim);margin-top:10px"><i class="fas fa-arrows-alt-h"></i> Drag to compare</p>
+          <p style="text-align:center;font-size:12px;color:var(--dim);margin-top:10px"><i class="fas fa-arrows-alt-h"></i> <span data-i18n="compress-drag-compare">Drag to compare</span></p>
         </div>
         <div class="panel-foot">
           <span id="iDims">—</span>
@@ -118,50 +150,50 @@
 
       <!-- Options -->
       <div class="opts-panel">
-        <div class="opts-head">Compression Options</div>
+        <div class="opts-head" data-i18n="compress-opts-head">Compression Options</div>
         <div class="opts-body">
 
           <div class="opt-g">
-            <div class="opt-label">Quality</div>
+            <div class="opt-label" data-i18n="compress-opt-quality">Quality</div>
             <div class="range-val" id="qVal">80%</div>
             <input type="range" id="qR" min="1" max="100" value="80" oninput="onQ()">
-            <div class="range-limits"><span>🗜 Smallest</span><span>✨ Best Quality</span></div>
+            <div class="range-limits"><span data-i18n="compress-range-lo">🗜 Smallest</span><span data-i18n="compress-range-hi">✨ Best Quality</span></div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Presets</div>
+            <div class="opt-label" data-i18n="compress-opt-presets">Presets</div>
             <div class="chips">
-              <button class="chip" onclick="setQ(35)">Max Compress</button>
-              <button class="chip" onclick="setQ(65)">Balanced</button>
-              <button class="chip" onclick="setQ(85)">High Quality</button>
-              <button class="chip" onclick="setQ(95)">Near Lossless</button>
+              <button class="chip" data-i18n="compress-preset-max" onclick="setQ(35)">Max Compress</button>
+              <button class="chip" data-i18n="compress-preset-balanced" onclick="setQ(65)">Balanced</button>
+              <button class="chip" data-i18n="compress-preset-high" onclick="setQ(85)">High Quality</button>
+              <button class="chip" data-i18n="compress-preset-near" onclick="setQ(95)">Near Lossless</button>
             </div>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Output Format</div>
+            <div class="opt-label" data-i18n="compress-opt-format">Output Format</div>
             <select class="inp" id="fmt">
-              <option value="auto">Auto-detect (recommended)</option>
-              <option value="image/jpeg">Force JPEG</option>
-              <option value="image/webp">Force WebP (best ratio)</option>
-              <option value="image/png">Force PNG (lossless)</option>
+              <option value="auto" data-i18n="compress-fmt-auto">Auto-detect (recommended)</option>
+              <option value="image/jpeg" data-i18n="compress-fmt-jpeg">Force JPEG</option>
+              <option value="image/webp" data-i18n="compress-fmt-webp">Force WebP (best ratio)</option>
+              <option value="image/png" data-i18n="compress-fmt-png">Force PNG (lossless)</option>
             </select>
           </div>
 
           <div class="opt-g">
-            <div class="opt-label">Max Dimensions (optional)</div>
+            <div class="opt-label" data-i18n="compress-opt-maxdim">Max Dimensions (optional)</div>
             <div class="two-col">
-              <div><input class="inp" type="number" id="mxW" placeholder="Max width"><div class="field-note">Width px</div></div>
-              <div><input class="inp" type="number" id="mxH" placeholder="Max height"><div class="field-note">Height px</div></div>
+              <div><input class="inp" type="number" id="mxW" placeholder="Max width" data-i18n-placeholder="compress-ph-maxw"><div class="field-note" data-i18n="compress-note-width">Width px</div></div>
+              <div><input class="inp" type="number" id="mxH" placeholder="Max height" data-i18n-placeholder="compress-ph-maxh"><div class="field-note" data-i18n="compress-note-height">Height px</div></div>
             </div>
           </div>
 
           <!-- size comparison (shows after compress) -->
           <div id="szCmp" style="display:none">
             <div class="sz-compare">
-              <div class="sz-box"><div class="sz-lbl">Original</div><div class="sz-val orig" id="szOrig">—</div></div>
+              <div class="sz-box"><div class="sz-lbl" data-i18n="compress-sz-original">Original</div><div class="sz-val orig" id="szOrig">—</div></div>
               <div class="sz-arrow"><i class="fas fa-arrow-right"></i></div>
-              <div class="sz-box"><div class="sz-lbl">Compressed</div><div class="sz-val new" id="szNew">—</div></div>
+              <div class="sz-box"><div class="sz-lbl" data-i18n="compress-sz-compressed">Compressed</div><div class="sz-val new" id="szNew">—</div></div>
             </div>
             <div class="sz-saved" id="szSaved"></div>
           </div>
@@ -169,7 +201,7 @@
         </div>
         <div class="opts-foot">
           <button class="btn btn-grad btn-block" id="actionBtn" onclick="doCompress()">
-            <i class="fas fa-compress-alt"></i> <span id="actionLabel" class="action-label">Compress Image</span>
+            <i class="fas fa-compress-alt"></i> <span id="actionLabel" class="action-label" data-i18n="compress-h1">Compress Image</span>
           </button>
         </div>
       </div>
@@ -177,38 +209,122 @@
 
     <div class="dl-box" id="dlBox">
       <div class="dl-ico" style="background:linear-gradient(135deg,#ec4899,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
-      <h3 class="gtext">Compression Done!</h3>
+      <h3 class="gtext" data-i18n="compress-dl-h3">Compression Done!</h3>
       <p id="dlInfo">Your image is ready.</p>
       <div class="dl-row">
         <a id="dlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
-        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Compress Another</button>
+        <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="compress-dl-btn">Compress Another</span></button>
       </div>
     </div>
 
     <div class="dl-box" id="batchBox">
       <div class="batch-toolbar">
         <div>
-          <h3 class="gtext" style="margin-bottom:4px">Compression Done!</h3>
-          <p id="batchInfo" style="color:var(--muted);font-size:14px">0 images processed</p>
+          <h3 class="gtext" style="margin-bottom:4px" data-i18n="compress-dl-h3">Compression Done!</h3>
+          <p id="batchInfo" style="color:var(--muted);font-size:14px"></p>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-green btn-lg" onclick="downloadZip()"><i class="fas fa-file-archive"></i> Download All (.zip)</button>
-          <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> Start Over</button>
+          <button class="btn btn-green btn-lg" onclick="downloadZip()"><i class="fas fa-file-archive"></i> <span data-i18n="q-download-zip">Download All (.zip)</span></button>
+          <button class="btn btn-outline btn-lg" onclick="reset()"><i class="fas fa-redo"></i> <span data-i18n="rotate-dl-btn">Start Over</span></button>
         </div>
       </div>
       <div class="batch-grid" id="batchGrid"></div>
     </div>
   </div>
+
+  </div><!-- /singleSection -->
+
+  <div id="batchSection" style="display:none">
+
+    <div class="upload-drop" id="boxBatch" onclick="document.getElementById('fiBatch').click()">
+      <div class="up-icon"><i class="fas fa-layer-group"></i></div>
+      <h2 data-i18n="compress-batch-upload-h2">Drop your images here</h2>
+      <p data-i18n="compress-batch-upload-p">or click to browse — select multiple</p>
+      <div class="up-row">
+        <button class="btn btn-grad" data-i18n-skip onclick="event.stopPropagation();document.getElementById('fiBatch').click()"><i class="fas fa-folder-open"></i> <span data-i18n="compress-batch-upload-btn">Choose Files</span></button>
+      </div>
+      <input type="file" id="fiBatch" accept="image/png,image/jpeg,image/webp,image/bmp" multiple hidden>
+      <p class="up-note" data-i18n="compress-batch-upload-note">JPG · PNG · WebP — compress many at once to a target size</p>
+    </div>
+
+    <div class="workspace" id="wsBatch">
+      <div class="ws-layout">
+
+        <div class="panel">
+          <div class="panel-head">
+            <h3><span data-i18n="compress-batch-queue">Queue</span> (<span id="bqCount">0</span>)</h3>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fiBatch').click()"><i class="fas fa-plus"></i> <span data-i18n="compress-batch-add-images">Add Images</span></button>
+          </div>
+          <div class="q-grid" id="bqGrid"></div>
+        </div>
+
+        <div class="opts-panel">
+          <div class="opts-head" data-i18n="compress-batch-opts-head">Target Size Options</div>
+          <div class="opts-body">
+
+            <div class="opt-g">
+              <div class="opt-label" data-i18n="compress-batch-opt-target">Target Size</div>
+              <div class="chips">
+                <button class="chip" id="tgt-500" onclick="setTargetPreset(500)">500 KB</button>
+                <button class="chip sel" id="tgt-1024" onclick="setTargetPreset(1024)">1 MB</button>
+                <button class="chip" id="tgt-5120" onclick="setTargetPreset(5120)">5 MB</button>
+              </div>
+              <div class="two-col" style="margin-top:10px">
+                <input class="inp" type="number" id="customTargetVal" placeholder="Custom" data-i18n-placeholder="compress-batch-custom-ph" min="10" oninput="onCustomTarget()">
+                <select class="inp" id="customTargetUnit" onchange="onCustomTarget()">
+                  <option value="KB">KB</option>
+                  <option value="MB" selected>MB</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="opt-g">
+              <div class="opt-label" data-i18n="compress-batch-opt-format">Output Format</div>
+              <select class="inp" id="bFmt">
+                <option value="auto" data-i18n="compress-batch-fmt-auto">Auto (JPEG or WebP)</option>
+                <option value="image/jpeg" data-i18n="compress-fmt-jpeg">Force JPEG</option>
+                <option value="image/webp" data-i18n="compress-fmt-webp">Force WebP (best ratio)</option>
+              </select>
+            </div>
+
+            <div class="opt-g" style="background:rgba(236,72,153,.07);border:1px solid rgba(236,72,153,.18);border-radius:var(--r-sm);padding:14px">
+              <div style="font-size:13px;color:var(--muted);line-height:1.6">
+                <strong style="color:#ec4899" data-i18n="compress-batch-note-label">How it works:</strong> <span data-i18n="compress-batch-note-desc">Each image's quality is reduced until it fits your target size. If it still doesn't fit at the lowest quality, dimensions are scaled down and it tries again.</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="opts-foot">
+            <button class="btn btn-block" id="batchBtn" style="background:linear-gradient(135deg,#ec4899,#ef4444);color:#fff;box-shadow:0 4px 20px rgba(236,72,153,.35)" onclick="doBatchCompress()">
+              <i class="fas fa-compress-alt"></i> <span id="batchBtnLbl" data-i18n="compress-batch-btn">Compress All to Target Size</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dl-box" id="bDlBox">
+        <div class="dl-ico" style="background:linear-gradient(135deg,#ec4899,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><i class="fas fa-check-circle"></i></div>
+        <h3 class="gtext" data-i18n="compress-batch-dl-h3">Batch Compression Done!</h3>
+        <p id="bDlInfo"></p>
+        <div class="dl-row">
+          <a id="bDlA" class="btn btn-green btn-lg" download><i class="fas fa-download"></i> Download</a>
+          <button class="btn btn-outline btn-lg" onclick="resetBatch()"><i class="fas fa-redo"></i> <span data-i18n="compress-batch-dl-btn">Compress Another Batch</span></button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /batchSection -->
+
 </div>
 
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
       <a class="logo" href="index.html">LLL<span style="-webkit-text-fill-color:var(--muted);color:var(--muted);background:none"> Image</span></a>
-      <p>Free browser-based image tools. Zero uploads.</p>
+      <p data-i18n="footer-brand-tool-uploads">Free browser-based image tools. Zero uploads.</p>
     </div>
-    <div class="footer-col"><h4>Tools</h4><a href="compress.html">Compress</a><a href="resize.html">Resize</a><a href="crop.html">Crop</a><a href="convert.html">Convert</a></div>
-    <div class="footer-col"><h4>More</h4><a href="rotate.html">Rotate</a><a href="watermark.html">Watermark</a><a href="filters.html">Filters</a><a href="meme.html">Meme</a><a href="ai.html">AI Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-tools">Tools</h4><a href="compress.html" data-i18n="nav-compress">Compress</a><a href="resize.html" data-i18n="nav-resize">Resize</a><a href="crop.html" data-i18n="nav-crop">Crop</a><a href="convert.html" data-i18n="nav-convert">Convert</a></div>
+    <div class="footer-col"><h4 data-i18n="footer-nav-more">More</h4><a href="rotate.html" data-i18n="nav-rotate">Rotate</a><a href="watermark.html" data-i18n="nav-watermark">Watermark</a><a href="filters.html" data-i18n="nav-filters">Filters</a><a href="meme.html" data-i18n="nav-meme">Meme</a><a href="ai.html" data-i18n="nav-ai">AI Convert</a></div>
   </div>
   <div class="footer-bottom">&copy; 2026 LLL Image</div>
 </footer>
@@ -216,7 +332,12 @@
 
 <script>
 let files=[],thumbUrls=[],activeIdx=0,batchResults=[];
-let file=null,origSize=0,ow=0,oh=0,origDataUrl=null;
+let file=null,origSize=0,ow=0,oh=0,origDataUrl=null,comparing=false;
+
+function lt(key){return window.LLLLang?window.LLLLang.t(key):key;}
+function updatePreviewLabel(){document.getElementById('previewLabel').textContent=comparing?lt('compress-panel-h3-compare'):lt('compress-panel-h3');}
+document.addEventListener('lllangchange',updatePreviewLabel);
+updatePreviewLabel();
 
 const box=document.getElementById('box');
 box.addEventListener('dragover',e=>{e.preventDefault();box.classList.add('over');});
@@ -254,7 +375,8 @@ function loadActive(){
       document.getElementById('baContainer').style.display='none';
       document.getElementById('normalPreview').style.display='';
       document.getElementById('iSaved').textContent='';
-      document.getElementById('previewLabel').textContent='Preview';
+      comparing=false;
+      updatePreviewLabel();
       box.style.display='none';
       document.getElementById('ws').classList.add('on');
       updateActionLabel();
@@ -269,7 +391,7 @@ function renderFileStrip(){
   if(files.length<=1){strip.style.display='none';return;}
   strip.style.display='flex';
   const count=document.createElement('span');
-  count.className='file-strip-count';count.textContent=files.length+' images';
+  count.className='file-strip-count';count.textContent=lt('q-strip-count').replace('{n}',files.length);
   strip.appendChild(count);
   files.forEach((f,i)=>{
     const chip=document.createElement('div');
@@ -294,8 +416,9 @@ function removeFile(i){
 }
 
 function updateActionLabel(){
-  document.getElementById('actionLabel').textContent=files.length>1?('Compress '+files.length+' Images'):'Compress Image';
+  document.getElementById('actionLabel').textContent=lt('compress-h1')+(files.length>1?' ('+files.length+')':'');
 }
+document.addEventListener('lllangchange',()=>{if(files.length){updateActionLabel();renderFileStrip();}});
 
 function onQ(){document.getElementById('qVal').textContent=document.getElementById('qR').value+'%';}
 function setQ(v){document.getElementById('qR').value=v;onQ();}
@@ -374,15 +497,15 @@ function showBatchResults(){
       '<div class="batch-card-body">'+
       '<div class="batch-card-name">'+r.name+'</div>'+
       '<div class="batch-card-meta">'+fmt(r.origSize)+' → '+fmt(r.newSize)+(saved>0?' <span class="saved">↓'+saved+'%</span>':'')+'</div>'+
-      '<a class="batch-card-dl" href="'+r.url+'" download="'+r.name+'"><i class="fas fa-download"></i> Save</a>'+
+      '<a class="batch-card-dl" href="'+r.url+'" download="'+r.name+'"><i class="fas fa-download"></i> '+lt('q-card-save')+'</a>'+
       '</div>';
     grid.appendChild(card);
   });
   const savedTotal=Math.max(0,Math.round((1-totalNew/totalOrig)*100));
-  document.getElementById('batchInfo').textContent=batchResults.length+' images processed · '+fmt(totalOrig)+' → '+fmt(totalNew)+(savedTotal>0?' (↓'+savedTotal+'%)':'');
+  document.getElementById('batchInfo').textContent=lt('q-strip-processed').replace('{n}',batchResults.length)+' · '+fmt(totalOrig)+' → '+fmt(totalNew)+(savedTotal>0?' (↓'+savedTotal+'%)':'');
   document.getElementById('batchBox').classList.add('on');
   document.getElementById('batchBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Compressed '+batchResults.length+' images!');
+  toast('✓ '+lt('compress-toast-batch-done').replace('{n}',batchResults.length));
 }
 
 async function downloadZip(){
@@ -428,7 +551,8 @@ function doCompressSingle(){
   document.getElementById('baComp').src=url;
   document.getElementById('normalPreview').style.display='none';
   document.getElementById('baContainer').style.display='';
-  document.getElementById('previewLabel').textContent='Before / After Compare';
+  comparing=true;
+  updatePreviewLabel();
   initBA();
 
   document.getElementById('iSaved').textContent=saved>0?'↓ '+saved+'% saved':'Optimized';
@@ -439,10 +563,10 @@ function doCompressSingle(){
 
   const a=document.getElementById('dlA');
   a.href=url;a.download='compressed.'+ext;
-  document.getElementById('dlInfo').textContent='Original: '+fmt(origSize)+' → Compressed: '+fmt(newSize);
+  document.getElementById('dlInfo').textContent=lt('compress-sz-original')+': '+fmt(origSize)+' → '+lt('compress-sz-compressed')+': '+fmt(newSize);
   document.getElementById('dlBox').classList.add('on');
   document.getElementById('dlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  toast('✓ Saved '+(saved>0?saved+'% ':'')+'file size!');
+  toast('✓ '+(saved>0?lt('compress-toast-saved-pct').replace('{p}',saved):lt('compress-toast-saved-generic')));
 }
 
 // ── Before/After Slider ──
@@ -485,10 +609,279 @@ function reset(){
   document.getElementById('fileStrip').style.display='none';
   document.getElementById('baContainer').style.display='none';
   document.getElementById('normalPreview').style.display='';
-  document.getElementById('previewLabel').textContent='Preview';
+  comparing=false;
+  updatePreviewLabel();
 }
 function fmt(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(2)+' MB';}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3200);}
+
+/* ══════════════════ BATCH → TARGET SIZE MODE ══════════════════ */
+
+function setToolMode(mode){
+  const single=mode==='single';
+  document.getElementById('modeSingleBtn').classList.toggle('sel',single);
+  document.getElementById('modeBatchBtn').classList.toggle('sel',!single);
+  document.getElementById('singleSection').style.display=single?'':'none';
+  document.getElementById('batchSection').style.display=single?'none':'';
+}
+
+let bQueue=[],bNextId=1,targetKB=1024;
+const BATCH_ACCEPTED_TYPES=new Set(['image/png','image/jpeg','image/webp','image/bmp']);
+
+const boxBatch=document.getElementById('boxBatch');
+boxBatch.addEventListener('dragover',e=>{e.preventDefault();boxBatch.classList.add('over');});
+boxBatch.addEventListener('dragleave',()=>boxBatch.classList.remove('over'));
+boxBatch.addEventListener('drop',e=>{e.preventDefault();boxBatch.classList.remove('over');addBatchFiles(e.dataTransfer.files);});
+document.getElementById('fiBatch').addEventListener('change',e=>{addBatchFiles(e.target.files);e.target.value='';});
+
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+function addBatchFiles(files){
+  if(!files.length)return;
+  let rejectedCount=0;
+  Array.from(files).forEach(file=>{
+    if(!BATCH_ACCEPTED_TYPES.has(file.type)){rejectedCount++;return;}
+    const item={id:bNextId++,file,name:file.name,dataURL:null,width:0,height:0,status:'loading',result:null};
+    bQueue.push(item);
+    const r=new FileReader();
+    r.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        item.dataURL=e.target.result;item.width=img.naturalWidth;item.height=img.naturalHeight;item.status='ready';
+        renderBatchQueue();
+      };
+      img.onerror=()=>{item.status='error';renderBatchQueue();toast('⚠ '+lt('q-failed-load')+': '+item.name);};
+      img.src=e.target.result;
+    };
+    r.onerror=()=>{item.status='error';renderBatchQueue();};
+    r.readAsDataURL(file);
+  });
+  if(rejectedCount)toast('⚠ '+lt('compress-batch-toast-rejected').replace('{n}',rejectedCount));
+  if(bQueue.length){boxBatch.style.display='none';document.getElementById('wsBatch').classList.add('on');}
+  renderBatchQueue();
+}
+
+function removeBatchItem(id){
+  bQueue=bQueue.filter(q=>q.id!==id);
+  renderBatchQueue();
+  if(!bQueue.length){boxBatch.style.display='';document.getElementById('wsBatch').classList.remove('on');document.getElementById('bDlBox').classList.remove('on');}
+}
+
+function updateBatchButtonState(){
+  const btn=document.getElementById('batchBtn');
+  const lbl=document.getElementById('batchBtnLbl');
+  const pending=bQueue.some(q=>q.status==='loading');
+  const readyCount=bQueue.filter(q=>q.status==='ready').length;
+  btn.disabled=pending||readyCount===0;
+  lbl.textContent=pending?lt('ai-loading'):lt('compress-batch-btn');
+}
+
+function renderBatchQueue(){
+  const grid=document.getElementById('bqGrid');
+  document.getElementById('bqCount').textContent=bQueue.length;
+  grid.innerHTML='';
+  bQueue.forEach(item=>{
+    const el=document.createElement('div');
+    el.className='q-item';
+    let dims;
+    if(item.status==='error')dims='<span style="color:#dc2626">'+lt('q-failed-load')+'</span>';
+    else if(item.status==='loading')dims=lt('ai-loading');
+    else if(item.result)dims=fmt(item.file.size)+' → '+fmt(item.result.size)+(item.result.achieved?' ✓':' ⚠');
+    else dims=item.width+' × '+item.height+' px · '+fmt(item.file.size);
+    el.innerHTML=
+      '<button class="q-remove" title="'+lt('q-remove-title')+'"><i class="fas fa-times"></i></button>'+
+      '<div class="q-thumb-wrap">'+(item.dataURL?'<img class="q-thumb" src="'+item.dataURL+'">':'')+'</div>'+
+      '<div class="q-meta"><div class="q-name">'+escapeHtml(item.name)+'</div>'+
+      '<div class="q-dims">'+dims+'</div></div>';
+    el.querySelector('.q-remove').onclick=()=>removeBatchItem(item.id);
+    grid.appendChild(el);
+  });
+  const addTile=document.createElement('div');
+  addTile.className='q-add-tile';
+  addTile.innerHTML='<i class="fas fa-plus"></i> '+lt('ai-add-more');
+  addTile.onclick=()=>document.getElementById('fiBatch').click();
+  grid.appendChild(addTile);
+  updateBatchButtonState();
+}
+
+function setTargetPreset(kb){
+  targetKB=kb;
+  document.querySelectorAll('.opts-panel .chips .chip').forEach(c=>c.classList.remove('sel'));
+  const btn=document.getElementById('tgt-'+kb);
+  if(btn)btn.classList.add('sel');
+  document.getElementById('customTargetVal').value='';
+}
+function onCustomTarget(){
+  const v=+document.getElementById('customTargetVal').value;
+  if(!v)return;
+  const unit=document.getElementById('customTargetUnit').value;
+  targetKB=unit==='MB'?v*1024:v;
+  document.querySelectorAll('.opts-panel .chips .chip').forEach(c=>c.classList.remove('sel'));
+}
+
+function loadImage(src){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    img.onload=()=>resolve(img);
+    img.onerror=()=>reject(new Error('Image failed to decode'));
+    img.src=src;
+  });
+}
+
+/* binary-search the highest quality (10–100) that still fits under targetBytes */
+function searchQualityForTarget(canvas,mime,targetBytes){
+  let lo=10,hi=100,bestUrl=null,bestSize=null;
+  for(let i=0;i<7;i++){
+    const q=Math.round((lo+hi)/2);
+    const url=canvas.toDataURL(mime,q/100);
+    const size=Math.round(url.split(',')[1].length*0.75);
+    if(size<=targetBytes){bestUrl=url;bestSize=size;lo=q+1;}
+    else{hi=q-1;}
+    if(lo>hi)break;
+  }
+  return bestUrl?{url:bestUrl,size:bestSize}:null;
+}
+
+async function compressOneToTarget(item,targetBytes,mime){
+  const img=await loadImage(item.dataURL);
+  let scale=1;
+  for(let round=0;round<6;round++){
+    const w=Math.max(1,Math.round(item.width*scale));
+    const h=Math.max(1,Math.round(item.height*scale));
+    const c=document.createElement('canvas');c.width=w;c.height=h;
+    const ctx=c.getContext('2d');
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    if(mime==='image/jpeg'){ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,h);}
+    ctx.drawImage(img,0,0,w,h);
+    const found=searchQualityForTarget(c,mime,targetBytes);
+    if(found)return{url:found.url,size:found.size,w,h,achieved:true};
+    scale*=0.75;
+  }
+  const w=Math.max(1,Math.round(item.width*scale));
+  const h=Math.max(1,Math.round(item.height*scale));
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const ctx=c.getContext('2d');
+  if(mime==='image/jpeg'){ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,h);}
+  ctx.drawImage(img,0,0,w,h);
+  const url=c.toDataURL(mime,0.1);
+  const size=Math.round(url.split(',')[1].length*0.75);
+  return{url,size,w,h,achieved:false};
+}
+
+/* ── minimal ZIP (stored/no-compression) writer, for bundling batch output ── */
+const CRC_TABLE=(()=>{
+  const t=new Uint32Array(256);
+  for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);t[n]=c>>>0;}
+  return t;
+})();
+function crc32(bytes){let c=0xFFFFFFFF;for(let i=0;i<bytes.length;i++)c=CRC_TABLE[(c^bytes[i])&0xFF]^(c>>>8);return(c^0xFFFFFFFF)>>>0;}
+function buildZip(files){
+  const enc=new TextEncoder();
+  const localParts=[],centralParts=[];
+  let offset=0;
+  const now=new Date();
+  const dosTime=((now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1))&0xFFFF;
+  const dosDate=(((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate())&0xFFFF;
+  files.forEach(f=>{
+    const nameBytes=enc.encode(f.name);
+    const crc=crc32(f.data);
+    const size=f.data.length;
+    const lh=new Uint8Array(30);const lv=new DataView(lh.buffer);
+    lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0,true);lv.setUint16(8,0,true);
+    lv.setUint16(10,dosTime,true);lv.setUint16(12,dosDate,true);lv.setUint32(14,crc,true);
+    lv.setUint32(18,size,true);lv.setUint32(22,size,true);lv.setUint16(26,nameBytes.length,true);lv.setUint16(28,0,true);
+    localParts.push(lh,nameBytes,f.data);
+    const ch=new Uint8Array(46);const cv=new DataView(ch.buffer);
+    cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0,true);cv.setUint16(10,0,true);
+    cv.setUint16(12,dosTime,true);cv.setUint16(14,dosDate,true);cv.setUint32(16,crc,true);
+    cv.setUint32(20,size,true);cv.setUint32(24,size,true);cv.setUint16(28,nameBytes.length,true);
+    cv.setUint16(30,0,true);cv.setUint16(32,0,true);cv.setUint16(34,0,true);cv.setUint16(36,0,true);
+    cv.setUint32(38,0,true);cv.setUint32(42,offset,true);
+    centralParts.push(ch,nameBytes);
+    offset+=lh.length+nameBytes.length+size;
+  });
+  let centralSize=0;centralParts.forEach(p=>centralSize+=p.length);
+  const centralOffset=offset;
+  const eocd=new Uint8Array(22);const ev=new DataView(eocd.buffer);
+  ev.setUint32(0,0x06054b50,true);ev.setUint16(4,0,true);ev.setUint16(6,0,true);
+  ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);
+  ev.setUint32(12,centralSize,true);ev.setUint32(16,centralOffset,true);ev.setUint16(20,0,true);
+  const allParts=[...localParts,...centralParts,eocd];
+  let total=0;allParts.forEach(p=>total+=p.length);
+  const out=new Uint8Array(total);let pos=0;
+  allParts.forEach(p=>{out.set(p,pos);pos+=p.length;});
+  return out;
+}
+
+function toOutName(originalName,ext,usedNames){
+  const base=originalName.replace(/\.[^.]+$/,'')||'compressed';
+  let name=base+'.'+ext,i=2;
+  while(usedNames.has(name)){name=base+'-'+i+'.'+ext;i++;}
+  usedNames.add(name);
+  return name;
+}
+
+async function doBatchCompress(){
+  const ready=bQueue.filter(q=>q.status==='ready');
+  if(!ready.length)return;
+  const btn=document.getElementById('batchBtn');
+  btn.disabled=true;
+  const targetBytes=targetKB*1024;
+  const fmtChoice=document.getElementById('bFmt').value;
+
+  try{
+    for(let i=0;i<ready.length;i++){
+      document.getElementById('batchBtnLbl').textContent=lt('ai-converting')+' '+(i+1)+' / '+ready.length+'…';
+      const item=ready[i];
+      const mime=fmtChoice==='auto'?(item.file.type==='image/png'?'image/webp':'image/jpeg'):fmtChoice;
+      const res=await compressOneToTarget(item,targetBytes,mime);
+      item.result={...res,mime};
+      renderBatchQueue();
+    }
+
+    const usedNames=new Set();
+    const files=[];
+    const ext={['image/jpeg']:'jpg',['image/webp']:'webp'};
+    ready.forEach(item=>{
+      const e=ext[item.result.mime]||'jpg';
+      const name=toOutName(item.name,e,usedNames);
+      const b64=item.result.url.split(',')[1];
+      const bytes=Uint8Array.from(atob(b64),c=>c.charCodeAt(0));
+      files.push({name,data:bytes,mime:item.result.mime});
+    });
+    const allAchieved=ready.every(item=>item.result.achieved);
+
+    const a=document.getElementById('bDlA');
+    if(files.length===1){
+      const blob=new Blob([files[0].data],{type:files[0].mime});
+      const url=URL.createObjectURL(blob);
+      a.href=url;a.download=files[0].name;
+      document.getElementById('bDlInfo').textContent=fmt(ready[0].result.size)+' · '+(ready[0].result.achieved?lt('compress-batch-achieved'):lt('compress-batch-not-achieved'));
+    }else{
+      const zipBytes=buildZip(files.map(f=>({name:f.name,data:f.data})));
+      const blob=new Blob([zipBytes],{type:'application/zip'});
+      const url=URL.createObjectURL(blob);
+      a.href=url;a.download='compressed-images.zip';
+      document.getElementById('bDlInfo').textContent=lt('compress-batch-images-compressed').replace('{n}',ready.length)+(allAchieved?'':' · '+lt('compress-batch-some-not-achieved'));
+    }
+    document.getElementById('bDlBox').classList.add('on');
+    document.getElementById('bDlBox').scrollIntoView({behavior:'smooth',block:'nearest'});
+    toast('✓ '+lt('compress-batch-toast'));
+  } finally {
+    updateBatchButtonState();
+  }
+}
+
+function resetBatch(){
+  bQueue=[];
+  document.getElementById('fiBatch').value='';
+  boxBatch.style.display='';
+  document.getElementById('wsBatch').classList.remove('on');
+  document.getElementById('bDlBox').classList.remove('on');
+  renderBatchQueue();
+}
+
+document.addEventListener('lllangchange',()=>{renderBatchQueue();});
 </script>
 </body>
 </html>
