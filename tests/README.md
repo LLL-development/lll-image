@@ -1,0 +1,3 @@
+Run `node --test tests/security.test.mjs` with jsdom installed in the test environment. An existing installation may be selected using `JSDOM_MODULE=/absolute/path/to/jsdom/lib/api.js` without adding runtime dependencies to this static site.
+
+The regression first reproduced an unknown data-i18n key becoming an executable image element. It now asserts literal rendering, rich CTA breaks/emphasis in all supported languages, icon preservation, and integrity/CORS metadata on all seven JSZip consumers. SHA512 was calculated from CDN bytes and verified against the identical `dist/jszip.min.js` in the official jszip@3.10.1 npm tarball (whose registry integrity was also verified).
