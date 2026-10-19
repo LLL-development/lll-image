@@ -656,8 +656,22 @@
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var key = el.getAttribute('data-i18n');
       var val = t(key);
-      if (el.hasAttribute('data-i18n-html')) el.innerHTML = val;
-      else el.textContent = val;
+      if (el.hasAttribute('data-i18n-html') && (key === 'cta-h2' || key === 'cta-p')) {
+        // Only these authored translations contain markup. Construct the allowed
+        // elements explicitly; DOM-derived keys and all other text stay literal.
+        el.replaceChildren();
+        var target = el;
+        val.split(/(<br>|<span class="gtext">|<\/span>)/).forEach(function (part) {
+          if (part === '<br>') target.appendChild(document.createElement('br'));
+          else if (part === '<span class="gtext">') {
+            var span = document.createElement('span');
+            span.className = 'gtext';
+            el.appendChild(span);
+            target = span;
+          } else if (part === '</span>') target = el;
+          else target.appendChild(document.createTextNode(part));
+        });
+      } else el.textContent = val;
     });
 
     /* 2. Logo words (injected by theme.js) */
